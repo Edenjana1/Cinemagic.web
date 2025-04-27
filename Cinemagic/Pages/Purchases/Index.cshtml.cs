@@ -24,6 +24,7 @@ namespace Cinemagic.Pages.Purchases
         public async Task OnGetAsync()
         {
             Purchase = await _context.Purchases
+                .Include(p => p.Members)
                 .Include(p => p.Movies)
                 .Include(p => p.Series).ToListAsync();
         }

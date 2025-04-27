@@ -36,6 +36,7 @@ namespace Cinemagic.Pages.Purchases
                 return NotFound();
             }
             Purchase = purchase;
+           ViewData["MemberID"] = new SelectList(_context.Members, "MemberID", "MemberID");
            ViewData["MovieID"] = new SelectList(_context.Movies, "MovieID", "MovieID");
            ViewData["SerieID"] = new SelectList(_context.Series, "SerieID", "SerieID");
             return Page();

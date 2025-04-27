@@ -75,16 +75,16 @@ namespace Cinemagic.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MovieID = table.Column<int>(type: "int", nullable: true),
                     SerieID = table.Column<int>(type: "int", nullable: true),
-                    CostumerID = table.Column<int>(type: "int", nullable: false),
-                    PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MembersMemberID = table.Column<int>(type: "int", nullable: true)
+                    MemberID = table.Column<int>(type: "int", nullable: true),
+                    MemberEmail = table.Column<int>(type: "int", nullable: true),
+                    PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Purchases", x => x.PurchaseID);
                     table.ForeignKey(
-                        name: "FK_Purchases_Members_MembersMemberID",
-                        column: x => x.MembersMemberID,
+                        name: "FK_Purchases_Members_MemberID",
+                        column: x => x.MemberID,
                         principalTable: "Members",
                         principalColumn: "MemberID");
                     table.ForeignKey(
@@ -100,9 +100,9 @@ namespace Cinemagic.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Purchases_MembersMemberID",
+                name: "IX_Purchases_MemberID",
                 table: "Purchases",
-                column: "MembersMemberID");
+                column: "MemberID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Purchases_MovieID",

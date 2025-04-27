@@ -12,10 +12,10 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Purchase.CostumerID)
+            @Html.DisplayNameFor(model => model.Purchase.MemberEmail)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Purchase.CostumerID)
+            @Html.DisplayFor(model => model.Purchase.MemberEmail)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Purchase.PurchaseDate)
@@ -34,6 +34,12 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Purchase.Series.SerieID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Purchase.Members)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Purchase.Members.MemberID)
         </dd>
     </dl>
 </div>

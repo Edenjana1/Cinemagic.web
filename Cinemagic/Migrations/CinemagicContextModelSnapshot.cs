@@ -95,10 +95,10 @@ namespace Cinemagic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseID"));
 
-                    b.Property<int>("CostumerID")
+                    b.Property<int?>("MemberEmail")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MembersMemberID")
+                    b.Property<int?>("MemberID")
                         .HasColumnType("int");
 
                     b.Property<int?>("MovieID")
@@ -112,7 +112,7 @@ namespace Cinemagic.Migrations
 
                     b.HasKey("PurchaseID");
 
-                    b.HasIndex("MembersMemberID");
+                    b.HasIndex("MemberID");
 
                     b.HasIndex("MovieID");
 
@@ -159,7 +159,7 @@ namespace Cinemagic.Migrations
                 {
                     b.HasOne("Cinemagic.Models.Member", "Members")
                         .WithMany("Purchases")
-                        .HasForeignKey("MembersMemberID");
+                        .HasForeignKey("MemberID");
 
                     b.HasOne("Cinemagic.Models.Movie", "Movies")
                         .WithMany("Purchases")

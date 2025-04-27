@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinemagic.Migrations
 {
     [DbContext(typeof(CinemagicContext))]
-    [Migration("20250427102014_afterPurchase1")]
+    [Migration("20250427125216_afterPurchase1")]
     partial class afterPurchase1
     {
         /// <inheritdoc />
@@ -98,10 +98,10 @@ namespace Cinemagic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseID"));
 
-                    b.Property<int>("CostumerID")
+                    b.Property<int?>("MemberEmail")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MembersMemberID")
+                    b.Property<int?>("MemberID")
                         .HasColumnType("int");
 
                     b.Property<int?>("MovieID")
@@ -115,7 +115,7 @@ namespace Cinemagic.Migrations
 
                     b.HasKey("PurchaseID");
 
-                    b.HasIndex("MembersMemberID");
+                    b.HasIndex("MemberID");
 
                     b.HasIndex("MovieID");
 
@@ -162,7 +162,7 @@ namespace Cinemagic.Migrations
                 {
                     b.HasOne("Cinemagic.Models.Member", "Members")
                         .WithMany("Purchases")
-                        .HasForeignKey("MembersMemberID");
+                        .HasForeignKey("MemberID");
 
                     b.HasOne("Cinemagic.Models.Movie", "Movies")
                         .WithMany("Purchases")

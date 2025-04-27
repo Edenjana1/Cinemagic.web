@@ -5,7 +5,8 @@
         public int PurchaseID { get; set; }
         public int? MovieID { get; set; }
         public int? SerieID { get; set; }
-        public int CostumerID { get; set; }
+        public int? MemberID { get; set; }
+        public int? MemberEmail { get; set; }
         public DateTime PurchaseDate { get; set; }
 
 
