@@ -21,12 +21,20 @@ namespace Cinemagic.Pages.Purchases
 
         public IList<Purchase> Purchase { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string SearchString)
         {
-            Purchase = await _context.Purchases
-                .Include(p => p.Members)
-                .Include(p => p.Movies)
-                .Include(p => p.Series).ToListAsync();
+            
+            IQueryable<Purchase> PurchaseID = from s in _context.Purchases select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                PurchaseID = PurchaseID.Where(s => s.Members.LastName.Contains(SearchString) || s.Members.FirstMidName.Contains(SearchString));
+            }
+
+            Purchase = await PurchaseID.ToListAsync();
+            //Purchase = await _context.Purchases.ToListAsync();
+            
+                
         }
     }
 }

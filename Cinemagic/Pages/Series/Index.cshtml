@@ -27,6 +27,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Serie[0].Image)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Serie[0].SerieName)
             </th>
             <th>
@@ -52,7 +55,11 @@
     </thead>
     <tbody>
 @foreach (var item in Model.Serie) {
+
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SerieName)
             </td>

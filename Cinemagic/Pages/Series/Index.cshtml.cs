@@ -21,9 +21,17 @@ namespace Cinemagic.Pages.Series
 
         public IList<Serie> Serie { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string SearchString)
         {
-            Serie = await _context.Series.ToListAsync();
+            IQueryable<Serie> SerieID = from s in _context.Series select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                SerieID = SerieID.Where(s => s.SerieName.Contains(SearchString));
+            }
+
+            Serie = await SerieID.ToListAsync();
+            //Serie = await _context.Series.ToListAsync();
         }
     }
 }

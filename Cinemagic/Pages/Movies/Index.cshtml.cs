@@ -21,9 +21,17 @@ namespace Cinemagic.Pages.Movies
 
         public IList<Movie> Movie { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string SearchString)
         {
-            Movie = await _context.Movies.ToListAsync();
+            IQueryable<Movie> MovieID = from s in _context.Movies select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                MovieID = MovieID.Where(s => s.MovieName.Contains(SearchString));
+            }
+
+            Movie = await MovieID.ToListAsync();
+            //Movie = await _context.Movies.ToListAsync();
         }
     }
 }

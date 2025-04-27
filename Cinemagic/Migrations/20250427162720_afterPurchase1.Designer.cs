@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinemagic.Migrations
 {
     [DbContext(typeof(CinemagicContext))]
-    [Migration("20250427135242_afterPurchase1")]
+    [Migration("20250427162720_afterPurchase1")]
     partial class afterPurchase1
     {
         /// <inheritdoc />
@@ -48,6 +48,9 @@ namespace Cinemagic.Migrations
                     b.Property<int>("IdintityCard")
                         .HasColumnType("int");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -68,6 +71,9 @@ namespace Cinemagic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovieID"));
 
                     b.Property<string>("AgeRate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MovieDescription")
@@ -107,11 +113,14 @@ namespace Cinemagic.Migrations
                     b.Property<int?>("MovieID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("PurchaseDate")
+                    b.Property<DateTime?>("PurchaseDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("SerieID")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("PurchaseID");
 
@@ -133,6 +142,9 @@ namespace Cinemagic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SerieID"));
 
                     b.Property<string>("AgeRate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReleaseDate")

@@ -15,6 +15,11 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Movie.MovieID" />
             <div class="form-group">
+                <label asp-for="Movie.Image" class="control-label"></label>
+                <input asp-for="Movie.Image" class="form-control" />
+                <span asp-validation-for="Movie.MovieName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Movie.MovieName" class="control-label"></label>
                 <input asp-for="Movie.MovieName" class="form-control" />
                 <span asp-validation-for="Movie.MovieName" class="text-danger"></span>

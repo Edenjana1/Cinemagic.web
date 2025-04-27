@@ -17,6 +17,7 @@ namespace Cinemagic.Migrations
                 {
                     MemberID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdintityCard = table.Column<int>(type: "int", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstMidName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -36,6 +37,7 @@ namespace Cinemagic.Migrations
                 {
                     MovieID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MovieName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MovieGenre = table.Column<int>(type: "int", nullable: true),
                     MovieDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -54,6 +56,7 @@ namespace Cinemagic.Migrations
                 {
                     SerieID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SerieName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SeasonNum = table.Column<int>(type: "int", nullable: false),
                     SerieGenre = table.Column<int>(type: "int", nullable: true),
@@ -77,7 +80,8 @@ namespace Cinemagic.Migrations
                     SerieID = table.Column<int>(type: "int", nullable: true),
                     MemberID = table.Column<int>(type: "int", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {

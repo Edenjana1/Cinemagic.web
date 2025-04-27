@@ -14,6 +14,11 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="Serie.Image" class="control-label"></label>
+                <input asp-for="Serie.Image" class="form-control" />
+                <span asp-validation-for="Serie.Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Serie.SerieName" class="control-label"></label>
                 <input asp-for="Serie.SerieName" class="form-control" />
                 <span asp-validation-for="Serie.SerieName" class="text-danger"></span>

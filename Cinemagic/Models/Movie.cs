@@ -7,6 +7,8 @@
     public class Movie
     {
         public int MovieID { get; set; }
+
+        public string Image { get; set; }
         public string MovieName { get; set; }
         public MovieGenre? MovieGenre { get; set; }
         public string MovieDescription { get; set; }

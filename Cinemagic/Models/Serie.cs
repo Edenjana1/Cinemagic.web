@@ -7,6 +7,7 @@
     public class Serie
     {
         public int SerieID { get; set; }
+        public string Image { get; set; }
         public string SerieName { get; set; }
         public int SeasonNum { get; set; }
         public SerieGenre? SerieGenre { get; set; }

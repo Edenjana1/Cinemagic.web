@@ -30,6 +30,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Member[0].Image)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Member[0].IdintityCard)
             </th>
             <th>
@@ -56,6 +59,9 @@
     <tbody>
 @foreach (var item in Model.Member) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IdintityCard)
             </td>
