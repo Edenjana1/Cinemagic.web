@@ -21,9 +21,17 @@ namespace Cinemagic.Pages.Members
 
         public IList<Member> Member { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string SearchString)
         {
-            Member = await _context.Members.ToListAsync();
+            IQueryable<Member> MemberID = from s in _context.Members select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                MemberID = MemberID.Where(s => s.LastName.Contains(SearchString) || s.FirstMidName.Contains(SearchString));
+            }
+
+            Member = await MemberID.ToListAsync();
+            //Member = await _context.Members.ToListAsync();
         }
     }
 }
