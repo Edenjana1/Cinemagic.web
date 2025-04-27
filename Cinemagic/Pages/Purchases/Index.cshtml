@@ -1,0 +1,54 @@
+﻿@page
+@model Cinemagic.Pages.Purchases.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Purchase[0].CostumerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Purchase[0].PurchaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Purchase[0].Movies)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Purchase[0].Series)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Purchase) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CostumerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Movies.MovieID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Series.SerieID)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.PurchaseID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.PurchaseID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.PurchaseID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

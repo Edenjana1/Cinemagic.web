@@ -1,0 +1,59 @@
+﻿@page
+@model Cinemagic.Pages.Movies.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Movie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Movie.MovieName" class="control-label"></label>
+                <input asp-for="Movie.MovieName" class="form-control" />
+                <span asp-validation-for="Movie.MovieName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.MovieGenre" class="control-label"></label>
+                <input asp-for="Movie.MovieGenre" class="form-control" />
+                <span asp-validation-for="Movie.MovieGenre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.MovieDescription" class="control-label"></label>
+                <input asp-for="Movie.MovieDescription" class="form-control" />
+                <span asp-validation-for="Movie.MovieDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.ReleaseDate" class="control-label"></label>
+                <input asp-for="Movie.ReleaseDate" class="form-control" />
+                <span asp-validation-for="Movie.ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.AgeRate" class="control-label"></label>
+                <input asp-for="Movie.AgeRate" class="form-control" />
+                <span asp-validation-for="Movie.AgeRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Movie.MoviePrice" class="control-label"></label>
+                <input asp-for="Movie.MoviePrice" class="form-control" />
+                <span asp-validation-for="Movie.MoviePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

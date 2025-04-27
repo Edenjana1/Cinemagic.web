@@ -1,0 +1,65 @@
+﻿@page
+@model Cinemagic.Pages.Series.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Serie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Serie.SerieID" />
+            <div class="form-group">
+                <label asp-for="Serie.SerieName" class="control-label"></label>
+                <input asp-for="Serie.SerieName" class="form-control" />
+                <span asp-validation-for="Serie.SerieName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Serie.SeasonNum" class="control-label"></label>
+                <input asp-for="Serie.SeasonNum" class="form-control" />
+                <span asp-validation-for="Serie.SeasonNum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Serie.SerieGenre" class="control-label"></label>
+                <input asp-for="Serie.SerieGenre" class="form-control" />
+                <span asp-validation-for="Serie.SerieGenre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Serie.ReleaseDate" class="control-label"></label>
+                <input asp-for="Serie.ReleaseDate" class="form-control" />
+                <span asp-validation-for="Serie.ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Serie.SerieDescription" class="control-label"></label>
+                <input asp-for="Serie.SerieDescription" class="form-control" />
+                <span asp-validation-for="Serie.SerieDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Serie.AgeRate" class="control-label"></label>
+                <input asp-for="Serie.AgeRate" class="form-control" />
+                <span asp-validation-for="Serie.AgeRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Serie.SeriePrice" class="control-label"></label>
+                <input asp-for="Serie.SeriePrice" class="form-control" />
+                <span asp-validation-for="Serie.SeriePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
