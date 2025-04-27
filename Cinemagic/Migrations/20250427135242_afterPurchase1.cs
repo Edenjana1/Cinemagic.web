@@ -76,7 +76,7 @@ namespace Cinemagic.Migrations
                     MovieID = table.Column<int>(type: "int", nullable: true),
                     SerieID = table.Column<int>(type: "int", nullable: true),
                     MemberID = table.Column<int>(type: "int", nullable: true),
-                    MemberEmail = table.Column<int>(type: "int", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>

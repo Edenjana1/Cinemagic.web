@@ -5,7 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>רכישות</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -17,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.Purchase[0].MemberID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Purchase[0].MemberEmail)
+                @Html.DisplayNameFor(model => model.Purchase[0].Email)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Purchase[0].PurchaseDate)
@@ -28,35 +28,37 @@
             <th>
                 @Html.DisplayNameFor(model => model.Purchase[0].Series)
             </th>
-            
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Purchase) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Members.MemberID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MemberEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PurchaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Movies.MovieID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Series.SerieID)
-            </td>
-            
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.PurchaseID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.PurchaseID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.PurchaseID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Purchase)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Members.IdintityCard)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.PurchaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movies.MovieName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Series.SerieName)
+                </td>
+
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.PurchaseID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.PurchaseID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.PurchaseID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

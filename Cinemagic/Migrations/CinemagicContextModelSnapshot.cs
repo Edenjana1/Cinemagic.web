@@ -95,8 +95,8 @@ namespace Cinemagic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseID"));
 
-                    b.Property<int?>("MemberEmail")
-                        .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("MemberID")
                         .HasColumnType("int");
