@@ -1,7 +1,16 @@
+using Cinemagic.Data;
+using Microsoft.EntityFrameworkCore;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+//שתי השורות הבאות מוסיפות שירות של בניית בסיס נתונים
+builder.Services.AddDbContext<CinemagicContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();
 
