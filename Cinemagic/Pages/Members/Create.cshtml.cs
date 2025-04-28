@@ -18,9 +18,16 @@ namespace Cinemagic.Pages.Members
         {
             _context = context;
         }
-
+        public List<SelectListItem> ImageOptions { get; set; } = new List<SelectListItem>();
         public IActionResult OnGet()
         {
+            ImageOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Girl", Value = "girl_icon.jpg" },
+                new SelectListItem { Text = "Boy", Value = "boy_icon.jpg" },
+                new SelectListItem { Text = "Woman", Value = "woman_icon.jpg" },
+                new SelectListItem { Text = "Man", Value = "man_icon.jpg" }
+            };
             return Page();
         }
 

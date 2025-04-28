@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -19,15 +20,37 @@ namespace Cinemagic.Pages.Series
             _context = context;
         }
 
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
-
         [BindProperty]
         public Serie Serie { get; set; } = default!;
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
+        public List<SelectListItem> ImagesList { get; set; } = new List<SelectListItem>();
+
+        public IActionResult OnGet()
+        {
+            // טוען את כל התמונות מתוך תיקיית wwwroot/images
+            var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+
+            if (Directory.Exists(imageDirectory))
+            {
+                var imageFiles = Directory.GetFiles(imageDirectory, "*.*", SearchOption.TopDirectoryOnly)
+                                          .Where(file => file.EndsWith(".jpg") || file.EndsWith(".png") || file.EndsWith(".jpeg"))
+                                          .ToList();
+
+                // המרת שם הקובץ ל-SelectListItem עם האפשרות להציג תמונה
+                foreach (var file in imageFiles)
+                {
+                    var fileName = Path.GetFileName(file);
+                    ImagesList.Add(new SelectListItem
+                    {
+                        Text = fileName, // מציג את שם הקובץ
+                        //Value = "/images/" + fileName // נתיב התמונה
+                    });
+                }
+            }
+
+            return Page();
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -42,3 +65,4 @@ namespace Cinemagic.Pages.Series
         }
     }
 }
+
