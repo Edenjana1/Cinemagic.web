@@ -13,11 +13,19 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Movie.Image" class="control-label"></label>
-                <input asp-for="Movie.Image" class="form-control" />
-                <span asp-validation-for="Movie.Image" class="text-danger"></span>
+
+            <div class="form-group" style="display: grid; grid-template-columns: 1fr auto; align-items: flex-start; column-gap: 30px;">
+                <div>
+                    <label asp-for="Movie.Image" class="control-label"></label>
+                    <select asp-for="Movie.Image" class="form-control" asp-items="Model.ImageOptions" id="imageSelect">
+                        <option value="">בחר תמונה</option>
+                    </select>
+                </div>
+                <div>
+                    <img id="selectedImage" src="" alt="Selected Movie Image" style="max-width: 200px; display: none;" />
+                </div>
             </div>
+
             <div class="form-group">
                 <label asp-for="Movie.MovieName" class="control-label"></label>
                 <input asp-for="Movie.MovieName" class="form-control" />
@@ -60,5 +68,25 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function updateSelectedImage() {
+            var selectedValue = document.getElementById("imageSelect").value;
+            var img = document.getElementById("selectedImage");
+
+            if (selectedValue) {
+                img.src = "/Images/MovieIMG/" + selectedValue;
+                img.style.display = "block";
+            } else {
+                img.style.display = "none";
+            }
+        }
+
+        document.getElementById("imageSelect").addEventListener("change", updateSelectedImage);
+
+        // כדי להציג את התמונה גם לאחר שליחה - אם יש בחירה קיימת
+        window.onload = function() {
+            updateSelectedImage();
+        }
+    </script>
+    
 }

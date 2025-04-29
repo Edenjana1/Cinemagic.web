@@ -19,8 +19,16 @@ namespace Cinemagic.Pages.Movies
             _context = context;
         }
 
+        public List<SelectListItem> ImageOptions { get; set; } = new List<SelectListItem>();
         public IActionResult OnGet()
         {
+            ImageOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "DUNE", Value = "DUNE.jpg" },
+                new SelectListItem { Text = "WICKED", Value = "WICKED.jpg" },
+                new SelectListItem { Text = "Oppenhaimer", Value = "oppenheimer.jpg" },
+                new SelectListItem { Text = "Harry potter and the philosopher's stone", Value = "harry_potter1.jpg" }
+            };
             return Page();
         }
 
