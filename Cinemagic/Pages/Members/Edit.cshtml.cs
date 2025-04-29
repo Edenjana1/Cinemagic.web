@@ -23,6 +23,7 @@ namespace Cinemagic.Pages.Members
         [BindProperty]
         public Member Member { get; set; } = default!;
 
+        public List<SelectListItem> GenderOptions { get; set; } = new List<SelectListItem>();
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -36,6 +37,15 @@ namespace Cinemagic.Pages.Members
                 return NotFound();
             }
             Member = member;
+
+            GenderOptions = Enum.GetValues(typeof(Gender))
+                .Cast<Gender>()
+                .Select(g => new SelectListItem
+                {
+                    Text = g.ToString(),  // הערך של המגדר (Male, Female)
+                    Value = g.ToString()   // שמירת הערך (Male, Female)
+                }).ToList();
+
             return Page();
         }
 

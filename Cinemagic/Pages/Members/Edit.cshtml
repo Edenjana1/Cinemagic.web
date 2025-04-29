@@ -34,9 +34,12 @@
                 <input asp-for="Member.FirstMidName" class="form-control" />
                 <span asp-validation-for="Member.FirstMidName" class="text-danger"></span>
             </div>
+            <!-- שדה מגדר -->
             <div class="form-group">
                 <label asp-for="Member.Gender" class="control-label"></label>
-                <input asp-for="Member.Gender" class="form-control" />
+                <select asp-for="Member.Gender" class="form-control" asp-items="Model.GenderOptions">
+                    <option value="">בחר מגדר</option>
+                </select>
                 <span asp-validation-for="Member.Gender" class="text-danger"></span>
             </div>
             <div class="form-group">
