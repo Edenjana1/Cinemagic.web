@@ -19,22 +19,28 @@ namespace Cinemagic.Pages.Purchases
             _context = context;
         }
 
-        public IList<Purchase> Purchase { get;set; } = default!;
+        public IList<Purchase> Purchase { get; set; } = default!;
 
         public async Task OnGetAsync(string SearchString)
         {
-            
-            IQueryable<Purchase> PurchaseID = from s in _context.Purchases select s;
+            // טוען את רכישות, כולל את הקשר למנוי, סרטים וסדרות
+            IQueryable<Purchase> PurchaseQuery = from p in _context.Purchases
+                                                 .Include(p => p.Members)  // טוען את המנויים
+                                                 .Include(p => p.Movies)   // טוען את הסרטים
+                                                 .Include(p => p.Series)   // טוען את הסדרות
+                                                 select p;
 
+            // חיפוש לפי שם משפחה ושם פרטי
             if (!string.IsNullOrEmpty(SearchString))
             {
-                PurchaseID = PurchaseID.Where(s => s.Members.LastName.Contains(SearchString) || s.Members.FirstMidName.Contains(SearchString));
+                PurchaseQuery = PurchaseQuery.Where(p => p.Members.LastName.Contains(SearchString)
+                                                       || p.Members.FirstMidName.Contains(SearchString)
+                                                       || p.Movies.MovieName.Contains(SearchString)
+                                                       || p.Series.SerieName.Contains(SearchString));
             }
 
-            Purchase = await PurchaseID.ToListAsync();
-            //Purchase = await _context.Purchases.ToListAsync();
-            
-                
+            // שמירת התוצאות
+            Purchase = await PurchaseQuery.ToListAsync();
         }
     }
 }
