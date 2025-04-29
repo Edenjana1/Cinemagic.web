@@ -19,6 +19,9 @@ namespace Cinemagic.Pages.Purchases
             _context = context;
         }
 
+        [BindProperty]
+        public Purchase Purchase { get; set; } = default!;
+
         public IActionResult OnGet()
         {
             // יצירת רשימות אפשרויות עבור רכישה
@@ -29,13 +32,15 @@ namespace Cinemagic.Pages.Purchases
             // יצירת רשימת אימיילים מתוך המנויים
             ViewData["Email"] = new SelectList(_context.Members, "Email", "Email");
 
+            // קביעת תאריך רכישה כברירת מחדל
+            Purchase = new Purchase
+            {
+                PurchaseDate = DateTime.Now
+            };
+
             return Page();
         }
 
-        [BindProperty]
-        public Purchase Purchase { get; set; } = default!;
-
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -43,7 +48,12 @@ namespace Cinemagic.Pages.Purchases
                 return Page();
             }
 
-            // הוספת רכישה למסד הנתונים
+            // ודא שתאריך נקבע גם אם שדה הוסתר בטופס או לא מולא
+            if (Purchase.PurchaseDate == default)
+            {
+                Purchase.PurchaseDate = DateTime.Now;
+            }
+
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();
 
