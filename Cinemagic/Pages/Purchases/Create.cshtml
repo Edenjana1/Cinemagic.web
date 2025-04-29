@@ -16,16 +16,14 @@
             <div class="form-group">
                 <label asp-for="Purchase.Movies" class="control-label"></label>
                 <select asp-for="Purchase.MovieID" class="form-control" asp-items="ViewBag.MovieID">
-                    <option> Select Movie</option>
-                    <option> No Movie</option>
+                    <option value=""> Select Movie</option>
                     </select>
                 
             </div>
             <div class="form-group">
                 <label asp-for="Purchase.Series" class="control-label"></label>
                 <select asp-for="Purchase.SerieID" class="form-control" asp-items="ViewBag.SerieID">
-                    <option> Select Serie</option>
-                    <option> No Serie</option>
+                    <option value="">Select Serie</option>
                 </select>
 
             </div>
@@ -46,13 +44,13 @@
 
             <div class="form-group">
                 <label asp-for="Purchase.PurchaseDate" class="control-label"></label>
-                <input asp-for="Purchase.PurchaseDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                <input asp-for="Purchase.PurchaseDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" readonly />
                 <span asp-validation-for="Purchase.PurchaseDate" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Purchase.Total" class="control-label">Total</label>
-                <input asp-for="Purchase.Total" class="form-control" />
+                <input asp-for="Purchase.Total" class="form-control" readonly /> <!-- readonly כך שלא ניתן לערוך -->
                 <span asp-validation-for="Purchase.Total" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -65,9 +63,47 @@
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        // המרת נתוני המחירים ל-JSON כדי להשתמש בהם בצד הלקוח
+        const moviePrices = @Html.Raw(Json.Serialize(ViewData["MoviePrices"]));
+        const seriePrices = @Html.Raw(Json.Serialize(ViewData["SeriePrices"]));
+
+        // הגדרת משתנים לכל האלמנטים בטופס
+        const movieSelect = document.querySelector('[name="Purchase.MovieID"]');
+        const serieSelect = document.querySelector('[name="Purchase.SerieID"]');
+        const totalInput = document.querySelector('[name="Purchase.Total"]');
+
+        // פונקציה לעדכון המחיר הכולל
+        function updateTotal() {
+            const movieId = movieSelect.value;
+            const serieId = serieSelect.value;
+
+            // אם לא נבחר סרט ולא נבחרה סדרה, הצג 0
+            if (movieId === "0" && serieId === "0") {
+                totalInput.value = "0.00";
+                return;
+            }
+
+            // קבלת המחירים
+            const moviePrice = moviePrices[movieId] || 0;
+            const seriePrice = seriePrices[serieId] || 0;
+
+            const total = moviePrice + seriePrice;
+            totalInput.value = total.toFixed(2);
+        }
+
+        // בדיקת קיום האלמנטים והוספת אירועים
+        if (movieSelect && serieSelect && totalInput) {
+            movieSelect.addEventListener("change", updateTotal);
+            serieSelect.addEventListener("change", updateTotal);
+            updateTotal(); // עדכון ראשוני
+        }
+    </script>
 }
+
+

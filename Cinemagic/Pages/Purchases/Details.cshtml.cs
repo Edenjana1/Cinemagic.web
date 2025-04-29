@@ -28,15 +28,17 @@ namespace Cinemagic.Pages.Purchases
                 return NotFound();
             }
 
-            var purchase = await _context.Purchases.FirstOrDefaultAsync(m => m.PurchaseID == id);
-            if (purchase == null)
+            Purchase = await _context.Purchases
+                .Include(p => p.Movies)
+                .Include(p => p.Series)
+                .Include(p => p.Members)
+                .FirstOrDefaultAsync(m => m.PurchaseID == id);
+
+            if (Purchase == null)
             {
                 return NotFound();
             }
-            else
-            {
-                Purchase = purchase;
-            }
+
             return Page();
         }
     }

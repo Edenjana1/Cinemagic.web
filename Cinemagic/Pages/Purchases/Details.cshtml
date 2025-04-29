@@ -17,35 +17,40 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Purchase.Email)
         </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Purchase.PurchaseDate)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Purchase.PurchaseDate)
         </dd>
+
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Purchase.Movies)
+            Movie
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Purchase.Movies.MovieID)
+            @(Model.Purchase.Movies?.MovieName ?? "NO MOVIE")
         </dd>
+
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Purchase.Series)
+            Serie
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Purchase.Series.SerieID)
+            @(Model.Purchase.Series?.SerieName ?? "NO SERIE")
         </dd>
+
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Purchase.Members)
+            Member ID
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Purchase.Members.MemberID)
+            @Model.Purchase.Members?.IdintityCard
         </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Purchase.Total)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Purchase.Total)
+            @Model.Purchase.Total.ToString("C")
         </dd>
     </dl>
 </div>
