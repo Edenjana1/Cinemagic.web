@@ -49,6 +49,14 @@ namespace Cinemagic.Pages.Members
                 return NotFound();
             }
 
+            // בדיקה אם קיימות רכישות למנוי
+            if (_context.Purchases.Any(p => p.MemberID == id))
+            {
+                ModelState.AddModelError(string.Empty, "לא ניתן למחוק מנוי שיש לו רכישות קיימות.");
+                Member = await _context.Members.FirstOrDefaultAsync(m => m.MemberID == id); // נטען שוב את החבר כדי להציג את פרטיו בעמוד
+                return Page();
+            }
+
             var member = await _context.Members.FindAsync(id);
             if (member != null)
             {
