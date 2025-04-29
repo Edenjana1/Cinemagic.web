@@ -27,13 +27,22 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Movie.MovieName" class="control-label"></label>
-                <input asp-for="Movie.MovieName" class="form-control" />
+                <label asp-for="Movie.MovieName" class="control-label">Movie Name</label>
+                <select asp-for="Movie.MovieName" class="form-control">
+                    <option value="">בחר סרט</option>
+                    <option value="Dune">Dune</option>
+                    <option value="Wicked">Wicked</option>
+                    <option value="Oppenheimer">Oppenheimer</option>
+                    <option value="Harry Potter and the philosopher's Stone">Harry Potter and the Sorcerer's Stone</option>
+
+                </select>
                 <span asp-validation-for="Movie.MovieName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Movie.MovieGenre" class="control-label"></label>
-                <input asp-for="Movie.MovieGenre" class="form-control" />
+                <label asp-for="Movie.MovieGenre" class="control-label">ז'אנר</label>
+                <select asp-for="Movie.MovieGenre" class="form-control" asp-items="Model.Genres">
+                    <option value="">בחר ז'אנר</option>
+                </select>
                 <span asp-validation-for="Movie.MovieGenre" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -87,6 +96,8 @@
         window.onload = function() {
             updateSelectedImage();
         }
+
+            
     </script>
     
 }

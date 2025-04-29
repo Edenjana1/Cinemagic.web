@@ -22,7 +22,9 @@ namespace Cinemagic.Pages.Movies
 
         [BindProperty]
         public Movie Movie { get; set; } = default!;
+        public List<SelectListItem> ImageOptions { get; set; } = new List<SelectListItem>();
 
+        public List<SelectListItem> Genres { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -36,6 +38,22 @@ namespace Cinemagic.Pages.Movies
                 return NotFound();
             }
             Movie = movie;
+
+            ImageOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "DUNE", Value = "DUNE.jpg" },
+                new SelectListItem { Text = "WICKED", Value = "WICKED.jpg" },
+                new SelectListItem { Text = "Oppenhaimer", Value = "oppenheimer.jpg" },
+                new SelectListItem { Text = "Harry potter and the philosopher's stone", Value = "harry_potter1.jpg" }
+            };
+            Genres = Enum.GetValues(typeof(MovieGenre))
+                 .Cast<MovieGenre>()
+                 .Select(g => new SelectListItem
+                 {
+                     Value = g.ToString(),
+                     Text = g.ToString()
+                 })
+                 .ToList();
             return Page();
         }
 

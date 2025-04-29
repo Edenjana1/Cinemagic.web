@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Cinemagic.Data;
 using Cinemagic.Models;
+using Humanizer.Localisation;
 
 namespace Cinemagic.Pages.Series
 {
@@ -23,30 +24,29 @@ namespace Cinemagic.Pages.Series
         [BindProperty]
         public Serie Serie { get; set; } = default!;
 
-        public List<SelectListItem> ImagesList { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> ImageOptions { get; set; } = new List<SelectListItem>();
+
+        public List<SelectListItem> Genres { get; set; }
 
         public IActionResult OnGet()
         {
-            // טוען את כל התמונות מתוך תיקיית wwwroot/images
-            var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
-
-            if (Directory.Exists(imageDirectory))
+            ImageOptions = new List<SelectListItem>
             {
-                var imageFiles = Directory.GetFiles(imageDirectory, "*.*", SearchOption.TopDirectoryOnly)
-                                          .Where(file => file.EndsWith(".jpg") || file.EndsWith(".png") || file.EndsWith(".jpeg"))
-                                          .ToList();
+                new SelectListItem { Text = "Cobra Kai", Value = "CobraKai.jpg" },
+                new SelectListItem { Text = "Game Of Thrones", Value = "GameOfThrones.jpg" },
+                new SelectListItem { Text = "Money Heist", Value = "MoneyHeist.jpg" },
+                new SelectListItem { Text = "Stranger Things", Value = "StrangerThings.jpg" },
+                new SelectListItem { Text = "Friends", Value = "Friends.jpg" }
+            };
 
-                // המרת שם הקובץ ל-SelectListItem עם האפשרות להציג תמונה
-                foreach (var file in imageFiles)
-                {
-                    var fileName = Path.GetFileName(file);
-                    ImagesList.Add(new SelectListItem
-                    {
-                        Text = fileName, // מציג את שם הקובץ
-                        //Value = "/images/" + fileName // נתיב התמונה
-                    });
-                }
-            }
+            Genres = Enum.GetValues(typeof(SerieGenre))
+                 .Cast<SerieGenre>()
+                 .Select(g => new SelectListItem
+                 {
+                     Value = g.ToString(),
+                     Text = g.ToString()
+                 })
+                 .ToList();
 
             return Page();
         }

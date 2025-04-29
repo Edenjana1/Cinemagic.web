@@ -23,6 +23,9 @@ namespace Cinemagic.Pages.Series
         [BindProperty]
         public Serie Serie { get; set; } = default!;
 
+        public List<SelectListItem> ImageOptions { get; set; } = new List<SelectListItem>();
+
+        public List<SelectListItem> Genres { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -36,6 +39,25 @@ namespace Cinemagic.Pages.Series
                 return NotFound();
             }
             Serie = serie;
+
+            ImageOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Cobra Kai", Value = "CobraKai.jpg" },
+                new SelectListItem { Text = "Game Of Thrones", Value = "GameOfThrones.jpg" },
+                new SelectListItem { Text = "Money Heist", Value = "MoneyHeist.jpg" },
+                new SelectListItem { Text = "Stranger Things", Value = "StrangerThings.jpg" },
+                new SelectListItem { Text = "Friends", Value = "Friends.jpg" }
+            };
+
+            Genres = Enum.GetValues(typeof(SerieGenre))
+                 .Cast<SerieGenre>()
+                 .Select(g => new SelectListItem
+                 {
+                     Value = g.ToString(),
+                     Text = g.ToString()
+                 })
+                 .ToList();
+
             return Page();
         }
 
@@ -66,6 +88,7 @@ namespace Cinemagic.Pages.Series
                 }
             }
 
+
             return RedirectToPage("./Index");
         }
 
@@ -73,5 +96,6 @@ namespace Cinemagic.Pages.Series
         {
             return _context.Series.Any(e => e.SerieID == id);
         }
+
     }
 }

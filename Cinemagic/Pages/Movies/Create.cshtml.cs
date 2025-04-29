@@ -20,6 +20,8 @@ namespace Cinemagic.Pages.Movies
         }
 
         public List<SelectListItem> ImageOptions { get; set; } = new List<SelectListItem>();
+
+        public List<SelectListItem> Genres { get; set; }
         public IActionResult OnGet()
         {
             ImageOptions = new List<SelectListItem>
@@ -29,6 +31,16 @@ namespace Cinemagic.Pages.Movies
                 new SelectListItem { Text = "Oppenhaimer", Value = "oppenheimer.jpg" },
                 new SelectListItem { Text = "Harry potter and the philosopher's stone", Value = "harry_potter1.jpg" }
             };
+
+            Genres = Enum.GetValues(typeof(MovieGenre))
+                 .Cast<MovieGenre>()
+                 .Select(g => new SelectListItem
+                 {
+                     Value = g.ToString(),
+                     Text = g.ToString()
+                 })
+                 .ToList();
+
             return Page();
         }
 
