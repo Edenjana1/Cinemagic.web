@@ -21,10 +21,14 @@ namespace Cinemagic.Pages.Purchases
 
         public IActionResult OnGet()
         {
-            ViewData["MemberID"] = new SelectList(_context.Members, "MemberID", "IdintityCard");
+            // יצירת רשימות אפשרויות עבור רכישה
             ViewData["MovieID"] = new SelectList(_context.Movies, "MovieID", "MovieName");
             ViewData["SerieID"] = new SelectList(_context.Series, "SerieID", "SerieName");
-            //ViewData["Email"] = new SelectList(_context.Series, "Email", "Email");
+            ViewData["MemberID"] = new SelectList(_context.Members, "MemberID", "IdintityCard");
+
+            // יצירת רשימת אימיילים מתוך המנויים
+            ViewData["Email"] = new SelectList(_context.Members, "Email", "Email");
+
             return Page();
         }
 
@@ -39,6 +43,7 @@ namespace Cinemagic.Pages.Purchases
                 return Page();
             }
 
+            // הוספת רכישה למסד הנתונים
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();
 
