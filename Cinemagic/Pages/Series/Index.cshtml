@@ -24,69 +24,17 @@
     </div>
 </form>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Serie[0].Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Serie[0].SerieName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Serie[0].SeasonNum)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Serie[0].SerieGenre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Serie[0].ReleaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Serie[0].SerieDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Serie[0].AgeRate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Serie[0].SeriePrice)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+    <div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+        @foreach (var item in Model.Serie)
+        {
+            <div class="movie-card" style="width: 180px; text-align: center;">
+                <a asp-page="./Details" asp-route-id="@item.SerieID" style="text-decoration: none; color: inherit;">
+                    <img src="~/Images/SerieIMG/@item.Image" alt="@item.SerieName" style="width: 100%; height: auto; border-radius: 10px;" />
+                    <h5>@item.SerieName</h5>
+                </a>
+            </div>
+        }
+    </div>
     <tbody>
-@foreach (var item in Model.Serie) {
 
-        <tr>
-            <td>
-                <img src="~/Images/SerieIMG/@item.Image" alt="Profile" width="100" height="100" style="border-radius: 50%;" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SerieName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SeasonNum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SerieGenre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SerieDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AgeRate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SeriePrice)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.SerieID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.SerieID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.SerieID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
 </table>

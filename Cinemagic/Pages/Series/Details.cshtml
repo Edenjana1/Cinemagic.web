@@ -7,59 +7,19 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>Serie</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Serie.Image)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Serie.Image)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Serie.SerieName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Serie.SerieName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Serie.SeasonNum)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Serie.SeasonNum)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Serie.SerieGenre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Serie.SerieGenre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Serie.ReleaseDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Serie.ReleaseDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Serie.SerieDescription)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Serie.SerieDescription)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Serie.AgeRate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Serie.AgeRate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Serie.SeriePrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Serie.SeriePrice)
-        </dd>
-    </dl>
+<div class="movie-details-container">
+    <div class="movie-image">
+        <img src="~/Images/SerieIMG/@Model.Serie.Image"
+             alt="@Model.Serie.SerieName" />
+    </div>
+
+    <div class="movie-info">
+        <p><strong>Genre:</strong> @Model.Serie.SerieGenre</p>
+        <p><strong>Description:</strong> @Model.Serie.SerieDescription</p>
+        <p><strong>Release Date:</strong> @Model.Serie.ReleaseDate.ToString("dd/MM/yyyy")</p>
+        <p><strong>Age Rating:</strong> @Model.Serie.AgeRate</p>
+        <p><strong>Price:</strong> @Model.Serie.SeriePrice ₪</p>
+    </div>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Serie.SerieID">Edit</a> |
