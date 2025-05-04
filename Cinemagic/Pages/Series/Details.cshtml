@@ -21,7 +21,14 @@
         <p><strong>Price:</strong> @Model.Serie.SeriePrice ₪</p>
     </div>
 </div>
+<!-- כפתור רכישה -->
+<div class="purchase-button-container">
+    <a asp-page="./Purchase" asp-route-id="@Model.Serie.SerieID" class="btn btn-success btn-lg">Buy Now</a>
+</div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Serie.SerieID">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Serie.SerieID" class="btn btn-primary mt-3">Edit</a>
+    <a asp-page="./Delete" asp-route-id="@Model.Serie.SerieID" class="btn btn-danger mt-3">Delete Serie</a>
+    <a asp-page="./Index" class="btn btn-secondary mt-3">Back to List</a>
+    
+
 </div>
