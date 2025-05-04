@@ -24,6 +24,9 @@ namespace Cinemagic.Pages.Members
         public Member Member { get; set; } = default!;
 
         public List<SelectListItem> GenderOptions { get; set; } = new List<SelectListItem>();
+
+        public List<SelectListItem> ImageOptions { get; set; } = new List<SelectListItem>();
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -37,6 +40,14 @@ namespace Cinemagic.Pages.Members
                 return NotFound();
             }
             Member = member;
+
+            ImageOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Girl", Value = "girl_icon.jpg" },
+                new SelectListItem { Text = "Boy", Value = "boy_icon.jpg" },
+                new SelectListItem { Text = "Woman", Value = "woman_icon.jpg" },
+                new SelectListItem { Text = "Man", Value = "man_icon.jpg" }
+            };
 
             GenderOptions = Enum.GetValues(typeof(Gender))
                 .Cast<Gender>()
