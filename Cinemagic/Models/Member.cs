@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Drawing;
 
 namespace Cinemagic.Models
 {
@@ -7,7 +8,7 @@ namespace Cinemagic.Models
         Male, Female,
     }
 
-    public class Member ()
+    public class Member()
     {
         public int MemberID { get; set; }
         public string Image { get; set; }
