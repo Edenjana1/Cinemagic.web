@@ -5,36 +5,36 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>סדרות</h1>
+<h1>Series</h1>
 
 <p>
     <a asp-page="Create" class="btn btn-primary">
-        הוסף סדרה
+        Add New Serie
     </a>
 </p>
+
 <form>
     <div>
         <p>
-            חיפוש סדרה:
+            Search Serie:
             <input type="text" name="SearchString" />
-            <input type="submit" value="חיפוש" class="btn btn-primary" />
-            <a asp-page="./Index">חזרה לרשימה המלאה</a>
+            <input type="submit" value="Search" class="btn btn-primary" />
+            <a asp-page="./Index">Back to Full List</a>
         </p>
-
     </div>
 </form>
+
 <table class="table">
     <div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
         @foreach (var item in Model.Serie)
         {
             <div class="movie-card" style="width: 180px; text-align: center;">
                 <a asp-page="./Details" asp-route-id="@item.SerieID" style="text-decoration: none; color: inherit;">
-                    <img src="~/Images/SerieIMG/@item.Image" alt="@item.SerieName" style="width: 100%; height: auto; border-radius: 10px;" />
+                    <img src="~/Images/SerieIMG/@item.Image" alt="@item.SerieName" style="width: 150px; height: 150px; border-radius: 10px;" />
+
                     <h5>@item.SerieName</h5>
                 </a>
             </div>
         }
     </div>
-    <tbody>
-
 </table>

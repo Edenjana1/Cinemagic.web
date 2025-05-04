@@ -5,12 +5,11 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Series Details</h1>
 
 <div class="movie-details-container">
     <div class="movie-image">
-        <img src="~/Images/SerieIMG/@Model.Serie.Image"
-             alt="@Model.Serie.SerieName" />
+        <img src="~/Images/SerieIMG/@Model.Serie.Image" alt="@Model.Serie.SerieName" style="width: 150px; height: 150px; border-radius: 10px;" /> 
     </div>
 
     <div class="movie-info">
@@ -21,14 +20,15 @@
         <p><strong>Price:</strong> @Model.Serie.SeriePrice ₪</p>
     </div>
 </div>
-<!-- כפתור רכישה -->
+
+<!-- Purchase Button -->
 <div class="purchase-button-container">
-    <a asp-page="./Purchase" asp-route-id="@Model.Serie.SerieID" class="btn btn-success btn-lg">Buy Now</a>
+    <a asp-page="/Purchases/Create" asp-route-movieid="@Model.Serie.SerieID" class="btn btn-primary">Buy Now</a>
 </div>
+
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Serie.SerieID" class="btn btn-primary mt-3">Edit</a>
-    <a asp-page="./Delete" asp-route-id="@Model.Serie.SerieID" class="btn btn-danger mt-3">Delete Serie</a>
+    <a asp-page="./Delete" asp-route-id="@Model.Serie.SerieID" class="btn btn-danger mt-3">Delete Series</a>
     <a asp-page="./Index" class="btn btn-secondary mt-3">Back to List</a>
-    
-
 </div>
+

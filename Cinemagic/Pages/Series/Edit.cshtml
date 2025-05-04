@@ -5,30 +5,32 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edit Serie</h1>
 
-<h4>Serie</h4>
+<h4>Serie Details</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Serie.SerieID" />
+
             <div class="form-group" style="display: grid; grid-template-columns: 1fr auto; align-items: flex-start; column-gap: 30px;">
                 <div>
-                    <label asp-for="Serie.Image" class="control-label"></label>
+                    <label asp-for="Serie.Image" class="control-label">Select Image</label>
                     <select asp-for="Serie.Image" class="form-control" asp-items="Model.ImageOptions" id="imageSelect">
-                        <option value="">בחר תמונה</option>
+                        <option value="">Choose an Image</option>
                     </select>
                 </div>
                 <div>
-                    <img id="selectedImage" src="" alt="Selected Movie Image" style="max-width: 200px; display: none;" />
+                    <img id="selectedImage" src="" alt="Selected Serie Image" style="width: 150px; height: 150px; border-radius: 10px;" />
                 </div>
             </div>
+
             <div class="form-group">
                 <label asp-for="Serie.SerieName" class="control-label">Serie Name</label>
                 <select asp-for="Serie.SerieName" class="form-control">
-                    <option value="">בחר סדרה</option>
+                    <option value="">Select Serie</option>
                     <option value="Cobra Kai">Cobra Kai</option>
                     <option value="Game of Thrones">Game of Thrones</option>
                     <option value="Money Heist">Money Heist</option>
@@ -37,6 +39,7 @@
                 </select>
                 <span asp-validation-for="Serie.SerieName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label for="SeasonNum" class="control-label">Season Number</label>
                 <select id="seasonDropdown" name="SeasonNum" class="form-control">
@@ -46,33 +49,39 @@
                     }
                 </select>
             </div>
+
             <div class="form-group">
-                <label asp-for="Serie.SerieGenre" class="control-label">ז'אנר</label>
+                <label asp-for="Serie.SerieGenre" class="control-label">Genre</label>
                 <select asp-for="Serie.SerieGenre" class="form-control" asp-items="Model.Genres">
-                    <option value="">בחר ז'אנר</option>
+                    <option value="">Select Genre</option>
                 </select>
                 <span asp-validation-for="Serie.SerieGenre" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Serie.ReleaseDate" class="control-label"></label>
+                <label asp-for="Serie.ReleaseDate" class="control-label">Release Date</label>
                 <input asp-for="Serie.ReleaseDate" class="form-control" />
                 <span asp-validation-for="Serie.ReleaseDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Serie.SerieDescription" class="control-label"></label>
+                <label asp-for="Serie.SerieDescription" class="control-label">Description</label>
                 <input asp-for="Serie.SerieDescription" class="form-control" />
                 <span asp-validation-for="Serie.SerieDescription" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Serie.AgeRate" class="control-label"></label>
+                <label asp-for="Serie.AgeRate" class="control-label">Age Rating</label>
                 <input asp-for="Serie.AgeRate" class="form-control" />
                 <span asp-validation-for="Serie.AgeRate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Serie.SeriePrice" class="control-label"></label>
+                <label asp-for="Serie.SeriePrice" class="control-label">Price</label>
                 <input asp-for="Serie.SeriePrice" class="form-control" />
                 <span asp-validation-for="Serie.SeriePrice" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -81,7 +90,7 @@
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index" class="btn btn-secondary mt-3">Back to List</a>
 </div>
 
 @section Scripts {
@@ -100,19 +109,18 @@
 
         document.getElementById("imageSelect").addEventListener("change", updateSelectedImage);
 
-        // כדי להציג את התמונה גם לאחר שליחה - אם יש בחירה קיימת
+        // To display the image after submission if an option is already selected
         window.onload = function() {
             updateSelectedImage();
         }
+
         $(document).ready(function () {
             $('#seasonDropdown').select2({
-                dropdownParent: $('#seasonDropdown').parent(), // מבטיח שייפתח מתחת
+                dropdownParent: $('#seasonDropdown').parent(), // ensures it opens below
                 dropdownAutoWidth: true,
                 width: '100%',
-                minimumResultsForSearch: Infinity // מסתיר חיפוש אם לא צריך
+                minimumResultsForSearch: Infinity // hides search if not needed
             });
         });
     </script>
 }
-
-
