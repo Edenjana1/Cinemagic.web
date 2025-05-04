@@ -14,12 +14,12 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Movie.MovieID" />
-            
+
             <div class="form-group" style="display: grid; grid-template-columns: 1fr auto; align-items: flex-start; column-gap: 30px;">
                 <div>
                     <label asp-for="Movie.Image" class="control-label"></label>
                     <select asp-for="Movie.Image" class="form-control" asp-items="Model.ImageOptions" id="imageSelect">
-                        <option value="">בחר תמונה</option>
+                        <option value="">Select Image</option>
                     </select>
                 </div>
                 <div>
@@ -30,39 +30,38 @@
             <div class="form-group">
                 <label asp-for="Movie.MovieName" class="control-label">Movie Name</label>
                 <select asp-for="Movie.MovieName" class="form-control">
-                    <option value="">בחר סרט</option>
+                    <option value="">Select Movie</option>
                     <option value="Dune">Dune</option>
                     <option value="Wicked">Wicked</option>
                     <option value="Oppenheimer">Oppenheimer</option>
-                    <option value="Harry Potter and the philosopher's Stone">Harry Potter and the Sorcerer's Stone</option>
-
+                    <option value="Harry Potter and the Philosopher's Stone">Harry Potter and the Philosopher's Stone</option>
                 </select>
                 <span asp-validation-for="Movie.MovieName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Movie.MovieGenre" class="control-label">ז'אנר</label>
+                <label asp-for="Movie.MovieGenre" class="control-label">Genre</label>
                 <select asp-for="Movie.MovieGenre" class="form-control" asp-items="Model.Genres">
-                    <option value="">בחר ז'אנר</option>
+                    <option value="">Select Genre</option>
                 </select>
                 <span asp-validation-for="Movie.MovieGenre" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Movie.MovieDescription" class="control-label"></label>
+                <label asp-for="Movie.MovieDescription" class="control-label">Description</label>
                 <input asp-for="Movie.MovieDescription" class="form-control" />
                 <span asp-validation-for="Movie.MovieDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Movie.ReleaseDate" class="control-label"></label>
+                <label asp-for="Movie.ReleaseDate" class="control-label">Release Date</label>
                 <input asp-for="Movie.ReleaseDate" class="form-control" />
                 <span asp-validation-for="Movie.ReleaseDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Movie.AgeRate" class="control-label"></label>
+                <label asp-for="Movie.AgeRate" class="control-label">Age Rating</label>
                 <input asp-for="Movie.AgeRate" class="form-control" />
                 <span asp-validation-for="Movie.AgeRate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Movie.MoviePrice" class="control-label"></label>
+                <label asp-for="Movie.MoviePrice" class="control-label">Price</label>
                 <input asp-for="Movie.MoviePrice" class="form-control" />
                 <span asp-validation-for="Movie.MoviePrice" class="text-danger"></span>
             </div>
@@ -93,12 +92,9 @@
 
         document.getElementById("imageSelect").addEventListener("change", updateSelectedImage);
 
-        // כדי להציג את התמונה גם לאחר שליחה - אם יש בחירה קיימת
+        // To display the image after submitting, if a selection exists
         window.onload = function() {
             updateSelectedImage();
         }
-
-
     </script>
-
 }

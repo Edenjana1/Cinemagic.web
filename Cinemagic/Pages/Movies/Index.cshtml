@@ -2,38 +2,49 @@
 @model Cinemagic.Pages.Movies.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Movies";
 }
 
-<h1>סרטים</h1>
+<h1>Movies</h1>
 
 <p>
     <a asp-page="Create" class="btn btn-primary">
-        הוסף סרט
+        Add Movie
     </a>
 </p>
-<form>
+
+<!-- Genre Filter -->
+<form method="get" class="d-flex align-items-center mb-4" style="gap: 10px; margin-top: 20px;">
+    <label for="Genre" class="form-label mb-0">Genre:</label>
+
+    <select asp-for="Genre" asp-items="Model.Genres" class="form-select" style="max-width: 150px;">
+        <option value="">All</option>
+    </select>
+
+    <input type="submit" value="Filter" class="btn btn-primary" />
+</form>
+
+<!-- Search Box -->
+<form method="get">
     <div>
         <p>
-            חיפוש סרטים:
+            Search Movies:
             <input type="text" name="SearchString" />
-            <input type="submit" value="חיפוש" class="btn btn-primary" />
-            <a asp-page="./Index">חזרה לרשימה המלאה</a>
+            <input type="submit" value="Search" class="btn btn-primary" />
+            <a asp-page="./Index">Back to Full List</a>
         </p>
-
     </div>
 </form>
-<table class="table">
-    <div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
-        @foreach (var item in Model.Movie)
-        {
-            <div class="movie-card" style="width: 180px; text-align: center;">
-                <a asp-page="./Details" asp-route-id="@item.MovieID" style="text-decoration: none; color: inherit;">
-                    <img src="~/Images/MovieIMG/@item.Image" alt="@item.MovieName" style="width: 150px; height: 150px; border-radius: 10px;" />
-                    <h5>@item.MovieName</h5>
-                </a>
-            </div>
-        }
-    </div>
 
-</table>
+<!-- Movie Grid -->
+<div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+    @foreach (var item in Model.Movie)
+    {
+        <div class="movie-card" style="width: 180px; text-align: center;">
+            <a asp-page="./Details" asp-route-id="@item.MovieID" style="text-decoration: none; color: inherit;">
+                <img src="~/Images/MovieIMG/@item.Image" alt="@item.MovieName" style="width: 150px; height: 150px; border-radius: 10px;" />
+                <h5>@item.MovieName</h5>
+            </a>
+        </div>
+    }
+</div>

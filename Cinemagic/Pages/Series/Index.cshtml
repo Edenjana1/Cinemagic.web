@@ -2,7 +2,7 @@
 @model Cinemagic.Pages.Series.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Series";
 }
 
 <h1>Series</h1>
@@ -13,10 +13,22 @@
     </a>
 </p>
 
-<form>
+<!-- Genre Filter -->
+<form method="get" class="d-flex align-items-center mb-4" style="gap: 10px; margin-top: 20px;">
+    <label for="Genre" class="form-label mb-0">Genre:</label>
+
+    <select asp-for="Genre" asp-items="Model.Genres" class="form-select" style="max-width: 150px;">
+        <option value="">All</option>
+    </select>
+
+    <input type="submit" value="Filter" class="btn btn-primary" />
+</form>
+
+<!-- Search Box -->
+<form method="get">
     <div>
         <p>
-            Search Serie:
+            Search Series:
             <input type="text" name="SearchString" />
             <input type="submit" value="Search" class="btn btn-primary" />
             <a asp-page="./Index">Back to Full List</a>

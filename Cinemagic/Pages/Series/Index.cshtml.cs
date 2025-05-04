@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Cinemagic.Data;
 using Cinemagic.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections;
 
 namespace Cinemagic.Pages.Series
 {
@@ -20,18 +22,41 @@ namespace Cinemagic.Pages.Series
         }
 
         public IList<Serie> Serie { get;set; } = default!;
+        
 
-        public async Task OnGetAsync(string SearchString)
+        [BindProperty(SupportsGet = true)]
+        public List<SelectListItem> Genres { get; set; } = new();
+        [BindProperty(SupportsGet = true)]
+        public SerieGenre? Genre { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string? SearchString { get; set; }
+
+        public async Task OnGetAsync()
         {
-            IQueryable<Serie> SerieID = from s in _context.Series select s;
+            // יצירת רשימת ז'אנרים מתוך ה-enum
+            Genres = Enum.GetValues(typeof(MovieGenre))
+                .Cast<SerieGenre>()
+                .Select(g => new SelectListItem
+                {
+                    Value = g.ToString(),
+                    Text = g.ToString() // אפשר לשנות כאן לעברית אם רוצים
+                })
+                .ToList();
+
+            var query = _context.Series.AsQueryable();
+
+            if (Genre.HasValue)
+            {
+                query = query.Where(m => m.SerieGenre == Genre.Value);
+            }
 
             if (!string.IsNullOrEmpty(SearchString))
             {
-                SerieID = SerieID.Where(s => s.SerieName.Contains(SearchString));
+                query = query.Where(m => m.SerieName.Contains(SearchString));
             }
 
-            Serie = await SerieID.ToListAsync();
-            //Serie = await _context.Series.ToListAsync();
+            Serie = await query.ToListAsync();
         }
     }
 }

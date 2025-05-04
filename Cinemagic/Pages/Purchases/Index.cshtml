@@ -2,81 +2,58 @@
 @model Cinemagic.Pages.Purchases.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Purchases";
 }
 
-<h1>רכישות</h1>
+<div class="container mt-5">
+    <div class="card shadow rounded">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Purchases</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-4">
+                <a asp-page="Create" class="btn btn-primary">
+                    New Purchase
+                </a>
+                <form method="get" class="d-flex align-items-center">
+                    <label for="SearchString" class="mr-2">Search Purchase:</label>
+                    <input type="text" name="SearchString" id="SearchString" class="form-control mr-2" />
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                    <a asp-page="./Index" class="btn btn-link ml-2">Back to Full List</a>
+                </form>
+            </div>
 
-<p>
-    <a asp-page="Create" class="btn btn-primary">
-        רכישה חדשה
-    </a>
-</p>
-<form>
-    <div>
-        <p>
-            חיפוש רכישה:
-            <input type="text" name="SearchString" />
-            <input type="submit" value="חיפוש" class="btn btn-primary" />
-            <a asp-page="./Index">חזרה לרשימה המלאה</a>
-        </p>
-
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Member ID</th>
+                        <th>Email</th>
+                        <th>Purchase Date</th>
+                        <th>Movie</th>
+                        <th>Series</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Purchase)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Members.IdintityCard)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                            <td>@Html.DisplayFor(modelItem => item.PurchaseDate)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Movies.MovieName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Series.SerieName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.PurchaseID" class="btn btn-warning btn-sm">Edit</a>
+                                <a asp-page="./Details" asp-route-id="@item.PurchaseID" class="btn btn-info btn-sm">Details</a>
+                                <a asp-page="./Delete" asp-route-id="@item.PurchaseID" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Purchase[0].MemberID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Purchase[0].Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Purchase[0].PurchaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Purchase[0].Movies)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Purchase[0].Series)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Purchase[0].Total)
-
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Purchase)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Members.IdintityCard)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.PurchaseDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Movies.MovieName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Series.SerieName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Total)
-                </td>
-
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.PurchaseID">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.PurchaseID">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.PurchaseID">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+</div>

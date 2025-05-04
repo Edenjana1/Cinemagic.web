@@ -14,36 +14,34 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Purchase.Movies" class="control-label"></label>
+                <label asp-for="Purchase.Movies" class="control-label">Select Movie</label>
                 <select asp-for="Purchase.MovieID" class="form-control" asp-items="ViewBag.MovieID">
-                    <option value=""> Select Movie</option>
-                    </select>
-                
-            </div>
-            <div class="form-group">
-                <label asp-for="Purchase.Series" class="control-label"></label>
-                <select asp-for="Purchase.SerieID" class="form-control" asp-items="ViewBag.SerieID">
-                    <option value="">Select Serie</option>
+                    <option value="">Select Movie</option>
                 </select>
-
             </div>
             <div class="form-group">
-                <label asp-for="Purchase.Members" class="control-label"></label>
+                <label asp-for="Purchase.Series" class="control-label">Select Series</label>
+                <select asp-for="Purchase.SerieID" class="form-control" asp-items="ViewBag.SerieID">
+                    <option value="">Select Series</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Purchase.Members" class="control-label">Select Member ID</label>
                 <select asp-for="Purchase.MemberID" class="form-control" asp-items="ViewBag.MemberID">
-                    <option> Select Memebr ID</option>
+                    <option>Select Member ID</option>
                 </select>
             </div>
             <!-- שדה בחירת אימייל -->
             <div class="form-group">
-                <label asp-for="Purchase.Email" class="control-label">בחר אימייל</label>
+                <label asp-for="Purchase.Email" class="control-label">Select Email</label>
                 <select asp-for="Purchase.Email" class="form-control" asp-items="ViewBag.Email">
-                    <option value="">בחר אימייל</option>
+                    <option value="">Select Email</option>
                 </select>
                 <span asp-validation-for="Purchase.Email" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Purchase.PurchaseDate" class="control-label"></label>
+                <label asp-for="Purchase.PurchaseDate" class="control-label">Purchase Date</label>
                 <input asp-for="Purchase.PurchaseDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" readonly />
                 <span asp-validation-for="Purchase.PurchaseDate" class="text-danger"></span>
             </div>
@@ -63,6 +61,7 @@
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -105,5 +104,3 @@
         }
     </script>
 }
-
-
