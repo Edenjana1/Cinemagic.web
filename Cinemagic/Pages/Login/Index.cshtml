@@ -1,0 +1,29 @@
+﻿@page
+@model Cinemagic.Pages.Login.IndexModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="idNumber">ID Number</label>
+        <input type="text" id="idNumber" name="idNumber" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Login</button>
+</form>
+
+@if (Model.ErrorMessage != null)
+{
+    <div class="alert alert-danger mt-3">
+        @Model.ErrorMessage
+    </div>
+}
+
+@* @if (Model.IsUserLoggedIn)
+{
+    <form method="post" action="/MembersUser/DetailsUser">
+        <button type="submit" class="btn btn-success mt-3">Go to Your Profile</button>
+    </form>
+} *@

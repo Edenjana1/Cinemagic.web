@@ -44,3 +44,77 @@ body {
 .purchase-button-container .btn:hover {
     background-color: #218838;
 }
+
+/* להוסיף קוד CSS הזה ל-site.css */
+.admin-link {
+    background-color: #4CAF50; /* צבע ירוק עדין */
+    color: white; /* טקסט לבן */
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px 15px;
+    transition: background-color 0.3s ease;
+}
+
+    .admin-link:hover {
+        background-color: #45a049; /* שינוי צבע ברוורס */
+    }
+
+/* עיצוב של ההודעה של מצב מנהל */
+.alert-admin {
+    background-color: #f0f8ff; /* צבע רקע רך */
+    color: #333333; /* צבע טקסט כהה */
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 18px;
+    text-align: center;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+}
+
+    .alert-admin h3 {
+        margin: 0;
+        color: #006400; /* צבע כהה ירוק */
+    }
+
+/* עיצוב נוסף לכפתור הכניסה */
+.btn-admin-login {
+    background-color: #008CBA; /* כחול נעים */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-admin-login:hover {
+        background-color: #007bb5; /* שינוי צבע ברוורס */
+    }
+/* כפתור יציאה ממצב מנהל */
+.btn-logout-admin {
+    background-color: #f44336; /* אדום חמים */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+/* כפתור יציאה ממצב מנהל */
+.btn-logout-admin {
+    background-color: #f44336; /* אדום חמים */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-logout-admin:hover {
+    background-color: #e53935; /* אדום כהה יותר ברוורס */
+}

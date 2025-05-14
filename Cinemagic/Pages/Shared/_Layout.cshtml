@@ -1,4 +1,11 @@
-﻿You said:
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var userType = HttpContextAccessor.HttpContext.Session.GetString("UserType");
+    var isAdmin = userType == "Admin";
+    var isMember = userType == "Member";
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,23 +32,78 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Movies/Index">Movies</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Series/Index">Series</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Purchases/Index">Purchases</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Members/Index">Members</a>
-                        </li>
+
+                        @if (isAdmin || isMember)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Movies/Index">Movies</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Series/Index">Series</a>
+                            </li>
+                        }
+
+                        @if (isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Purchases/Index">Purchases</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Members/Index">Members</a>
+                            </li>
+                        }
+
+                        @if (isMember)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/MembersUser/DetailsUser">My Profile</a>
+                            </li>
+                        }
                     </ul>
+
+                    <!-- אזור הכפתורים בצד ימין -->
+                    <div class="d-flex">
+                        @if (isAdmin)
+                        {
+                            <form method="post" asp-page="/Index" asp-route-handler="LogoutAdmin" class="me-2">
+                                <button type="submit" class="btn btn-danger">Logout as Admin</button>
+                            </form>
+                        }
+                        else if (isMember)
+                        {
+                            <form method="post" asp-page="/Index" asp-route-handler="LogoutMember" class="me-2">
+                                <button type="submit" class="btn btn-warning">Logout</button>
+                            </form>
+                        }
+                        else
+                        {
+
+                            <form method="post" asp-page="/Index">
+
+                                <a href="/MembersUser/CreateUser" class="btn btn-primary" style="margin-right: 20px;" >Sign In</a>
+                            </form>
+
+                            <!-- כפתור כניסת מנוי -->
+                            <form method="post" asp-page-handler="MemberLogin" style="display: flex; align-items: center; gap: 10px;">
+                                <label for="idintityCard" style="margin-bottom: 0;">תעודת זהות</label>
+                                <input type="text" name="idintityCard" id="idintityCard" required
+                                       style="padding: 5px 10px; border: 1px solid #ccc; border-radius: 4px; width: 150px;" />
+
+                                <button type="submit" style="margin-right: 20px;" class="btn btn-success">כניסת מנוי</button>
+                                
+                                
+                            </form>
+                            <form method="post" asp-page="/Index">
+                                <button type="submit" style="margin-right: 20px;" class="btn btn-secondary">Login as Admin</button>
+
+                            </form>
+                        }
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -57,8 +119,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

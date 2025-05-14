@@ -7,11 +7,14 @@
 
 <h1>Series</h1>
 
-<p>
-    <a asp-page="Create" class="btn btn-primary">
-        Add New Serie
-    </a>
-</p>
+@{
+    var userType = HttpContext.Session.GetString("UserType");
+}
+
+@if (userType == "Admin")
+{
+    <a href="/Series/Create" class="btn btn-primary">Add Serie</a>
+}
 
 <!-- Genre Filter -->
 <form method="get" class="d-flex align-items-center mb-4" style="gap: 10px; margin-top: 20px;">

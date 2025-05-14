@@ -1,10 +1,31 @@
 ﻿@page
-@model IndexModel
+@model Cinemagic.Pages.IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-4">🎬 ברוכים הבאים ל־Cinemagic</h1>
+
+    
+    <!-- כפתור כניסה למנהל -->
+    @* <form method="post">
+        <button type="submit" class="btn btn-primary">כניסת מנהל</button>
+    </form> *@
+
+    @* <!-- כפתור כניסת מנוי -->
+    <form method="post" asp-page="/Index" asp-route-handler="MemberLogin">
+        <div class="form-group">
+            <label for="idintityCard">תעודת זהות</label>
+            <input type="text" id="idintityCard" name="idintityCard" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success mt-2">כניסת מנוי</button>
+    </form> *@
 </div>

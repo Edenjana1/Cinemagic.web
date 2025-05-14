@@ -7,11 +7,14 @@
 
 <h1>Movies</h1>
 
-<p>
-    <a asp-page="Create" class="btn btn-primary">
-        Add Movie
-    </a>
-</p>
+@{
+    var userType = HttpContext.Session.GetString("UserType");
+}
+
+@if (userType == "Admin")
+{
+    <a href="/Movies/Create" class="btn btn-primary">Add Movie</a>
+}
 
 <!-- Genre Filter -->
 <form method="get" class="d-flex align-items-center mb-4" style="gap: 10px; margin-top: 20px;">

@@ -1,0 +1,101 @@
+﻿@page
+@model Cinemagic.Pages.MembersUser.CreateUserModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Member</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group" style="display: grid; grid-template-columns: 1fr auto; align-items: flex-start; column-gap: 30px;">
+                <div>
+                    <label asp-for="Member.Image" class="control-label"></label>
+                    <select asp-for="Member.Image" class="form-control" asp-items="Model.ImageOptions" id="imageSelect">
+                        <option value="">בחר תמונה</option>
+                    </select>
+                </div>
+                <div>
+                    <img id="selectedImage" src="" alt="Selected Member Image" style="max-width: 100px; display: none;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Member.IdintityCard" class="control-label"></label>
+                <input asp-for="Member.IdintityCard" class="form-control" />
+                <span asp-validation-for="Member.IdintityCard" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Member.LastName" class="control-label"></label>
+                <input asp-for="Member.LastName" class="form-control" />
+                <span asp-validation-for="Member.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Member.FirstMidName" class="control-label"></label>
+                <input asp-for="Member.FirstMidName" class="form-control" />
+                <span asp-validation-for="Member.FirstMidName" class="text-danger"></span>
+            </div>
+            <!-- שדה מגדר -->
+            <div class="form-group">
+                <label asp-for="Member.Gender" class="control-label"></label>
+                <select asp-for="Member.Gender" class="form-control" asp-items="Model.GenderOptions">
+                    <option value="">בחר מגדר</option>
+                </select>
+                <span asp-validation-for="Member.Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Member.Email" class="control-label"></label>
+                <input asp-for="Member.Email" class="form-control" />
+                <span asp-validation-for="Member.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Member.Phone" class="control-label"></label>
+                <input asp-for="Member.Phone" class="form-control" />
+                <span asp-validation-for="Member.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Member.BirthDate" class="control-label"></label>
+                <input asp-for="Member.BirthDate" class="form-control" />
+                <span asp-validation-for="Member.BirthDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                @* <a href="/MembersUser/DetailsUser" class="btn btn-primary" style="margin-right: 20px;">Create</a> *@
+                <a href="/Movies/Index" class="btn btn-primary" style="margin-right: 20px;">Create</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* <div>
+    <a asp-page="./IndexUser">Back to List</a>
+</div> *@
+
+@section Scripts {
+    <script>
+        function updateSelectedImage() {
+            var selectedValue = document.getElementById("imageSelect").value;
+            var img = document.getElementById("selectedImage");
+
+            if (selectedValue) {
+                img.src = "/Images/MemberIMG/" + selectedValue;
+                img.style.display = "block";
+            } else {
+                img.style.display = "none";
+            }
+        }
+
+        document.getElementById("imageSelect").addEventListener("change", updateSelectedImage);
+
+        // כדי להציג את התמונה גם לאחר שליחה - אם יש בחירה קיימת
+        window.onload = function() {
+            updateSelectedImage();
+        }
+    </script>
+}
