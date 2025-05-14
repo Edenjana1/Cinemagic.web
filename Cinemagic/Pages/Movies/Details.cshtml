@@ -32,3 +32,41 @@
 <a asp-page="./Delete" asp-route-id="@Model.Movie.MovieID" class="btn btn-danger mt-3">Delete Movie</a>
 
 <a asp-page="./Index" class="btn btn-secondary mt-3">Back to List</a>
+
+<hr />
+<div class="mt-5">
+    <h4>דירוג ותגובות גולשים</h4>
+
+    <!-- ממוצע דירוג -->
+    <div class="mb-3">
+        <strong>דירוג ממוצע:</strong>
+        @for (int i = 1; i <= 5; i++)
+        {
+            <span class="fa fa-star @(Model.AverageRating >= i ? "text-warning" : "text-secondary")"></span>
+        }
+        <span class="ml-2">(@Model.AverageRating.ToString("0.0") מתוך 5)</span>
+    </div>
+
+    <!-- רשימת תגובות -->
+    @if (Model.Reviews.Count == 0)
+    {
+        <p>אין תגובות עדיין.</p>
+    }
+    else
+    {
+        <div class="card-columns" style="column-count: 2;">
+            @foreach (var review in Model.Reviews)
+            {
+                <div class="card mb-3 p-3 shadow-sm">
+                    <div class="mb-2">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <span class="fa fa-star @(review.Rating >= i ? "text-warning" : "text-muted")"></span>
+                        }
+                    </div>
+                    <p>@review.Comment</p>
+                </div>
+            }
+        </div>
+    }
+</div>
