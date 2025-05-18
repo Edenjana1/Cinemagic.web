@@ -33,6 +33,8 @@ namespace Cinemagic.Pages.Movies
         [BindProperty(SupportsGet = true)]
         public string? SearchString { get; set; }
 
+        public List<Movie> MostPurchasedMovies { get; set; } = new();
+
         public async Task OnGetAsync()
         {
             // יצירת רשימת ז'אנרים מתוך ה-enum
@@ -41,7 +43,7 @@ namespace Cinemagic.Pages.Movies
                 .Select(g => new SelectListItem
                 {
                     Value = g.ToString(),
-                    Text = g.ToString() // אפשר לשנות כאן לעברית אם רוצים
+                    Text = g.ToString() // אפשר לשנות לעברית
                 })
                 .ToList();
 
@@ -58,6 +60,20 @@ namespace Cinemagic.Pages.Movies
             }
 
             Movie = await query.ToListAsync();
+
+            // --- רשימת הסרטים הכי נרכשים ---
+            MostPurchasedMovies = await _context.Purchases
+                .Where(p => p.MovieID != null)
+                .GroupBy(p => p.MovieID)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
+                .Take(5)
+                .Join(_context.Movies,
+                    movieId => movieId,
+                    movie => movie.MovieID,
+                    (movieId, movie) => movie)
+                .ToListAsync();
         }
+
     }
 }

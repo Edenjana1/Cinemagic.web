@@ -26,6 +26,31 @@
 
     <input type="submit" value="Filter" class="btn btn-primary" />
 </form>
+@if (Model.MostPurchasedSeries.Any())
+{
+    <h2 class="mt-5">הסדרות הכי נרכשות</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        @foreach (var serie in Model.MostPurchasedSeries)
+        {
+            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+                @foreach (var Serie in Model.MostPurchasedSeries)
+                {
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">@serie.SerieName</h5>
+                                <p class="card-text">Price: @serie.SeriePrice ₪</p>
+                                <p class="card-text"><small class="text-muted">Genre: @serie.SerieGenre</small></p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+
+
 
 <!-- Search Box -->
 <form method="get">

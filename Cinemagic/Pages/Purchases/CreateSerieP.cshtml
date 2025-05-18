@@ -1,5 +1,5 @@
 ﻿@page
-@model Cinemagic.Pages.Purchases.CreateModel
+@model Cinemagic.Pages.Purchases.CreateSeriePModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,24 +13,19 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @* <div class="form-group">
-                <label asp-for="Purchase.Movies" class="control-label">Select Movie</label>
-                <select asp-for="Purchase.MovieID" class="form-control" asp-items="ViewBag.MovieID">
-                    <option value="">Select Movie</option>
-                </select>
-            </div> *@
             <div class="form-group">
-                <label asp-for="Purchase.Series" class="control-label">Select Series</label>
-                <select asp-for="Purchase.SerieID" class="form-control" asp-items="ViewBag.SerieID">
-                    <option value="">Select Series</option>
-                </select>
+                <label>שם הסדרה:</label>
+                <p>בדיקה: @Model.SerieName</p>
+                <input type="text" class="form-control" value="@Model.SerieName" readonly />
             </div>
+
             <div class="form-group">
                 <label asp-for="Purchase.Members" class="control-label">Select Member ID</label>
                 <select asp-for="Purchase.MemberID" class="form-control" asp-items="ViewBag.MemberID">
                     <option>Select Member ID</option>
                 </select>
             </div>
+
             <!-- שדה בחירת אימייל -->
             <div class="form-group">
                 <label asp-for="Purchase.Email" class="control-label">Select Email</label>

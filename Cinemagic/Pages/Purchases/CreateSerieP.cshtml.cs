@@ -23,8 +23,31 @@ namespace Cinemagic.Pages.Purchases
         [BindProperty]
         public Purchase Purchase { get; set; } = default!;
 
-        public IActionResult OnGet()
+        public string? SerieName { get; set; }
+
+        public IActionResult OnGet(int? serieid)
         {
+            if (serieid.HasValue)
+            {
+                var serie = _context.Series.FirstOrDefault(s => s.SerieID == serieid.Value);
+                if (serie != null)
+                {
+                    SerieName = serie.SerieName; // כאן שומרים להצגה
+                    Purchase = new Purchase
+                    {
+                        SerieID = serie.SerieID,
+                        PurchaseDate = DateTime.Now
+                    };
+                }
+            }
+            else
+            {
+                Purchase = new Purchase
+                {
+                    PurchaseDate = DateTime.Now
+                };
+            }
+
             // הצגת שם הסרט + המחיר
             ViewData["MovieID"] = new SelectList(
                 _context.Movies.Select(m => new

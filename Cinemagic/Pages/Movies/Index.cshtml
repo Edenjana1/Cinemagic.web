@@ -26,6 +26,30 @@
 
     <input type="submit" value="Filter" class="btn btn-primary" />
 </form>
+<!-- Most Purchased Movies -->
+<h3>Most Purchased Movies</h3>
+
+@if (Model.MostPurchasedMovies.Any())
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        @foreach (var movie in Model.MostPurchasedMovies)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@movie.MovieName</h5>
+                        <p class="card-text">Price: @movie.MoviePrice ₪</p>
+                        <p class="card-text"><small class="text-muted">Genre: @movie.MovieGenre</small></p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No purchased movies yet.</p>
+}
 
 <!-- Search Box -->
 <form method="get">

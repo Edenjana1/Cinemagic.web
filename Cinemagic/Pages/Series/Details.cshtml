@@ -5,11 +5,11 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Series Details</h1>
+<h1 class="serie-title">@Model.Serie.SerieName</h1>
 
 <div class="movie-details-container">
     <div class="movie-image">
-        <img src="~/Images/SerieIMG/@Model.Serie.Image" alt="@Model.Serie.SerieName" style="width: 150px; height: 150px; border-radius: 10px;" /> 
+        <img src="~/Images/SerieIMG/@Model.Serie.Image" alt="@Model.Serie.SerieName" style="width: 150px; height: 150px; border-radius: 10px;" />
     </div>
 
     <div class="movie-info">
@@ -23,9 +23,9 @@
 
 <!-- Purchase Button -->
 <div class="purchase-button-container">
-    <a asp-page="/Purchases/CreateSerieP" asp-route-movieid="@Model.Serie.SerieID" class="btn btn-primary">Buy Now</a>
-</div>
+    <a asp-page="/Purchases/CreateSerieP" asp-route-movieid="@Model.Serie.SerieID" class="btn btn-primary">קנייה עכשיו</a>
 
+</div>
 <div>
     @* <a asp-page="./Edit" asp-route-id="@Model.Serie.SerieID" class="btn btn-primary mt-3">Edit</a>
     <a asp-page="./Delete" asp-route-id="@Model.Serie.SerieID" class="btn btn-danger mt-3">Delete Series</a> *@

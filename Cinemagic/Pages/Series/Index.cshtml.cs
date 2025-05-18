@@ -21,8 +21,8 @@ namespace Cinemagic.Pages.Series
             _context = context;
         }
 
-        public IList<Serie> Serie { get;set; } = default!;
-        
+        public IList<Serie> Serie { get; set; } = default!;
+
 
         [BindProperty(SupportsGet = true)]
         public List<SelectListItem> Genres { get; set; } = new();
@@ -32,15 +32,17 @@ namespace Cinemagic.Pages.Series
         [BindProperty(SupportsGet = true)]
         public string? SearchString { get; set; }
 
+        public List<Serie> MostPurchasedSeries { get; set; } = new();
+
         public async Task OnGetAsync()
         {
-            // יצירת רשימת ז'אנרים מתוך ה-enum
-            Genres = Enum.GetValues(typeof(MovieGenre))
+            // יצירת רשימת ז'אנרים מתוך enum
+            Genres = Enum.GetValues(typeof(SerieGenre)) // שימי לב שזו הייתה טעות – MovieGenre => SerieGenre
                 .Cast<SerieGenre>()
                 .Select(g => new SelectListItem
                 {
                     Value = g.ToString(),
-                    Text = g.ToString() // אפשר לשנות כאן לעברית אם רוצים
+                    Text = g.ToString()
                 })
                 .ToList();
 
@@ -48,15 +50,28 @@ namespace Cinemagic.Pages.Series
 
             if (Genre.HasValue)
             {
-                query = query.Where(m => m.SerieGenre == Genre.Value);
+                query = query.Where(s => s.SerieGenre == Genre.Value);
             }
 
             if (!string.IsNullOrEmpty(SearchString))
             {
-                query = query.Where(m => m.SerieName.Contains(SearchString));
+                query = query.Where(s => s.SerieName.Contains(SearchString));
             }
 
             Serie = await query.ToListAsync();
+
+            // --- רשימת הסדרות הכי נרכשות ---
+            MostPurchasedSeries = await _context.Purchases
+                .Where(p => p.SerieID != null)
+                .GroupBy(p => p.SerieID)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
+                .Take(5)
+                .Join(_context.Series,
+                    serieId => serieId,
+                    serie => serie.SerieID,
+                    (serieId, serie) => serie)
+                .ToListAsync();
         }
     }
 }

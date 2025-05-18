@@ -23,9 +23,32 @@ namespace Cinemagic.Pages.Purchases
         [BindProperty]
         public Purchase Purchase { get; set; } = default!;
 
-        public IActionResult OnGet()
+        public string? MovieName { get; set; }
+
+        public IActionResult OnGet(int? movieid)
         {
-            // הצגת שם הסרט + המחיר
+            if (movieid.HasValue)
+            {
+                var movie = _context.Movies.FirstOrDefault(m => m.MovieID == movieid.Value);
+                if (movie != null)
+                {
+                    MovieName = movie.MovieName; // כאן שומרים את שם הסרט להצגה
+                    Purchase = new Purchase
+                    {
+                        MovieID = movie.MovieID,
+                        PurchaseDate = DateTime.Now
+                    };
+                }
+            }
+            else
+            {
+                Purchase = new Purchase
+                {
+                    PurchaseDate = DateTime.Now
+                };
+            }
+
+            // הצגת שם הסרט + המחיר לבחירה ב-Dropdown
             ViewData["MovieID"] = new SelectList(
                 _context.Movies.Select(m => new
                 {
@@ -36,7 +59,7 @@ namespace Cinemagic.Pages.Purchases
                 "Display"
             );
 
-            // הצגת שם הסדרה + המחיר
+            // הצגת שם הסדרה + המחיר לבחירה ב-Dropdown
             ViewData["SerieID"] = new SelectList(
                 _context.Series.Select(s => new
                 {
@@ -50,18 +73,12 @@ namespace Cinemagic.Pages.Purchases
             ViewData["MemberID"] = new SelectList(_context.Members, "MemberID", "IdintityCard");
             ViewData["Email"] = new SelectList(_context.Members, "Email", "Email");
 
-            // שליחת המחירים ל־JavaScript בעזרת ViewData (לא ViewBag)
+            // שליחת מחירי סרטים וסדרות ל-JavaScript
             var moviePrices = _context.Movies.ToDictionary(m => m.MovieID.ToString(), m => m.MoviePrice);
             var seriePrices = _context.Series.ToDictionary(s => s.SerieID.ToString(), s => s.SeriePrice);
 
             ViewData["MoviePrices"] = JsonSerializer.Serialize(moviePrices);
             ViewData["SeriePrices"] = JsonSerializer.Serialize(seriePrices);
-
-            // תאריך ברירת מחדל
-            Purchase = new Purchase
-            {
-                PurchaseDate = DateTime.Now
-            };
 
             return Page();
         }
@@ -74,7 +91,7 @@ namespace Cinemagic.Pages.Purchases
                 return Page();
             }
 
-            // אם לא נבחר תאריך, קובעים את התאריך לעכשיו
+            // אם לא נבחר תאריך, קובעים תאריך ברירת מחדל להיום
             if (Purchase.PurchaseDate == default)
             {
                 Purchase.PurchaseDate = DateTime.Now;
@@ -82,7 +99,6 @@ namespace Cinemagic.Pages.Purchases
 
             decimal total = 0;
 
-            // בדיקה אם נבחר סרט (MovieID לא ריק)
             if (Purchase.MovieID.HasValue)
             {
                 var movie = await _context.Movies.FindAsync(Purchase.MovieID.Value);
@@ -92,7 +108,6 @@ namespace Cinemagic.Pages.Purchases
                 }
             }
 
-            // בדיקה אם נבחרה סדרה (SerieID לא ריק)
             if (Purchase.SerieID.HasValue)
             {
                 var serie = await _context.Series.FindAsync(Purchase.SerieID.Value);
@@ -102,10 +117,8 @@ namespace Cinemagic.Pages.Purchases
                 }
             }
 
-            // עדכון הסכום הסופי
             Purchase.Total = total;
 
-            // שמירה למסד הנתונים
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();
 
