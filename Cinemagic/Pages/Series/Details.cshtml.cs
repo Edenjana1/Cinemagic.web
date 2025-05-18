@@ -21,6 +21,8 @@ namespace Cinemagic.Pages.Series
 
         public Serie Serie { get; set; } = default!;
 
+        public List<Comment> SerieComments { get; set; } = new();
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -37,7 +39,31 @@ namespace Cinemagic.Pages.Series
             {
                 Serie = serie;
             }
+
+            // טוענים תגובות לסדרה הנבחרת בלבד
+            SerieComments = await _context.Comments
+                .Where(c => c.SerieID == id)
+                .OrderByDescending(c => c.CommentDate)
+                .ToListAsync();
+
             return Page();
+        }
+        public Comment NewComment { get; set; }
+
+        public async Task<IActionResult> OnPostAsync(int? id)
+        {
+            if (!ModelState.IsValid || id == null)
+            {
+                return Page();
+            }
+
+            NewComment.SerieID = id.Value;
+            NewComment.CommentDate = DateTime.Now;
+
+            _context.Comments.Add(NewComment);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage(new { id });
         }
     }
 }

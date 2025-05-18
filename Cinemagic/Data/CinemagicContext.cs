@@ -12,6 +12,7 @@ namespace Cinemagic.Data
         public DbSet<Member> Members { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Serie> Series { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
     }
 }

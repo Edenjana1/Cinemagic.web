@@ -20,7 +20,7 @@ namespace Cinemagic.Pages.Movies
         }
 
         public Movie Movie { get; set; } = default!;
-
+        public IList<Comment> MovieComments { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -37,7 +37,33 @@ namespace Cinemagic.Pages.Movies
             {
                 Movie = movie;
             }
+
+            // טוענים תגובות לסרט הנבחר בלבד
+            MovieComments = await _context.Comments
+                .Where(c => c.MovieID == id)
+                .OrderByDescending(c => c.CommentDate)
+                .ToListAsync();
+
             return Page();
         }
+        [BindProperty]
+        public Comment NewComment { get; set; }
+
+        public async Task<IActionResult> OnPostAsync(int? id)
+        {
+            if (!ModelState.IsValid || id == null)
+            {
+                return Page();
+            }
+
+            NewComment.MovieID = id.Value;
+            NewComment.CommentDate = DateTime.Now;
+
+            _context.Comments.Add(NewComment);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage(new { id });
+        }
+
     }
 }

@@ -72,6 +72,11 @@ namespace Cinemagic.Pages.Series
                     serie => serie.SerieID,
                     (serieId, serie) => serie)
                 .ToListAsync();
+
+
+
+
+
         }
     }
 }

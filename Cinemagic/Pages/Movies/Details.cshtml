@@ -33,3 +33,28 @@
 <a asp-page="./Delete" asp-route-id="@Model.Movie.MovieID" class="btn btn-danger mt-3">Delete Movie</a> *@
 
 <a asp-page="./Index" class="btn btn-secondary mt-3">Back to List</a>
+
+<h3>תגובות:</h3>
+@if (Model.MovieComments.Any())
+{
+    foreach (var comment in Model.MovieComments)
+    {
+        <div class="comment">
+            <p>@comment.Content</p>
+            <small>@comment.CommentDate.ToString("dd/MM/yyyy HH:mm")</small>
+        </div>
+    }
+}
+else
+{
+    <p>אין תגובות עדיין לסרט זה.</p>
+}
+
+<h4>הוסף תגובה חדשה:</h4>
+<form method="post">
+    <div class="mb-3">
+        <textarea asp-for="NewComment.Content" class="form-control" rows="3" placeholder="כתוב כאן את התגובה שלך..."></textarea>
+        <span asp-validation-for="NewComment.Content" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">שלח</button>
+</form>

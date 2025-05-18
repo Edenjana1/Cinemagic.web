@@ -26,9 +26,35 @@
     <a asp-page="/Purchases/CreateSerieP" asp-route-movieid="@Model.Serie.SerieID" class="btn btn-primary">קנייה עכשיו</a>
 
 </div>
+
 <div>
     @* <a asp-page="./Edit" asp-route-id="@Model.Serie.SerieID" class="btn btn-primary mt-3">Edit</a>
     <a asp-page="./Delete" asp-route-id="@Model.Serie.SerieID" class="btn btn-danger mt-3">Delete Series</a> *@
     <a asp-page="./Index" class="btn btn-secondary mt-3">Back to List</a>
 </div>
+
+<h3>תגובות:</h3>
+@if (Model.SerieComments.Any())
+{
+    foreach (var comment in Model.SerieComments)
+    {
+        <div class="comment">
+            <p>@comment.Content</p>
+            <small>@comment.CommentDate.ToString("dd/MM/yyyy HH:mm")</small>
+        </div>
+    }
+}
+else
+{
+    <p>אין תגובות עדיין לסדרה זו.</p>
+}
+
+<h4>הוסף תגובה חדשה:</h4>
+<form method="post">
+    <div class="mb-3">
+        <textarea asp-for="NewComment.Content" class="form-control" rows="3" placeholder="כתוב כאן את התגובה שלך..."></textarea>
+        <span asp-validation-for="NewComment.Content" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">שלח</button>
+</form>
 
