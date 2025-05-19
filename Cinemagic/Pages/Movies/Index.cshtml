@@ -87,3 +87,43 @@ else
         </div>
     }
 </div>
+
+<h3>New Movies</h3>
+
+@if (Model.RecentMovies.Any())
+{
+    <div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+        @foreach (var movie in Model.Movie)
+        {
+            <div class="movie-card" style="width: 180px; text-align: center;">
+                <a asp-page="/Movies/Details" asp-route-id="@movie.MovieID" style="text-decoration: none; color: inherit;">
+                    <img src="~/Images/MovieIMG/@movie.Image" alt="@movie.MovieName"
+                         style="width: 150px; height: 150px; border-radius: 10px; object-fit: cover;" />
+                    <h5 style="margin-top: 10px;">@movie.MovieName</h5>
+                    <p style="font-size: 0.9rem; color: #555;">Released: @movie.ReleaseDate.ToShortDateString()</p>
+                </a>
+            </div>
+        }
+    </div>
+
+}
+else
+{
+    <p>No new movies in the last year.</p>
+}
+
+
+<h3 style="margin-top: 30px;">Movies for Kids</h3>
+<div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+    @foreach (var movie in Model.KidsMovies) // ודאי שיש לך רשימה כזו ב-Model
+    {
+        <div class="movie-card" style="width: 180px; text-align: center;">
+            <a asp-page="/Movies/Details" asp-route-id="@movie.MovieID" style="text-decoration: none; color: inherit;">
+                <img src="~/Images/MovieIMG/@movie.Image" alt="@movie.MovieName"
+                     style="width: 150px; height: 150px; border-radius: 10px; object-fit: cover;" />
+                <h5 style="margin-top: 10px;">@movie.MovieName</h5>
+                <p style="font-size: 0.9rem; color: #555;">Released: @movie.ReleaseDate.ToShortDateString()</p>
+            </a>
+        </div>
+    }
+</div>

@@ -54,7 +54,7 @@
             {
                 <div class="serie-item" style="flex: 0 0 180px;">
                     <a asp-page="/Series/Details" asp-route-id="@serie.SerieID" class="text-decoration-none text-dark">
-                        <div class="card h-100" style="width: 100%; height: 280px; border: 3px solid ; box-shadow: 2px 2px 8px rgba(0,0,0,0.25); padding: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease; background-color: white;">
+                        <div class="card h-100" style="width: 100%; height: 280px; border: 3px solid groove; box-shadow: 2px 2px 8px rgba(0,0,0,0.25); padding: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease; background-color: white;">
                             @if (!string.IsNullOrEmpty(serie.Image))
                             {
                                 <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" style="width: 100%; height: 180px; object-fit: cover; margin-bottom: 8px;" />
@@ -94,3 +94,31 @@ else
         }
     </div>
 </table>
+
+<h3 class="mt-5">Recent Series</h3>
+<div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+    @foreach (var serie in Model.RecentSeries)
+    {
+        <div class="movie-card" style="width: 180px; text-align: center;">
+            <a asp-page="/Series/Details" asp-route-id="@serie.SerieID" style="text-decoration: none; color: inherit;">
+                <img src="~/Images/SeriesIMG/@serie.Image" alt="@serie.SerieName" style="width: 150px; height: 150px; border-radius: 10px; object-fit: cover;" />
+                <h5>@serie.SerieName</h5>
+            </a>
+        </div>
+    }
+</div>
+
+<h3 class="mt-5">Series for Kids</h3>
+<div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+    @foreach (var serie in Model.KidsSeries)
+    {
+        <div class="movie-card" style="width: 180px; text-align: center;">
+            <a asp-page="/Series/Details" asp-route-id="@serie.SerieID" style="text-decoration: none; color: inherit;">
+                <img src="~/Images/SeriesIMG/@serie.Image" alt="@serie.SerieName" style="width: 150px; height: 150px; border-radius: 10px; object-fit: cover;" />
+                <h5>@serie.SerieName</h5>
+            </a>
+        </div>
+    }
+</div>
+
+

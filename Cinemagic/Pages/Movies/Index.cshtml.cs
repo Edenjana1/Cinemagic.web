@@ -34,7 +34,9 @@ namespace Cinemagic.Pages.Movies
         public string? SearchString { get; set; }
 
         public List<Movie> MostPurchasedMovies { get; set; } = new();
+        public IList<Movie> RecentMovies { get; set; } = default!;
 
+        public List<Movie> KidsMovies { get; set; } = new();
         public async Task OnGetAsync()
         {
             // יצירת רשימת ז'אנרים מתוך ה-enum
@@ -72,6 +74,19 @@ namespace Cinemagic.Pages.Movies
                     movieId => movieId,
                     movie => movie.MovieID,
                     (movieId, movie) => movie)
+                .ToListAsync();
+            
+            //סרטים חדשים
+            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
+
+            RecentMovies = await _context.Movies
+                .Where(m => m.ReleaseDate >= oneYearAgo)
+                .OrderByDescending(m => m.ReleaseDate)
+                .ToListAsync();
+
+            //סרטים לילדים
+            KidsMovies = await _context.Movies
+                .Where(m => m.AgeRate == "G" || m.AgeRate == "TV-Y" || m.AgeRate == "PG")
                 .ToListAsync();
         }
 

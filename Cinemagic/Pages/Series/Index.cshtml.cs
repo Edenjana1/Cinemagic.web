@@ -33,6 +33,8 @@ namespace Cinemagic.Pages.Series
         public string? SearchString { get; set; }
 
         public List<Serie> MostPurchasedSeries { get; set; } = new();
+        public List<Serie> RecentSeries { get; set; } = new();
+        public List<Serie> KidsSeries { get; set; } = new();
 
         public async Task OnGetAsync()
         {
@@ -73,6 +75,16 @@ namespace Cinemagic.Pages.Series
                     (serieId, serie) => serie)
                 .ToListAsync();
 
+            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
+
+            RecentSeries = await _context.Series
+                .Where(s => s.ReleaseDate >= oneYearAgo)
+                .OrderByDescending(s => s.ReleaseDate)
+                .ToListAsync();
+
+            KidsSeries = await _context.Series
+                .Where(s => s.AgeRate == "G" || s.AgeRate == "TV-Y" || s.AgeRate == "PG")
+                .ToListAsync();
 
 
 

@@ -42,7 +42,7 @@
                                 <a class="nav-link" asp-area="" asp-page="/Series/Index">Series</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Purchases/Index">My Profile</a>
+                                <a class="nav-link" asp-area="" asp-page="/Purchases/Index">Purchases</a>
                             </li>
                             
                         }
@@ -50,15 +50,13 @@
                         @if (isAdmin)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Purchases/Index">Purchases</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-page="/Members/Index">Members</a>
                             </li>
                         }
 
                         @if (isMember)
                         {
+                            
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-page="/MembersUser/DetailsUser">My Profile</a>
                             </li>
@@ -116,7 +114,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - Cinemagic - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2025 - Cinemagic - <a asp-area="" asp-page="/Privacy" style=" color: black;  ">Privacy</a>
         </div>
     </footer>
 
