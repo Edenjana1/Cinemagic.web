@@ -26,30 +26,7 @@
 
     <input type="submit" value="Filter" class="btn btn-primary" />
 </form>
-<!-- Most Purchased Movies -->
-<h3>Most Purchased Movies</h3>
 
-@if (Model.MostPurchasedMovies.Any())
-{
-    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-        @foreach (var movie in Model.MostPurchasedMovies)
-        {
-            <div class="col">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">@movie.MovieName</h5>
-                        <p class="card-text">Price: @movie.MoviePrice ₪</p>
-                        <p class="card-text"><small class="text-muted">Genre: @movie.MovieGenre</small></p>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-}
-else
-{
-    <p>No purchased movies yet.</p>
-}
 
 <!-- Search Box -->
 <form method="get">
@@ -63,6 +40,41 @@ else
     </div>
 </form>
 
+
+
+<!-- Most Purchased Movies -->
+<h3>Most Purchased Movies</h3>
+
+@if (Model.MostPurchasedMovies.Any())
+{
+    <div class="d-flex flex-row flex-nowrap overflow-auto" style="gap: 12px; padding: 10px 0; justify-content: flex-start;">
+        @foreach (var movie in Model.MostPurchasedMovies)
+        {
+            <div class="movie-item" style="flex: 0 0 180px;">
+                <a asp-page="/Movies/Details" asp-route-id="@movie.MovieID" class="text-decoration-none text-dark">
+                    <div class="card h-100" style="width: 100%; height: 280px; border: 3px solid ; box-shadow: 2px 2px 8px rgba(0,0,0,0.25); padding: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease; background-color: white;">
+                        @if (!string.IsNullOrEmpty(movie.Image))
+                        {
+                            <img src="~/Images/MovieIMG/@movie.Image" alt="@movie.MovieName" style="width: 100%; height: 180px; object-fit: cover; margin-bottom: 8px;" />
+                        }
+                        <div class="card-body p-2">
+                            <h5 class="card-title mb-1" style="font-size: 1rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@movie.MovieName</h5>
+                            <p class="card-text mb-1" style="font-size: 0.9rem;">Price: @movie.MoviePrice ₪</p>
+                            <p class="card-text" style="font-size: 0.8rem; color: #666;">Genre: @movie.MovieGenre</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+}
+else
+{
+    <p>No purchased movies yet.</p>
+}
+
+<h3> Movies</h3>
 <!-- Movie Grid -->
 <div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
     @foreach (var item in Model.Movie)

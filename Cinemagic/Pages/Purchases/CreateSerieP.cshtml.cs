@@ -29,10 +29,10 @@ namespace Cinemagic.Pages.Purchases
         {
             if (serieid.HasValue)
             {
-                var serie = _context.Series.FirstOrDefault(s => s.SerieID == serieid.Value);
+                var serie = _context.Series.FirstOrDefault(m => m.SerieID == serieid.Value);
                 if (serie != null)
                 {
-                    SerieName = serie.SerieName; // כאן שומרים להצגה
+                    SerieName = serie.SerieName; // שם הסדרה להצגה בלבד
                     Purchase = new Purchase
                     {
                         SerieID = serie.SerieID,
@@ -42,13 +42,18 @@ namespace Cinemagic.Pages.Purchases
             }
             else
             {
-                Purchase = new Purchase
+                if (Purchase == null || Purchase.PurchaseDate == default)
                 {
-                    PurchaseDate = DateTime.Now
-                };
+                    Purchase = new Purchase
+                    {
+                        PurchaseDate = DateTime.Now
+                    };
+                }
             }
 
-            // הצגת שם הסרט + המחיר
+            // --- אפשר להסיר את רשימת הסדרות ---
+            // ViewData["SerieID"] = new SelectList(...);
+
             ViewData["MovieID"] = new SelectList(
                 _context.Movies.Select(m => new
                 {
@@ -59,35 +64,18 @@ namespace Cinemagic.Pages.Purchases
                 "Display"
             );
 
-            // הצגת שם הסדרה + המחיר
-            ViewData["SerieID"] = new SelectList(
-                _context.Series.Select(s => new
-                {
-                    s.SerieID,
-                    Display = s.SerieName + " (" + s.SeriePrice + "₪)"
-                }),
-                "SerieID",
-                "Display"
-            );
-
             ViewData["MemberID"] = new SelectList(_context.Members, "MemberID", "IdintityCard");
             ViewData["Email"] = new SelectList(_context.Members, "Email", "Email");
 
-            // שליחת המחירים ל־JavaScript בעזרת ViewData (לא ViewBag)
             var moviePrices = _context.Movies.ToDictionary(m => m.MovieID.ToString(), m => m.MoviePrice);
             var seriePrices = _context.Series.ToDictionary(s => s.SerieID.ToString(), s => s.SeriePrice);
 
             ViewData["MoviePrices"] = JsonSerializer.Serialize(moviePrices);
             ViewData["SeriePrices"] = JsonSerializer.Serialize(seriePrices);
 
-            // תאריך ברירת מחדל
-            Purchase = new Purchase
-            {
-                PurchaseDate = DateTime.Now
-            };
-
             return Page();
         }
+
 
 
         public async Task<IActionResult> OnPostAsync()

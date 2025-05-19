@@ -26,31 +26,6 @@
 
     <input type="submit" value="Filter" class="btn btn-primary" />
 </form>
-@if (Model.MostPurchasedSeries.Any())
-{
-    <h2 class="mt-5">הסדרות הכי נרכשות</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
-        @foreach (var serie in Model.MostPurchasedSeries)
-        {
-            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-                @foreach (var Serie in Model.MostPurchasedSeries)
-                {
-                    <div class="col">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">@serie.SerieName</h5>
-                                <p class="card-text">Price: @serie.SeriePrice ₪</p>
-                                <p class="card-text"><small class="text-muted">Genre: @serie.SerieGenre</small></p>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-    </div>
-}
-
-
 
 
 <!-- Search Box -->
@@ -64,6 +39,46 @@
         </p>
     </div>
 </form>
+
+<!-- Most Purchased Series -->
+<h3>Most Purchased Series</h3>
+
+@if (Model.MostPurchasedSeries.Any())
+{
+
+
+    @if (Model.MostPurchasedSeries != null && Model.MostPurchasedSeries.Any())
+    {
+        <div class="d-flex flex-row flex-nowrap overflow-auto" style="gap: 12px; padding: 10px 0; justify-content: flex-start;">
+            @foreach (var serie in Model.MostPurchasedSeries)
+            {
+                <div class="serie-item" style="flex: 0 0 180px;">
+                    <a asp-page="/Series/Details" asp-route-id="@serie.SerieID" class="text-decoration-none text-dark">
+                        <div class="card h-100" style="width: 100%; height: 280px; border: 3px solid ; box-shadow: 2px 2px 8px rgba(0,0,0,0.25); padding: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease; background-color: white;">
+                            @if (!string.IsNullOrEmpty(serie.Image))
+                            {
+                                <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" style="width: 100%; height: 180px; object-fit: cover; margin-bottom: 8px;" />
+                            }
+                            <div class="card-body p-2">
+                                <h5 class="card-title mb-1" style="font-size: 1rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@serie.SerieName</h5>
+                                <p class="card-text mb-1" style="font-size: 0.9rem;">Price: @serie.SeriePrice ₪</p>
+                                <p class="card-text" style="font-size: 0.8rem; color: #666;">Genre: @serie.SerieGenre</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+}
+else
+{
+    <p>No purchased movies yet.</p>
+}
+
+
+
+<h3> Series</h3>
 
 <table class="table">
     <div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
