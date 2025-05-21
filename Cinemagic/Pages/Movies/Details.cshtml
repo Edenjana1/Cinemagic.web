@@ -41,11 +41,12 @@
 <h3>תגובות:</h3>
 @if (Model.MovieComments.Any())
 {
-    foreach (var comment in Model.MovieComments)
+    @foreach (var comment in Model.MovieComments)
     {
-        <div class="comment">
+        <div class="comment border p-2 my-2">
+            <small>@comment.CommentDate.ToString("dd/MM/yyyy HH:mm")</small><br />
+            @* <strong>נכתב על ידי ת"ז: @comment.User?.IdintityCard</strong> *@
             <p>@comment.Content</p>
-            <small>@comment.CommentDate.ToString("dd/MM/yyyy HH:mm")</small>
         </div>
     }
 }

@@ -6,14 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-// ? הוספת שירותי Session
+// הוספת שירותי Session ושירותי HttpContextAccessor
 builder.Services.AddSession();
-builder.Services.AddHttpContextAccessor(); // כדי שנוכל להשתמש בסשן בלייאאוט ובדפים
+builder.Services.AddHttpContextAccessor();
 
-// חיבור לבסיס הנתונים
+// חיבור לבסיס הנתונים SQL Server
 builder.Services.AddDbContext<CinemagicContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();
 
@@ -24,19 +23,17 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-builder.Services.AddSession();
-builder.Services.AddHttpContextAccessor();
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
-
-// ? הפעלת הסשן בפועל
+// הפעלת סשן - חובה לפני UseAuthorization אם רוצים להשתמש בסשן בתוך Authentication/Authorization
 app.UseSession();
+
+app.UseAuthorization();
 
 app.MapRazorPages();
 
 app.Run();
+

@@ -8,8 +8,8 @@
 
 <form method="post">
     <div class="form-group">
-        <label for="idNumber">ID Number</label>
-        <input type="text" id="idNumber" name="idNumber" class="form-control" required />
+        <label for="IdintityCard">ID Number</label>
+        <input type="text" id="IdintityCard" name="IdintityCard" class="form-control" required />
     </div>
     <button type="submit" class="btn btn-primary mt-3">Login</button>
 </form>
@@ -20,10 +20,3 @@
         @Model.ErrorMessage
     </div>
 }
-
-@* @if (Model.IsUserLoggedIn)
-{
-    <form method="post" action="/MembersUser/DetailsUser">
-        <button type="submit" class="btn btn-success mt-3">Go to Your Profile</button>
-    </form>
-} *@

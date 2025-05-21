@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Cinemagic.Data;
 using Cinemagic.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http; // לגישה לסשן
+using System;
 
 namespace Cinemagic.Pages.Movies
 {
@@ -20,34 +19,32 @@ namespace Cinemagic.Pages.Movies
         }
 
         public Movie Movie { get; set; } = default!;
-        public IList<Comment> MovieComments { get; set; }
+        public IList<Comment> MovieComments { get; set; } = new List<Comment>();
+
+        [BindProperty]
+        public Comment NewComment { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == id);
             if (movie == null)
-            {
                 return NotFound();
-            }
-            else
-            {
-                Movie = movie;
-            }
 
-            // טוענים תגובות לסרט הנבחר בלבד
+            Movie = movie;
+
+            // טוענים תגובות כולל את המשתמש שכתב כל תגובה
             MovieComments = await _context.Comments
                 .Where(c => c.MovieID == id)
+                //.Include(c => c.User)
                 .OrderByDescending(c => c.CommentDate)
                 .ToListAsync();
+            
 
             return Page();
         }
-        [BindProperty]
-        public Comment NewComment { get; set; }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
@@ -59,11 +56,18 @@ namespace Cinemagic.Pages.Movies
             NewComment.MovieID = id.Value;
             NewComment.CommentDate = DateTime.Now;
 
+            // נסה לקרוא את ה-UserId מהסשן
+            //var userIdStr = HttpContext.Session.GetString("UserId");
+            //if (int.TryParse(userIdStr, out int userId))
+            //{
+            //    NewComment.UserID = userId;
+            //}
+
             _context.Comments.Add(NewComment);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage(new { id });
+            return RedirectToPage();
+            //return RedirectToPage(new { id });
         }
-
     }
 }
