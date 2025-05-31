@@ -59,26 +59,26 @@ namespace Cinemagic.Pages.Purchases
                 "Display"
             );
 
-            // הצגת שם הסדרה + המחיר לבחירה ב-Dropdown
-            ViewData["SerieID"] = new SelectList(
-                _context.Series.Select(s => new
-                {
-                    s.SerieID,
-                    Display = s.SerieName + " (" + s.SeriePrice + "₪)"
-                }),
-                "SerieID",
-                "Display"
-            );
+            //// הצגת שם הסדרה + המחיר לבחירה ב-Dropdown
+            //ViewData["SerieID"] = new SelectList(
+            //    _context.Series.Select(s => new
+            //    {
+            //        s.SerieID,
+            //        Display = s.SerieName + " (" + s.SeriePrice + "₪)"
+            //    }),
+            //    "SerieID",
+            //    "Display"
+            //);
 
             ViewData["MemberID"] = new SelectList(_context.Members, "MemberID", "IdintityCard");
             ViewData["Email"] = new SelectList(_context.Members, "Email", "Email");
 
             // שליחת מחירי סרטים וסדרות ל-JavaScript
             var moviePrices = _context.Movies.ToDictionary(m => m.MovieID.ToString(), m => m.MoviePrice);
-            var seriePrices = _context.Series.ToDictionary(s => s.SerieID.ToString(), s => s.SeriePrice);
+            //var seriePrices = _context.Series.ToDictionary(s => s.SerieID.ToString(), s => s.SeriePrice);
 
             ViewData["MoviePrices"] = JsonSerializer.Serialize(moviePrices);
-            ViewData["SeriePrices"] = JsonSerializer.Serialize(seriePrices);
+            //ViewData["SeriePrices"] = JsonSerializer.Serialize(seriePrices);
 
             return Page();
         }

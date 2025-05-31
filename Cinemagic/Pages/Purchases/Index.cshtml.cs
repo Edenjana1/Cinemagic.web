@@ -21,26 +21,45 @@ namespace Cinemagic.Pages.Purchases
 
         public IList<Purchase> Purchase { get; set; } = default!;
 
-        public async Task OnGetAsync(string SearchString)
-        {
-            // טוען את רכישות, כולל את הקשר למנוי, סרטים וסדרות
-            IQueryable<Purchase> PurchaseQuery = from p in _context.Purchases
-                                                 .Include(p => p.Members)  // טוען את המנויים
-                                                 .Include(p => p.Movies)   // טוען את הסרטים
-                                                 .Include(p => p.Series)   // טוען את הסדרות
-                                                 select p;
+        public bool IsAdmin { get; set; }
 
-            // חיפוש לפי שם משפחה ושם פרטי
-            if (!string.IsNullOrEmpty(SearchString))
+        public async Task OnGetAsync(string? SearchString)
+        {
+            IsAdmin = HttpContext.Session.GetString("UserType") == "Admin";
+
+            // שליפת ת"ז מה-Session והמרה ל-int
+            string? identityCardStr = HttpContext.Session.GetString("IdentityCard");
+            int? identityCard = null;
+
+            if (int.TryParse(identityCardStr, out int parsedId))
             {
-                PurchaseQuery = PurchaseQuery.Where(p => p.Members.LastName.Contains(SearchString)
-                                                       || p.Members.FirstMidName.Contains(SearchString)
-                                                       || p.Movies.MovieName.Contains(SearchString)
-                                                       || p.Series.SerieName.Contains(SearchString));
+                identityCard = parsedId;
             }
 
-            // שמירת התוצאות
+            IQueryable<Purchase> PurchaseQuery = _context.Purchases
+                .Include(p => p.Members)
+                .Include(p => p.Movies)
+                .Include(p => p.Series);
+
+            // אם המשתמש הוא מנוי, הצג רק את הרכישות שלו
+            if (!IsAdmin && identityCard != null)
+            {
+                PurchaseQuery = PurchaseQuery.Where(p => p.Members.IdintityCard == identityCard);
+            }
+
+            // סינון לפי טקסט חיפוש
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                PurchaseQuery = PurchaseQuery.Where(p =>
+                    p.Members.LastName.Contains(SearchString) ||
+                    p.Members.FirstMidName.Contains(SearchString) ||
+                    p.Movies.MovieName.Contains(SearchString) ||
+                    p.Series.SerieName.Contains(SearchString)
+                );
+            }
+
             Purchase = await PurchaseQuery.ToListAsync();
+
         }
     }
 }

@@ -25,6 +25,7 @@ namespace Cinemagic.Pages.Purchases
 
         public IActionResult OnGet()
         {
+            
             // הצגת שם הסרט + המחיר
             ViewData["MovieID"] = new SelectList(
                 _context.Movies.Select(m => new

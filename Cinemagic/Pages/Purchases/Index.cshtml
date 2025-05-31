@@ -12,9 +12,13 @@
         </div>
         <div class="card-body">
             <div class="d-flex justify-content-between mb-4">
-                <a asp-page="Create" class="btn btn-primary">
-                    New Purchase
-                </a>
+                @if (Model.IsAdmin)
+                {
+                    <a asp-page="Create" class="btn btn-primary">
+                        New Purchase
+                    </a>
+                }
+
                 <form method="get" class="d-flex align-items-center">
                     <label for="SearchString" class="mr-2">Search Purchase:</label>
                     <input type="text" name="SearchString" id="SearchString" class="form-control mr-2" />
