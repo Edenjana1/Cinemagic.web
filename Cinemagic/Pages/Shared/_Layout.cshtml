@@ -54,19 +54,17 @@
                         </li>
                     }
 
-                    @if (isAdmin)
+                    @{
+                        var userId = Context.Session.GetString("UserId");
+                    }
+
+                    @if (isMember && !string.IsNullOrEmpty(userId))
                     {
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Members/Index">👥 Members</a>
+                            <a class="nav-link" asp-area="" asp-page="/MembersUser/DetailsUser" asp-route-id="@userId">👤 My Profile</a>
                         </li>
                     }
 
-                    @if (isMember)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/MembersUser/DetailsUser">👤 My Profile</a>
-                        </li>
-                    }
                 </ul>
 
                 <!-- כפתורי התחברות / התנתקות -->

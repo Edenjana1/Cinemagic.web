@@ -5,7 +5,8 @@
 }
 <style>
     body {
-        background-image: url('/Images/FotoJet.jpg');
+        
+        background-image: url('/Images/Background.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -14,6 +15,19 @@
         margin: 0;
         padding: 0;
     }
+
+        /* שכבת כהות */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 0.5 = כהות 50% */
+            z-index: -1;
+        }
+
 
     .navbar {
         background-color: rgba(0, 0, 0, 0.6) !important;
@@ -37,8 +51,8 @@
 
 <div class="text-center mt-5">
     <h1 class="display-4">🎬 Cinemagic ברוכים הבאים ל־</h1>
-    <h2 style: class="h2 text-dark mb-3"> העולם שלך לסרטים, סדרות ורכישות</h2>
-    <p class="lead text-dark">בחר סרט או סדרה ותהנה מהחוויה הקולנועית מהבית</p>
+    <h2 class="h2  mb-3"> העולם שלך לסרטים, סדרות ורכישות</h2>
+    <p class="lead">בחר סרט או סדרה ותהנה מהחוויה הקולנועית מהבית</p>
 </div>
 
     

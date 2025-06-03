@@ -7,7 +7,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Cinemagic.Data;
 using Cinemagic.Models;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Cinemagic.Data;
+using Cinemagic.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http; // נדרש לגישה ל-Session
 
 namespace Cinemagic.Pages.MembersUser
@@ -22,6 +31,14 @@ namespace Cinemagic.Pages.MembersUser
         }
 
         public Member Member { get; set; } = default!;
+
+        public List<SelectListItem> ImageOptions { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Girl", Value = "girl_icon.jpg" },
+            new SelectListItem { Text = "Boy", Value = "boy_icon.jpg" },
+            new SelectListItem { Text = "Woman", Value = "woman_icon.jpg" },
+            new SelectListItem { Text = "Man", Value = "man_icon.jpg" }
+        };
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

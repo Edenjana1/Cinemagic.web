@@ -87,7 +87,7 @@ namespace Cinemagic.Pages.MembersUser
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./IndexUser");
         }
 
         private bool MemberExists(int id)

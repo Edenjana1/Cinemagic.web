@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Cinemagic.Data;
 using Cinemagic.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace Cinemagic.Pages.Members
 {
@@ -21,8 +23,23 @@ namespace Cinemagic.Pages.Members
 
         public Member Member { get; set; } = default!;
 
+        public List<SelectListItem> ImageOptions { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Girl", Value = "girl_icon.jpg" },
+            new SelectListItem { Text = "Boy", Value = "boy_icon.jpg" },
+            new SelectListItem { Text = "Woman", Value = "woman_icon.jpg" },
+            new SelectListItem { Text = "Man", Value = "man_icon.jpg" }
+        };
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            // בדיקת סשן – רק משתמש מחובר יכול לראות את הדף
+            var userType = HttpContext.Session.GetString("UserType");
+            if (userType != "Member")
+            {
+                return RedirectToPage("/Login/Index");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -33,11 +50,10 @@ namespace Cinemagic.Pages.Members
             {
                 return NotFound();
             }
-            else
-            {
-                Member = member;
-            }
+
+            Member = member;
             return Page();
         }
     }
 }
+

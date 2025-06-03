@@ -1,49 +1,47 @@
-﻿@page "{id:int}"
-@model Cinemagic.Pages.MembersUser.DetailsUserModel
+﻿@page
+@model Cinemagic.Pages.Members.DetailsModel
+
 @{
     ViewData["Title"] = "פרטי משתמש";
 }
 
-<div class="container mt-5">
-    <div class="card shadow-lg border-0">
-        <div class="card-header bg-primary text-white text-center">
-            <h2>פרטי משתמש</h2>
-        </div>
+<h1 class="text-center text-primary mb-4">פרטי מנוי</h1>
 
-        <div class="card-body">
-            <div class="row">
-                @if (!string.IsNullOrEmpty(Model.Member.Image))
-                {
-                    <div class="col-md-4 text-center">
-                        <img src="@Model.Member.Image" class="img-fluid rounded-circle border border-3" style="max-width: 250px;" alt="תמונת משתמש" />
-                    </div>
-                }
+<div class="card shadow-lg p-4 mx-auto" style="max-width: 600px;">
+    <div class="text-center mb-4">
+        <img src="~/images/MemberIMG/@Model.Member.Image"
+             alt="Profile"
+             class="rounded-circle border border-secondary"
+             width="120"
+             height="120" />
+    </div>
 
-                <div class="col-md-8">
-                    <dl class="row">
-                        <dt class="col-sm-4">תעודת זהות</dt>
-                        <dd class="col-sm-8">@Model.Member.IdintityCard</dd>
+    <dl class="row">
+        <dt class="col-sm-4">תעודת זהות:</dt>
+        <dd class="col-sm-8">@Model.Member.IdintityCard</dd>
 
-                        <dt class="col-sm-4">שם משפחה</dt>
-                        <dd class="col-sm-8">@Model.Member.LastName</dd>
+        <dt class="col-sm-4">שם משפחה:</dt>
+        <dd class="col-sm-8">@Model.Member.LastName</dd>
 
-                        <dt class="col-sm-4">שם פרטי</dt>
-                        <dd class="col-sm-8">@Model.Member.FirstMidName</dd>
+        <dt class="col-sm-4">שם פרטי:</dt>
+        <dd class="col-sm-8">@Model.Member.FirstMidName</dd>
 
-                        <dt class="col-sm-4">מגדר</dt>
-                        <dd class="col-sm-8">@Model.Member.Gender</dd>
+        <dt class="col-sm-4">מגדר:</dt>
+        <dd class="col-sm-8">@Model.Member.Gender</dd>
 
-                        <dt class="col-sm-4">אימייל</dt>
-                        <dd class="col-sm-8">@Model.Member.Email</dd>
+        <dt class="col-sm-4">אימייל:</dt>
+        <dd class="col-sm-8">@Model.Member.Email</dd>
 
-                        <dt class="col-sm-4">טלפון</dt>
-                        <dd class="col-sm-8">@Model.Member.Phone</dd>
+        <dt class="col-sm-4">טלפון:</dt>
+        <dd class="col-sm-8">@Model.Member.Phone</dd>
 
-                        <dt class="col-sm-4">תאריך לידה</dt>
-                        <dd class="col-sm-8">@Model.Member.BirthDate.ToString("dd/MM/yyyy")</dd>
-                    </dl>
-                </div>
-            </div>
-        </div>
+        <dt class="col-sm-4">תאריך לידה:</dt>
+        <dd class="col-sm-8">@Model.Member.BirthDate.ToShortDateString()</dd>
+    </dl>
+
+    <div class="text-center mt-4">
+        <a class="btn btn-warning me-2" asp-page="/MembersUser/EditUser" asp-route-id="@Model.Member.MemberID">ערוך פרטים</a>
+        <a class="btn btn-secondary" asp-page="/Movies/Index">חזרה לרשימה </a>
     </div>
 </div>
+
