@@ -30,7 +30,7 @@ namespace Cinemagic.Pages.Login
                 HttpContext.Session.SetString("UserId", member.MemberID.ToString());
                 HttpContext.Session.SetString("UserType", "Member");
 
-                return RedirectToPage("/MembersUser/DetailsUser", new { id = member.MemberID });
+                return RedirectToPage("/Movies/Index", new { id = member.MemberID });
             }
             else
             {

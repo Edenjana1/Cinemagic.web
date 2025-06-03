@@ -1,22 +1,32 @@
 ﻿@page
 @model Cinemagic.Pages.Login.IndexModel
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "התחברות";
 }
 
-<h2>Login</h2>
+<div class="container mt-5" style="max-width: 500px;">
+    <div class="card shadow rounded-4 p-4">
+        <h2 class="text-center mb-4 text-primary">התחברות למערכת</h2>
 
-<form method="post">
-    <div class="form-group">
-        <label for="IdintityCard">ID Number</label>
-        <input type="text" id="IdintityCard" name="IdintityCard" class="form-control" required />
-    </div>
-    <button type="submit" class="btn btn-primary mt-3">Login</button>
-</form>
+        <form method="post">
+            <div class="mb-3">
+                <label for="IdintityCard" class="form-label">מספר תעודת זהות</label>
+                <input type="text" id="IdintityCard" name="IdintityCard" class="form-control" required />
+            </div>
 
-@if (Model.ErrorMessage != null)
-{
-    <div class="alert alert-danger mt-3">
-        @Model.ErrorMessage
+            <button type="submit" class="btn btn-primary w-100">התחבר</button>
+        </form>
+
+        @if (Model.ErrorMessage != null)
+        {
+            <div class="alert alert-danger mt-3 text-center">
+                @Model.ErrorMessage
+            </div>
+        }
+
+        <hr />
+        <div class="text-center mt-3">
+            <a href="/Members/Create" class="text-decoration-none">עוד לא רשום? צור משתמש חדש</a>
+        </div>
     </div>
-}
+</div>

@@ -1,64 +1,49 @@
 ﻿@page "{id:int}"
 @model Cinemagic.Pages.MembersUser.DetailsUserModel
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "פרטי משתמש";
 }
 
-<h1>Details</h1>
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>פרטי משתמש</h2>
+        </div>
 
-<div>
-    <h4>Member</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Member.Image)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Member.Image)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Member.IdintityCard)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Member.IdintityCard)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Member.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Member.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Member.FirstMidName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Member.FirstMidName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Member.Gender)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Member.Gender)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Member.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Member.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Member.Phone)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Member.Phone)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Member.BirthDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Member.BirthDate)
-        </dd>
-    </dl>
+        <div class="card-body">
+            <div class="row">
+                @if (!string.IsNullOrEmpty(Model.Member.Image))
+                {
+                    <div class="col-md-4 text-center">
+                        <img src="@Model.Member.Image" class="img-fluid rounded-circle border border-3" style="max-width: 250px;" alt="תמונת משתמש" />
+                    </div>
+                }
+
+                <div class="col-md-8">
+                    <dl class="row">
+                        <dt class="col-sm-4">תעודת זהות</dt>
+                        <dd class="col-sm-8">@Model.Member.IdintityCard</dd>
+
+                        <dt class="col-sm-4">שם משפחה</dt>
+                        <dd class="col-sm-8">@Model.Member.LastName</dd>
+
+                        <dt class="col-sm-4">שם פרטי</dt>
+                        <dd class="col-sm-8">@Model.Member.FirstMidName</dd>
+
+                        <dt class="col-sm-4">מגדר</dt>
+                        <dd class="col-sm-8">@Model.Member.Gender</dd>
+
+                        <dt class="col-sm-4">אימייל</dt>
+                        <dd class="col-sm-8">@Model.Member.Email</dd>
+
+                        <dt class="col-sm-4">טלפון</dt>
+                        <dd class="col-sm-8">@Model.Member.Phone</dd>
+
+                        <dt class="col-sm-4">תאריך לידה</dt>
+                        <dd class="col-sm-8">@Model.Member.BirthDate.ToString("dd/MM/yyyy")</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
