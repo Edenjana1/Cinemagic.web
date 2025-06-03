@@ -56,7 +56,7 @@ namespace Cinemagic.Pages.MembersUser
             _context.Members.Add(Member);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./IndexUser");
+            return RedirectToPage("/Index");
         }
 
 

@@ -118,3 +118,64 @@ body {
 .btn-logout-admin:hover {
     background-color: #e53935; /* אדום כהה יותר ברוורס */
 }
+
+.navbar-custom {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    padding: 10px 20px;
+}
+
+.nav-link {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: white !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 10px;
+}
+
+    .nav-link:hover,
+    .nav-link.active {
+        background-color: #e3f2fd;
+        color: #007bff !important;
+    }
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white !important;
+}
+
+.navbar-buttons .btn {
+    margin-left: 10px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+    .navbar-buttons .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'><path stroke='rgba(0, 0, 0, 0.7)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+}
+/* צבע שחור למשתמשים מחוברים (Admin או Member) */
+.navbar-custom.logged-in .nav-link {
+    color: #000000 !important;
+}
+
+    .navbar-custom.logged-in .nav-link:hover,
+    .navbar-custom.logged-in .nav-link.active {
+        background-color: #e3f2fd;
+        color: #007bff !important;
+    }
+
+.navbar-custom.logged-in .navbar-brand {
+    color: #000000 !important;
+}

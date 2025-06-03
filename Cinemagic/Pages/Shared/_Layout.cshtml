@@ -4,6 +4,13 @@
     var userType = HttpContextAccessor.HttpContext.Session.GetString("UserType");
     var isAdmin = userType == "Admin";
     var isMember = userType == "Member";
+
+    // קביעת מחלקת ה-navbar
+    var navClass = "navbar navbar-expand-lg navbar-light navbar-custom";
+    if (isAdmin || isMember)
+    {
+        navClass += " logged-in";
+    }
 }
 
 <!DOCTYPE html>
@@ -19,91 +26,75 @@
 </head>
 
 <body>
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Cinemagic</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+        <!-- סרגל ניווט -->
+        <nav class="@navClass">
+            <a class="navbar-brand fw-bold" href="/">🎞️ Cinemagic</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/Index">🏠 Home</a>
+                    </li>
+
+                    @if (isAdmin || isMember)
+                    {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-page="/Movies/Index">🎬 Movies</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Series/Index">📺 Series</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Purchases/Index">💳 Purchases</a>
+                        </li>
+                    }
 
-                        @if (isAdmin || isMember)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Movies/Index">Movies</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Series/Index">Series</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Purchases/Index">Purchases</a>
-                            </li>
-                            
-                        }
+                    @if (isAdmin)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Members/Index">👥 Members</a>
+                        </li>
+                    }
 
-                        @if (isAdmin)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Members/Index">Members</a>
-                            </li>
-                        }
+                    @if (isMember)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/MembersUser/DetailsUser">👤 My Profile</a>
+                        </li>
+                    }
+                </ul>
 
-                        @if (isMember)
-                        {
-                            
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/MembersUser/DetailsUser">My Profile</a>
-                            </li>
-                        }
-                    </ul>
-
-                    <!-- אזור הכפתורים בצד ימין -->
-                    <div class="d-flex">
-                        @if (isAdmin)
-                        {
-                            <form method="post" asp-page="/Index" asp-route-handler="LogoutAdmin" class="me-2">
-                                <button type="submit" class="btn btn-danger">Logout as Admin</button>
-                            </form>
-                        }
-                        else if (isMember)
-                        {
-                            <form method="post" asp-page="/Index" asp-route-handler="LogoutMember" class="me-2">
-                                <button type="submit" class="btn btn-warning">Logout</button>
-                            </form>
-                        }
-                        else
-                        {
-
-                            <form method="post" asp-page="/Index">
-
-                                <a href="/MembersUser/CreateUser" class="btn btn-primary" style="margin-right: 20px;" >Sign In</a>
-                            </form>
-
-                            <!-- כפתור כניסת מנוי -->
-                            <form method="post" asp-page-handler="MemberLogin" style="display: flex; align-items: center; gap: 10px;">
-                                <label for="idintityCard" style="margin-bottom: 0;">תעודת זהות</label>
-                                <input type="text" name="idintityCard" id="idintityCard" required
-                                       style="padding: 5px 10px; border: 1px solid #ccc; border-radius: 4px; width: 150px;" />
-
-                                <button type="submit" style="margin-right: 20px;" class="btn btn-success">כניסת מנוי</button>
-                                
-                                
-                            </form>
-                            <form method="post" asp-page="/Index">
-                                <button type="submit" style="margin-right: 20px;" class="btn btn-secondary">Login as Admin</button>
-
-                            </form>
-                        }
-                    </div>
+                <!-- כפתורי התחברות / התנתקות -->
+                <div class="navbar-buttons d-flex">
+                    @if (isAdmin)
+                    {
+                        <form method="post" asp-page="/Index" asp-route-handler="LogoutAdmin">
+                            <button type="submit" class="btn btn-danger">🚪 Logout as Admin</button>
+                        </form>
+                    }
+                    else if (isMember)
+                    {
+                        <form method="post" asp-page="/Index" asp-route-handler="LogoutMember">
+                            <button type="submit" class="btn btn-warning">🚪 Logout</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a href="/MembersUser/CreateUser" class="btn btn-primary">📝 Sign Up</a>
+                        <a href="/Login" class="btn btn-success text-white">🔐 Member Login</a>
+                        <form method="post" asp-page="/Index">
+                            <button type="submit" class="btn btn-secondary">🛠️ Admin Login</button>
+                        </form>
+                    }
                 </div>
             </div>
         </nav>
+
     </header>
 
     <div class="container">
@@ -124,5 +115,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
