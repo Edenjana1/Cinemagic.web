@@ -165,17 +165,25 @@ body {
 .navbar-toggler-icon {
     background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'><path stroke='rgba(0, 0, 0, 0.7)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
 }
-/* צבע שחור למשתמשים מחוברים (Admin או Member) */
-.navbar-custom.logged-in .nav-link {
-    color: #000000 !important;
+.navbar-custom.logged-in {
+    background-color: #000000 !important;
 }
 
-    .navbar-custom.logged-in .nav-link:hover,
-    .navbar-custom.logged-in .nav-link.active {
-        background-color: #e3f2fd;
-        color: #007bff !important;
-    }
-
+.navbar-custom.logged-in .nav-link,
 .navbar-custom.logged-in .navbar-brand {
-    color: #000000 !important;
+    color: white !important;
 }
+
+.navbar-custom.logged-in .nav-link:hover {
+    background-color: #333333;
+    color: #00aced !important;
+}
+/* עיצוב navbar לדפים כמו Login ו־Create */
+.navbar-custom.login-page {
+    background-color: #000 !important;
+}
+
+    .navbar-custom.login-page .nav-link,
+    .navbar-custom.login-page .navbar-brand {
+        color: white !important;
+    }
