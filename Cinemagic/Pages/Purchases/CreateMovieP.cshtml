@@ -3,9 +3,12 @@
 
 @{
     ViewData["Title"] = "Create";
+
+    var moviePricesJson = ViewData["MoviePrices"]?.ToString() ?? "{}";
+    var seriePricesJson = ViewData["SeriePrices"]?.ToString() ?? "{}";
 }
 
-<h1>Create</h1>
+<h1>Create Purchase</h1>
 
 <h4>Purchase</h4>
 <hr />
@@ -13,20 +16,19 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label>שם הסרט:</label>
                 <input type="text" class="form-control" value="@Model.MovieName" readonly />
-
             </div>
 
             <div class="form-group">
-                <label asp-for="Purchase.Members" class="control-label">Select Member ID</label>
-                <select asp-for="Purchase.MemberID" class="form-control" asp-items="ViewBag.MemberID">
-                    <option>Select Member ID</option>
-                </select>
+                <label>תעודת זהות:</label>
+                <input type="text" class="form-control" value="@Model.IdentityCard" readonly />
             </div>
 
-            <!-- שדה בחירת אימייל -->
+            <input type="hidden" asp-for="Purchase.MemberID" />
+
             <div class="form-group">
                 <label asp-for="Purchase.Email" class="control-label">Select Email</label>
                 <select asp-for="Purchase.Email" class="form-control" asp-items="ViewBag.Email">
@@ -43,9 +45,10 @@
 
             <div class="form-group">
                 <label asp-for="Purchase.Total" class="control-label">Total</label>
-                <input asp-for="Purchase.Total" class="form-control" readonly /> <!-- readonly כך שלא ניתן לערוך -->
+                <input asp-for="Purchase.Total" class="form-control" readonly />
                 <span asp-validation-for="Purchase.Total" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -58,44 +61,30 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 
     <script>
-        // המרת נתוני המחירים ל-JSON כדי להשתמש בהם בצד הלקוח
-        const moviePrices = @Html.Raw(Json.Serialize(ViewData["MoviePrices"]));
-        const seriePrices = @Html.Raw(Json.Serialize(ViewData["SeriePrices"]));
+        const moviePrices = @Html.Raw(moviePricesJson);
+        const seriePrices = @Html.Raw(seriePricesJson);
 
-        // הגדרת משתנים לכל האלמנטים בטופס
         const movieSelect = document.querySelector('[name="Purchase.MovieID"]');
         const serieSelect = document.querySelector('[name="Purchase.SerieID"]');
         const totalInput = document.querySelector('[name="Purchase.Total"]');
 
-        // פונקציה לעדכון המחיר הכולל
         function updateTotal() {
-            const movieId = movieSelect.value;
-            const serieId = serieSelect.value;
+            const movieId = movieSelect ? movieSelect.value : null;
+            const serieId = serieSelect ? serieSelect.value : null;
 
-            // אם לא נבחר סרט ולא נבחרה סדרה, הצג 0
-            if (movieId === "0" && serieId === "0") {
-                totalInput.value = "0.00";
-                return;
-            }
+            const moviePrice = movieId && moviePrices[movieId] ? moviePrices[movieId] : 0;
+            const seriePrice = serieId && seriePrices[serieId] ? seriePrices[serieId] : 0;
 
-            // קבלת המחירים
-            const moviePrice = moviePrices[movieId] || 0;
-            const seriePrice = seriePrices[serieId] || 0;
-
-            const total = moviePrice + seriePrice;
-            totalInput.value = total.toFixed(2);
+            totalInput.value = (moviePrice + seriePrice).toFixed(2);
         }
 
-        // בדיקת קיום האלמנטים והוספת אירועים
         if (movieSelect && serieSelect && totalInput) {
             movieSelect.addEventListener("change", updateTotal);
             serieSelect.addEventListener("change", updateTotal);
-            updateTotal(); // עדכון ראשוני
+            updateTotal();
         }
     </script>
 }

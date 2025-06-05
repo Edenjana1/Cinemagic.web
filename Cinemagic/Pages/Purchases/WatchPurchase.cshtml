@@ -1,0 +1,39 @@
+﻿<h2>סרטים שנקנו</h2>
+<div class="row">
+    @foreach (var purchase in Model.MoviePurchases)
+    {
+        var url = Model.MovieUrls.ContainsKey(purchase.MovieID.Value)
+        ? Model.MovieUrls[purchase.MovieID.Value]
+        : "#";
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="~/Images/MovieIMG/@purchase.Movies.Image" class="card-img-top" alt="@purchase.Movies.MovieName" style="max-height: 300px; object-fit: cover;" />
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@purchase.Movies.MovieName</h5>
+                    <a href="@url" target="_blank" class="btn btn-primary mt-auto">▶️ צפה עכשיו</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<h2>סדרות שנקנו</h2>
+<div class="row">
+    @foreach (var purchase in Model.SeriesPurchases)
+    {
+        var url = Model.SeriesUrls.ContainsKey(purchase.SerieID.Value)
+        ? Model.SeriesUrls[purchase.SerieID.Value]
+        : "#";
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="~/Images/SeriesIMG/@purchase.Series.Image" class="card-img-top" alt="@purchase.Series.SerieName" style="max-height: 300px; object-fit: cover;" />
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@purchase.Series.SerieName</h5>
+                    <a href="@url" target="_blank" class="btn btn-primary mt-auto">▶️ צפה עכשיו</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

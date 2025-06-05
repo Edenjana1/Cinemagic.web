@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Cinemagic.Data;
 using Cinemagic.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
 
 namespace Cinemagic.Pages.Purchases
@@ -23,50 +20,47 @@ namespace Cinemagic.Pages.Purchases
         [BindProperty]
         public Purchase Purchase { get; set; } = default!;
 
-        public string? MovieName { get; set; }
-        public int IdentityCard { get; set; }
+        public string MovieName { get; set; } = "";
+        public string IdentityCard { get; set; } = "";
 
-        public IActionResult OnGet(int? movieid)
+        public async Task<IActionResult> OnGetAsync(int? movieId)
         {
-            // קבלת ת"ז מה-Session
-            int? identityCard = HttpContext.Session.GetInt32("IdentityCard");
-            if (identityCard == null)
-            {
-                return RedirectToPage("/Login"); // אם אין ת"ז – החזר לכניסה
-            }
+            if (movieId == null)
+                return NotFound();
 
-            // חיפוש המנוי במסד הנתונים לפי ת"ז
-            var member = _context.Members.FirstOrDefault(m => m.IdintityCard == identityCard.Value);
-            if (member == null)
-            {
-                return NotFound("Member not found.");
-            }
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieID == movieId);
+            if (movie == null)
+                return NotFound();
 
-            // הגדרת הנתונים ההתחלתיים לרכישה
+            MovieName = movie.MovieName;
             Purchase = new Purchase
             {
-                MemberID = member.MemberID,
-                PurchaseDate = DateTime.Now
+                MovieID = movie.MovieID,
+                PurchaseDate = DateTime.Now,
+                Total = movie.MoviePrice
             };
 
-            IdentityCard = member.IdintityCard;
-
-            if (movieid.HasValue)
+            var memberIdString = HttpContext.Session.GetString("UserId");
+            if (!string.IsNullOrEmpty(memberIdString) && int.TryParse(memberIdString, out int memberId))
             {
-                var movie = _context.Movies.FirstOrDefault(m => m.MovieID == movieid.Value);
-                if (movie != null)
+                var member = await _context.Members.FirstOrDefaultAsync(m => m.MemberID == memberId);
+                if (member != null)
                 {
-                    MovieName = movie.MovieName;
-                    Purchase.MovieID = movie.MovieID;
+                    Purchase.MemberID = member.MemberID;
+                    IdentityCard = member.IdintityCard.ToString(); // ודא שזה שם השדה הנכון במודל Member
                 }
             }
 
-            // רשימות לבחירת אימייל
-            ViewData["Email"] = new SelectList(_context.Members, "Email", "Email");
+            ViewData["Email"] = new SelectList(await _context.Members.Select(m => m.Email).ToListAsync());
 
-            // שליחת מחירי סרטים ל-JavaScript
-            var moviePrices = _context.Movies.ToDictionary(m => m.MovieID.ToString(), m => m.MoviePrice);
+            var moviePrices = await _context.Movies
+                .ToDictionaryAsync(m => m.MovieID.ToString(), m => m.MoviePrice);
+
+            var seriePrices = await _context.Series
+                .ToDictionaryAsync(s => s.SerieID.ToString(), s => s.SeriePrice);
+
             ViewData["MoviePrices"] = JsonSerializer.Serialize(moviePrices);
+            ViewData["SeriePrices"] = JsonSerializer.Serialize(seriePrices);
 
             return Page();
         }
@@ -76,43 +70,10 @@ namespace Cinemagic.Pages.Purchases
             if (!ModelState.IsValid)
                 return Page();
 
-            // ודא שהת"ז קיימת ב-Session
-            int? identityCard = HttpContext.Session.GetInt32("IdentityCard");
-            if (identityCard == null)
-                return RedirectToPage("/Login");
-
-            var member = _context.Members.FirstOrDefault(m => m.IdintityCard == identityCard.Value);
-            if (member == null)
-                return NotFound("Member not found");
-
-            Purchase.MemberID = member.MemberID;
-
-            if (Purchase.PurchaseDate == default)
-                Purchase.PurchaseDate = DateTime.Now;
-
-            // חישוב מחיר כולל
-            decimal total = 0;
-
-            if (Purchase.MovieID.HasValue)
-            {
-                var movie = await _context.Movies.FindAsync(Purchase.MovieID.Value);
-                if (movie != null)
-                    total += movie.MoviePrice;
-            }
-
-            if (Purchase.SerieID.HasValue)
-            {
-                var serie = await _context.Series.FindAsync(Purchase.SerieID.Value);
-                if (serie != null)
-                    total += serie.SeriePrice;
-            }
-
-            Purchase.Total = total;
-
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("Index");
         }
     }
 }
