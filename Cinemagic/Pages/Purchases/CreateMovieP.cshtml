@@ -3,25 +3,27 @@
 
 @{
     ViewData["Title"] = "Create";
-
-    var moviePricesJson = ViewData["MoviePrices"]?.ToString() ?? "{}";
-    var seriePricesJson = ViewData["SeriePrices"]?.ToString() ?? "{}";
 }
 
-<h1>Create Purchase</h1>
+<h1>רכישת סרט</h1>
 
-<h4>Purchase</h4>
+<h4>פרטי רכישה</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+            <!-- מציג שם הסרט -->
             <div class="form-group">
                 <label>שם הסרט:</label>
                 <input type="text" class="form-control" value="@Model.MovieName" readonly />
             </div>
 
+            <!-- שומר את MovieID בצורה חבויה -->
+            <input type="hidden" asp-for="Purchase.MovieID" />
+
+            <!-- מציג תעודת זהות -->
             <div class="form-group">
                 <label>תעודת זהות:</label>
                 <input type="text" class="form-control" value="@Model.IdentityCard" readonly />
@@ -30,61 +32,36 @@
             <input type="hidden" asp-for="Purchase.MemberID" />
 
             <div class="form-group">
-                <label asp-for="Purchase.Email" class="control-label">Select Email</label>
+                <label asp-for="Purchase.Email" class="control-label">כתובת אימייל</label>
                 <select asp-for="Purchase.Email" class="form-control" asp-items="ViewBag.Email">
-                    <option value="">Select Email</option>
+                    <option value="">בחר אימייל</option>
                 </select>
                 <span asp-validation-for="Purchase.Email" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Purchase.PurchaseDate" class="control-label">Purchase Date</label>
-                <input asp-for="Purchase.PurchaseDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" readonly />
+                <label asp-for="Purchase.PurchaseDate">תאריך רכישה</label>
+                <input asp-for="Purchase.PurchaseDate" class="form-control" readonly />
                 <span asp-validation-for="Purchase.PurchaseDate" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Purchase.Total" class="control-label">Total</label>
+                <label asp-for="Purchase.Total">סכום לתשלום</label>
                 <input asp-for="Purchase.Total" class="form-control" readonly />
                 <span asp-validation-for="Purchase.Total" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="רכוש" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="Index">חזרה לרשימה</a>
 </div>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
-
-    <script>
-        const moviePrices = @Html.Raw(moviePricesJson);
-        const seriePrices = @Html.Raw(seriePricesJson);
-
-        const movieSelect = document.querySelector('[name="Purchase.MovieID"]');
-        const serieSelect = document.querySelector('[name="Purchase.SerieID"]');
-        const totalInput = document.querySelector('[name="Purchase.Total"]');
-
-        function updateTotal() {
-            const movieId = movieSelect ? movieSelect.value : null;
-            const serieId = serieSelect ? serieSelect.value : null;
-
-            const moviePrice = movieId && moviePrices[movieId] ? moviePrices[movieId] : 0;
-            const seriePrice = serieId && seriePrices[serieId] ? seriePrices[serieId] : 0;
-
-            totalInput.value = (moviePrice + seriePrice).toFixed(2);
-        }
-
-        if (movieSelect && serieSelect && totalInput) {
-            movieSelect.addEventListener("change", updateTotal);
-            serieSelect.addEventListener("change", updateTotal);
-            updateTotal();
-        }
-    </script>
 }

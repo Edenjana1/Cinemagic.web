@@ -2,99 +2,70 @@
 @model Cinemagic.Pages.Purchases.CreateSeriePModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "רכישת סדרה";
 }
 
-<h1>Create</h1>
+<h1>רכישת סדרה</h1>
 
-<h4>Purchase</h4>
+<h4>פרטי רכישה</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="mb-3">
-                <label class="form-label">שם הסדרה</label>
+
+            <!-- הצגת שם הסדרה -->
+            <div class="form-group">
+                <label>שם הסדרה:</label>
                 <input type="text" class="form-control" value="@Model.SerieName" readonly />
             </div>
 
+            <!-- שדה חבוי לשמירת SerieID -->
+            <input type="hidden" asp-for="Purchase.SerieID" />
+
+            <!-- ת"ז -->
             <div class="form-group">
-                <label asp-for="Purchase.Members" class="control-label">Select Member ID</label>
-                <select asp-for="Purchase.MemberID" class="form-control" asp-items="ViewBag.MemberID">
-                    <option>Select Member ID</option>
-                </select>
+                <label>תעודת זהות:</label>
+                <input type="text" class="form-control" value="@Model.IdentityCard" readonly />
             </div>
 
-            <!-- שדה בחירת אימייל -->
+            <!-- מזהה משתמש -->
+            <input type="hidden" asp-for="Purchase.MemberID" />
+
+            <!-- אימייל -->
             <div class="form-group">
-                <label asp-for="Purchase.Email" class="control-label">Select Email</label>
+                <label asp-for="Purchase.Email" class="control-label">כתובת אימייל</label>
                 <select asp-for="Purchase.Email" class="form-control" asp-items="ViewBag.Email">
-                    <option value="">Select Email</option>
+                    <option value="">בחר אימייל</option>
                 </select>
                 <span asp-validation-for="Purchase.Email" class="text-danger"></span>
             </div>
 
+            <!-- תאריך רכישה -->
             <div class="form-group">
-                <label asp-for="Purchase.PurchaseDate" class="control-label">Purchase Date</label>
-                <input asp-for="Purchase.PurchaseDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" readonly />
+                <label asp-for="Purchase.PurchaseDate">תאריך רכישה</label>
+                <input asp-for="Purchase.PurchaseDate" class="form-control" readonly />
                 <span asp-validation-for="Purchase.PurchaseDate" class="text-danger"></span>
             </div>
 
+            <!-- סכום -->
             <div class="form-group">
-                <label asp-for="Purchase.Total" class="control-label">Total</label>
-                <input asp-for="Purchase.Total" class="form-control" readonly /> <!-- readonly כך שלא ניתן לערוך -->
+                <label asp-for="Purchase.Total">סכום לתשלום</label>
+                <input asp-for="Purchase.Total" class="form-control" readonly />
                 <span asp-validation-for="Purchase.Total" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="רכוש" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="Index">חזרה לרשימת רכישות</a>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
-    <script>
-        // המרת נתוני המחירים ל-JSON כדי להשתמש בהם בצד הלקוח
-        const moviePrices = @Html.Raw(Json.Serialize(ViewData["MoviePrices"]));
-        const seriePrices = @Html.Raw(Json.Serialize(ViewData["SeriePrices"]));
-
-        // הגדרת משתנים לכל האלמנטים בטופס
-        const movieSelect = document.querySelector('[name="Purchase.MovieID"]');
-        const serieSelect = document.querySelector('[name="Purchase.SerieID"]');
-        const totalInput = document.querySelector('[name="Purchase.Total"]');
-
-        // פונקציה לעדכון המחיר הכולל
-        function updateTotal() {
-            const movieId = movieSelect.value;
-            const serieId = serieSelect.value;
-
-            // אם לא נבחר סרט ולא נבחרה סדרה, הצג 0
-            if (movieId === "0" && serieId === "0") {
-                totalInput.value = "0.00";
-                return;
-            }
-
-            // קבלת המחירים
-            const moviePrice = moviePrices[movieId] || 0;
-            const seriePrice = seriePrices[serieId] || 0;
-
-            const total = moviePrice + seriePrice;
-            totalInput.value = total.toFixed(2);
-        }
-
-        // בדיקת קיום האלמנטים והוספת אירועים
-        if (movieSelect && serieSelect && totalInput) {
-            movieSelect.addEventListener("change", updateTotal);
-            serieSelect.addEventListener("change", updateTotal);
-            updateTotal(); // עדכון ראשוני
-        }
-    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

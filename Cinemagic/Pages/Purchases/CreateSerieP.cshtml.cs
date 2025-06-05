@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Cinemagic.Data;
 using Cinemagic.Models;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cinemagic.Pages.Purchases
 {
@@ -24,51 +25,55 @@ namespace Cinemagic.Pages.Purchases
         public Purchase Purchase { get; set; } = default!;
 
         public string? SerieName { get; set; }
+        public string? IdentityCard { get; set; }
 
-        public IActionResult OnGet(int? serieid)
+        public async Task<IActionResult> OnGetAsync(int? serieid)
         {
-            if (serieid.HasValue)
+            if (serieid == null)
+                return NotFound();
+
+            var serie = await _context.Series.FirstOrDefaultAsync(s => s.SerieID == serieid);
+            if (serie == null)
+                return NotFound();
+
+            SerieName = serie.SerieName;
+
+            // ניסיון לשלוף את המשתמש המחובר מה-Session
+            var memberIdString = HttpContext.Session.GetString("UserId");
+            if (!string.IsNullOrEmpty(memberIdString) && int.TryParse(memberIdString, out int memberId))
             {
-                var serie = _context.Series.FirstOrDefault(m => m.SerieID == serieid.Value);
-                if (serie != null)
+                var member = await _context.Members.FirstOrDefaultAsync(m => m.MemberID == memberId);
+                if (member != null)
                 {
-                    SerieName = serie.SerieName; // שם הסדרה להצגה בלבד
                     Purchase = new Purchase
                     {
                         SerieID = serie.SerieID,
-                        PurchaseDate = DateTime.Now
+                        PurchaseDate = DateTime.Now,
+                        Total = serie.SeriePrice,
+                        MemberID = member.MemberID,
+                        Email = member.Email
                     };
+
+                    IdentityCard = member.IdintityCard.ToString();
                 }
             }
             else
             {
-                if (Purchase == null || Purchase.PurchaseDate == default)
+                // לא נמצא משתמש — הצג טופס ריק
+                Purchase = new Purchase
                 {
-                    Purchase = new Purchase
-                    {
-                        PurchaseDate = DateTime.Now
-                    };
-                }
+                    SerieID = serie.SerieID,
+                    PurchaseDate = DateTime.Now,
+                    Total = serie.SeriePrice
+                };
             }
 
-            // --- אפשר להסיר את רשימת הסדרות ---
-            // ViewData["SerieID"] = new SelectList(...);
-
-            ViewData["MovieID"] = new SelectList(
-                _context.Movies.Select(m => new
-                {
-                    m.MovieID,
-                    Display = m.MovieName + " (" + m.MoviePrice + "₪)"
-                }),
-                "MovieID",
-                "Display"
-            );
-
+            // שדות להצגה בטופס
             ViewData["MemberID"] = new SelectList(_context.Members, "MemberID", "IdintityCard");
             ViewData["Email"] = new SelectList(_context.Members, "Email", "Email");
 
-            var moviePrices = _context.Movies.ToDictionary(m => m.MovieID.ToString(), m => m.MoviePrice);
-            var seriePrices = _context.Series.ToDictionary(s => s.SerieID.ToString(), s => s.SeriePrice);
+            var moviePrices = await _context.Movies.ToDictionaryAsync(m => m.MovieID.ToString(), m => m.MoviePrice);
+            var seriePrices = await _context.Series.ToDictionaryAsync(s => s.SerieID.ToString(), s => s.SeriePrice);
 
             ViewData["MoviePrices"] = JsonSerializer.Serialize(moviePrices);
             ViewData["SeriePrices"] = JsonSerializer.Serialize(seriePrices);
@@ -76,47 +81,33 @@ namespace Cinemagic.Pages.Purchases
             return Page();
         }
 
-
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            // אם לא נבחר תאריך, קובעים את התאריך לעכשיו
+            // קביעת תאריך אם חסר
             if (Purchase.PurchaseDate == default)
-            {
                 Purchase.PurchaseDate = DateTime.Now;
-            }
 
             decimal total = 0;
 
-            // בדיקה אם נבחר סרט (MovieID לא ריק)
             if (Purchase.MovieID.HasValue)
             {
                 var movie = await _context.Movies.FindAsync(Purchase.MovieID.Value);
                 if (movie != null)
-                {
                     total += movie.MoviePrice;
-                }
             }
 
-            // בדיקה אם נבחרה סדרה (SerieID לא ריק)
             if (Purchase.SerieID.HasValue)
             {
                 var serie = await _context.Series.FindAsync(Purchase.SerieID.Value);
                 if (serie != null)
-                {
                     total += serie.SeriePrice;
-                }
             }
 
-            // עדכון הסכום הסופי
             Purchase.Total = total;
 
-            // שמירה למסד הנתונים
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();
 
