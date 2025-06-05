@@ -4,6 +4,7 @@ using Cinemagic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinemagic.Migrations
 {
     [DbContext(typeof(CinemagicContext))]
-    partial class CinemagicContextModelSnapshot : ModelSnapshot
+    [Migration("20250605095148_Quizzes")]
+    partial class Quizzes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +56,7 @@ namespace Cinemagic.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Member", b =>
@@ -90,7 +93,7 @@ namespace Cinemagic.Migrations
 
                     b.HasKey("MemberID");
 
-                    b.ToTable("Members", (string)null);
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Movie", b =>
@@ -124,7 +127,7 @@ namespace Cinemagic.Migrations
 
                     b.HasKey("MovieID");
 
-                    b.ToTable("Movies", (string)null);
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Purchase", b =>
@@ -161,7 +164,7 @@ namespace Cinemagic.Migrations
 
                     b.HasIndex("SerieID");
 
-                    b.ToTable("Purchases", (string)null);
+                    b.ToTable("Purchases");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Serie", b =>
@@ -198,7 +201,7 @@ namespace Cinemagic.Migrations
 
                     b.HasKey("SerieID");
 
-                    b.ToTable("Series", (string)null);
+                    b.ToTable("Series");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Comment", b =>

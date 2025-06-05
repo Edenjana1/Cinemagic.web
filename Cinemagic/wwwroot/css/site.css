@@ -178,12 +178,12 @@ body {
     background-color: #333333;
     color: #00aced !important;
 }
-/* עיצוב navbar לדפים כמו Login ו־Create */
+/* עיצוב navbar בדף הלוגין */
 .navbar-custom.login-page {
     background-color: #000 !important;
 }
 
-    .navbar-custom.login-page .nav-link,
-    .navbar-custom.login-page .navbar-brand {
-        color: white !important;
-    }
+.navbar-custom.login-page .nav-link,
+.navbar-custom.login-page .navbar-brand {
+    color: white !important;
+}
