@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinemagic.Migrations
 {
     [DbContext(typeof(CinemagicContext))]
-    [Migration("20250605095148_Quizzes")]
-    partial class Quizzes
+    [Migration("20250605150117_AddOptionsSerializedToQuestions")]
+    partial class AddOptionsSerializedToQuestions
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,6 +167,52 @@ namespace Cinemagic.Migrations
                     b.ToTable("Purchases");
                 });
 
+            modelBuilder.Entity("Cinemagic.Models.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CorrectOptionIndex")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OptionsSerialized")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuizId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("Cinemagic.Models.Quiz", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Quizzes");
+                });
+
             modelBuilder.Entity("Cinemagic.Models.Serie", b =>
                 {
                     b.Property<int>("SerieID")
@@ -247,6 +293,17 @@ namespace Cinemagic.Migrations
                     b.Navigation("Series");
                 });
 
+            modelBuilder.Entity("Cinemagic.Models.Question", b =>
+                {
+                    b.HasOne("Cinemagic.Models.Quiz", "Quiz")
+                        .WithMany("Questions")
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
+                });
+
             modelBuilder.Entity("Cinemagic.Models.Member", b =>
                 {
                     b.Navigation("Purchases");
@@ -255,6 +312,11 @@ namespace Cinemagic.Migrations
             modelBuilder.Entity("Cinemagic.Models.Movie", b =>
                 {
                     b.Navigation("Purchases");
+                });
+
+            modelBuilder.Entity("Cinemagic.Models.Quiz", b =>
+                {
+                    b.Navigation("Questions");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Serie", b =>

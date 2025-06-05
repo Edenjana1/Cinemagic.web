@@ -24,8 +24,9 @@
                             <div>
                                 <h5 class="card-title">@quiz.Title</h5>
                             </div>
-                            <div class="mt-3">
-                                <a asp-page="/Quizzes/PlayQuiz" asp-route-id="@quiz.Id" class="btn btn-outline-primary w-100">🎮 Play</a>
+                            <div class="mt-3 d-flex justify-content-between gap-2">
+                                <a asp-page="/Quizzes/PlayQuiz" asp-route-id="@quiz.Id" class="btn btn-outline-primary w-50">🎮 Play</a>
+                                <a asp-page="/Quizzes/Details" asp-route-id="@quiz.Id" class="btn btn-outline-secondary w-50">ℹ️ Details</a>
                             </div>
                         </div>
                     </div>

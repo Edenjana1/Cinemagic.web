@@ -28,7 +28,15 @@ namespace Cinemagic.Data
                 .HasForeignKey(c => c.UserID)
                 .OnDelete(DeleteBehavior.SetNull); // כשמשתמש נמחק, התגובה תישאר בלי יוצר
 
-            // קשרים נוספים אפשריים אם תצטרך בהמשך
+            modelBuilder.Entity<Question>()
+                .HasOne(q => q.Quiz)
+                .WithMany(qz => qz.Questions)
+                .HasForeignKey(q => q.QuizId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.Total)
+                .HasColumnType("decimal(18,2)");
         }
     }
 }

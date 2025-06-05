@@ -53,7 +53,7 @@ namespace Cinemagic.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Member", b =>
@@ -90,7 +90,7 @@ namespace Cinemagic.Migrations
 
                     b.HasKey("MemberID");
 
-                    b.ToTable("Members", (string)null);
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Movie", b =>
@@ -124,7 +124,7 @@ namespace Cinemagic.Migrations
 
                     b.HasKey("MovieID");
 
-                    b.ToTable("Movies", (string)null);
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Purchase", b =>
@@ -161,7 +161,53 @@ namespace Cinemagic.Migrations
 
                     b.HasIndex("SerieID");
 
-                    b.ToTable("Purchases", (string)null);
+                    b.ToTable("Purchases");
+                });
+
+            modelBuilder.Entity("Cinemagic.Models.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CorrectOptionIndex")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OptionsSerialized")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuizId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("Cinemagic.Models.Quiz", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Quizzes");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Serie", b =>
@@ -198,7 +244,7 @@ namespace Cinemagic.Migrations
 
                     b.HasKey("SerieID");
 
-                    b.ToTable("Series", (string)null);
+                    b.ToTable("Series");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Comment", b =>
@@ -244,6 +290,17 @@ namespace Cinemagic.Migrations
                     b.Navigation("Series");
                 });
 
+            modelBuilder.Entity("Cinemagic.Models.Question", b =>
+                {
+                    b.HasOne("Cinemagic.Models.Quiz", "Quiz")
+                        .WithMany("Questions")
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
+                });
+
             modelBuilder.Entity("Cinemagic.Models.Member", b =>
                 {
                     b.Navigation("Purchases");
@@ -252,6 +309,11 @@ namespace Cinemagic.Migrations
             modelBuilder.Entity("Cinemagic.Models.Movie", b =>
                 {
                     b.Navigation("Purchases");
+                });
+
+            modelBuilder.Entity("Cinemagic.Models.Quiz", b =>
+                {
+                    b.Navigation("Questions");
                 });
 
             modelBuilder.Entity("Cinemagic.Models.Serie", b =>

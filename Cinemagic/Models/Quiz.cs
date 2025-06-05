@@ -21,10 +21,10 @@ namespace Cinemagic.Models
         [Required]
         public string QuestionText { get; set; }
 
-        // שמירת האופציות כמחרוזת מופרדת בפסיקים, נשתמש ב-NotMapped לתמיכה בקוד
-        [NotMapped]
+        // זהו השדה שישמר בפועל במסד הנתונים
         public string OptionsSerialized { get; set; }
 
+        // שדה מחושב – לא נשמר בבסיס הנתונים
         [NotMapped]
         public List<string> Options
         {
@@ -38,4 +38,5 @@ namespace Cinemagic.Models
         public int QuizId { get; set; }
         public Quiz Quiz { get; set; }
     }
+
 }

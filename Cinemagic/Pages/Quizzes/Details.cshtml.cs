@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +9,9 @@ namespace Cinemagic.Pages.Quizzes
 {
     public class DetailsModel : PageModel
     {
-        private readonly Cinemagic.Data.CinemagicContext _context;
+        private readonly CinemagicContext _context;
 
-        public DetailsModel(Cinemagic.Data.CinemagicContext context)
+        public DetailsModel(CinemagicContext context)
         {
             _context = context;
         }
@@ -24,19 +21,16 @@ namespace Cinemagic.Pages.Quizzes
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var quiz = await _context.Quizzes.FirstOrDefaultAsync(m => m.Id == id);
-            if (quiz == null)
-            {
+            // טען את ה-Quiz כולל השאלות המשויכות אליו
+            Quiz = await _context.Quizzes
+                .Include(q => q.Questions)
+                .FirstOrDefaultAsync(q => q.Id == id);
+
+            if (Quiz == null)
                 return NotFound();
-            }
-            else
-            {
-                Quiz = quiz;
-            }
+
             return Page();
         }
     }

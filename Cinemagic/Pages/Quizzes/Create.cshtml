@@ -16,7 +16,7 @@
 
     <h4>Questions</h4>
     <div id="questions-container">
-        <!-- שאלה אחת כברירת מחדל -->
+        <!-- First question block by default -->
         <div class="question-block mb-4 border rounded p-3">
             <div class="mb-2">
                 <label>Question Text</label>
@@ -66,7 +66,7 @@
                 html += `
                     <div class="input-group mb-1">
                         <span class="input-group-text">
-                            <input type="radio" name="Questions[${questionIndex}].CorrectOptionIndex" value="${i}" ${(i == 0 ? "checked" : "")} />
+                            <input type="radio" name="Questions[${questionIndex}].CorrectOptionIndex" value="${i}" ${i === 0 ? "checked" : ""} />
                         </span>
                         <input name="Questions[${questionIndex}].Options[${i}]" class="form-control" required placeholder="Option ${i + 1}" />
                     </div>`;
@@ -77,7 +77,7 @@
             questionIndex++;
         }
     </script>
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+    @* {
+	    @await Html.RenderPartialAsync("_ValidationScriptsPartial")
+        }*@
+} 
