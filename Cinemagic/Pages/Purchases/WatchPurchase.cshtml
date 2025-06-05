@@ -12,14 +12,19 @@
         : "#";
 
         <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <img src="~/Images/MovieIMG/@purchase.Movies.Image " class="card-img-top" alt="@purchase.Movies.MovieName" style="max-height: 300px; object-fit: cover;" />
+            <div class="card h-100 shadow-sm" style="padding: 16px; background-color: white;">
+                <div style="display: inline-block; border: 1px solid #ccc; padding: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.25);">
+                    <img src="~/Images/MovieIMG/@purchase.Movies.Image"
+                         alt="@purchase.Movies.MovieName"
+                         style="width: 100%; height: 280px; object-fit: contain; display: block;" />
+                </div>
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">@purchase.Movies.MovieName</h5>
-                    <a href="@url" target="_blank" class="btn btn-primary mt-auto">▶️ צפה עכשיו</a>
+                    <h5 class="card-title text-center">@purchase.Movies.MovieName</h5>
+                    <a href="@url" target="_blank" class="btn btn-primary mt-auto w-100">▶️ צפה עכשיו</a>
                 </div>
             </div>
         </div>
+
     }
 </div>
 
@@ -32,11 +37,15 @@
         : "#";
 
         <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <img src="~/Images/SeriesIMG/@purchase.Series.Image" class="card-img-top" alt="@purchase.Series.SerieName" style="max-height: 300px; object-fit: cover;" />
+            <div class="card h-100 shadow-sm" style="padding: 16px; background-color: white;">
+                <div style="display: inline-block; border: 1px solid #ccc; padding: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.25);">
+                    <img src="~/Images/SerieIMG/@purchase.Series.Image"
+                         alt="@purchase.Series.SerieName"
+                         style="width: 100%; height: 280px; object-fit: contain; display: block;" />
+                </div>
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">@purchase.Series.SerieName</h5>
-                    <a href="@url" target="_blank" class="btn btn-primary mt-auto">▶️ צפה עכשיו</a>
+                    <h5 class="card-title text-center">@purchase.Series.SerieName</h5>
+                    <a href="@url" target="_blank" class="btn btn-primary mt-auto w-100">▶️ צפה עכשיו</a>
                 </div>
             </div>
         </div>
