@@ -8,7 +8,6 @@
 <h1>Delete</h1>
 
 <h3>Are you sure you want to delete this?</h3>
-
 <div>
     <h4>Quiz</h4>
     <hr />
@@ -20,25 +19,6 @@
             @Html.DisplayFor(model => model.Quiz.Title)
         </dd>
     </dl>
-
-    @if (Model.Quiz.Questions != null && Model.Quiz.Questions.Any())
-    {
-        <h5>Questions:</h5>
-        <ol>
-            @foreach (var question in Model.Quiz.Questions)
-            {
-                <li class="mb-3">
-                    <strong>@question.QuestionText</strong>
-                    <ul>
-                        @for (int i = 0; i < question.Options.Count; i++)
-                        {
-                            <li>@question.Options[i] @(question.CorrectOptionIndex == i ? "(Correct)" : "")</li>
-                        }
-                    </ul>
-                </li>
-            }
-        </ol>
-    }
 
     <form method="post">
         <input type="hidden" asp-for="Quiz.Id" />

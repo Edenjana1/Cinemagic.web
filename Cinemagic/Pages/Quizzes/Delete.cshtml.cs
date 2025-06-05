@@ -25,15 +25,20 @@ namespace Cinemagic.Pages.Quizzes
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
+            {
                 return NotFound();
+            }
 
-            Quiz = await _context.Quizzes
-                .Include(q => q.Questions) // ⬅ חשוב!
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var quiz = await _context.Quizzes.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Quiz == null)
+            if (quiz == null)
+            {
                 return NotFound();
-
+            }
+            else
+            {
+                Quiz = quiz;
+            }
             return Page();
         }
 

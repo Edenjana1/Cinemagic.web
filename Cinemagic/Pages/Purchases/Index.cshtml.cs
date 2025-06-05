@@ -27,27 +27,28 @@ namespace Cinemagic.Pages.Purchases
         {
             IsAdmin = HttpContext.Session.GetString("UserType") == "Admin";
 
-            // שליפת ת"ז מה-Session והמרה ל-int
-            string? identityCardStr = HttpContext.Session.GetString("IdentityCard");
-            int? identityCard = null;
-
-            if (int.TryParse(identityCardStr, out int parsedId))
-            {
-                identityCard = parsedId;
-            }
+            // קבלת MemberID כ-string (יכול להיות שאצלה זה string ולא int)
+            string? userIdStr = HttpContext.Session.GetString("UserId");
 
             IQueryable<Purchase> PurchaseQuery = _context.Purchases
                 .Include(p => p.Members)
                 .Include(p => p.Movies)
                 .Include(p => p.Series);
 
-            // אם המשתמש הוא מנוי, הצג רק את הרכישות שלו
-            if (!IsAdmin && identityCard != null)
+            if (!IsAdmin && !string.IsNullOrEmpty(userIdStr))
             {
-                PurchaseQuery = PurchaseQuery.Where(p => p.Members.IdintityCard == identityCard);
+                // אם MemberID הוא int, יש להמיר
+                if (int.TryParse(userIdStr, out int userId))
+                {
+                    PurchaseQuery = PurchaseQuery.Where(p => p.Members.MemberID == userId);
+                }
+                else
+                {
+                    // טיפול במקרה שה-MemberID לא מספרי (לפי מבנה ה-DB שלך)
+                    // למשל: PurchaseQuery = PurchaseQuery.Where(p => p.Members.MemberIdString == userIdStr);
+                }
             }
 
-            // סינון לפי טקסט חיפוש
             if (!string.IsNullOrEmpty(SearchString))
             {
                 PurchaseQuery = PurchaseQuery.Where(p =>
@@ -59,7 +60,6 @@ namespace Cinemagic.Pages.Purchases
             }
 
             Purchase = await PurchaseQuery.ToListAsync();
-
         }
     }
 }

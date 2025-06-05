@@ -5,7 +5,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Quiz Details</h1>
+<h1>Details</h1>
 
 <div>
     <h4>Quiz</h4>
@@ -18,34 +18,7 @@
             @Html.DisplayFor(model => model.Quiz.Title)
         </dd>
     </dl>
-
-    @if (Model.Quiz.Questions != null && Model.Quiz.Questions.Any())
-    {
-        <h5>Questions:</h5>
-        <ol>
-            @foreach (var question in Model.Quiz.Questions)
-            {
-                <li class="mb-3">
-                    <strong>@question.QuestionText</strong>
-                    <ul>
-                        @for (int i = 0; i < question.Options.Count; i++)
-                        {
-                            var isCorrect = (question.CorrectOptionIndex == i);
-                            <li style="@(isCorrect ? "color: green; font-weight: bold;" : "")">
-                                @question.Options[i] @(isCorrect ? "(Correct)" : "")
-                            </li>
-                        }
-                    </ul>
-                </li>
-            }
-        </ol>
-    }
-    else
-    {
-        <p><em>No questions available for this quiz.</em></p>
-    }
 </div>
-
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Quiz.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>
