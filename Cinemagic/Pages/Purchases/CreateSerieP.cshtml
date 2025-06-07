@@ -48,6 +48,13 @@
                 <span asp-validation-for="Purchase.PurchaseDate" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <label asp-for="CouponCode">קוד קופון</label>
+                <input asp-for="CouponCode" class="form-control" />
+                <span asp-validation-for="CouponCode" class="text-danger"></span>
+            </div>
+
+
             <!-- Total Price -->
             <div class="form-group">
                 <label asp-for="Purchase.Total">Total Amount</label>

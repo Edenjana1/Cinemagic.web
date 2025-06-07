@@ -24,6 +24,9 @@ namespace Cinemagic.Pages.Purchases
         [BindProperty]
         public Purchase Purchase { get; set; } = default!;
 
+        [BindProperty]
+        public string? CouponCode { get; set; }  // <-- הוספתי פה
+
         public string? SerieName { get; set; }
         public string? IdentityCard { get; set; }
 
@@ -38,7 +41,6 @@ namespace Cinemagic.Pages.Purchases
 
             SerieName = serie.SerieName;
 
-            // ניסיון לשלוף את המשתמש המחובר מה-Session
             var memberIdString = HttpContext.Session.GetString("UserId");
             if (!string.IsNullOrEmpty(memberIdString) && int.TryParse(memberIdString, out int memberId))
             {
@@ -59,7 +61,6 @@ namespace Cinemagic.Pages.Purchases
             }
             else
             {
-                // לא נמצא משתמש — הצג טופס ריק
                 Purchase = new Purchase
                 {
                     SerieID = serie.SerieID,
@@ -68,7 +69,6 @@ namespace Cinemagic.Pages.Purchases
                 };
             }
 
-            // שדות להצגה בטופס
             ViewData["MemberID"] = new SelectList(_context.Members, "MemberID", "IdintityCard");
             ViewData["Email"] = new SelectList(_context.Members, "Email", "Email");
 
@@ -86,7 +86,6 @@ namespace Cinemagic.Pages.Purchases
             if (!ModelState.IsValid)
                 return Page();
 
-            // קביעת תאריך אם חסר
             if (Purchase.PurchaseDate == default)
                 Purchase.PurchaseDate = DateTime.Now;
 
@@ -106,7 +105,18 @@ namespace Cinemagic.Pages.Purchases
                     total += serie.SeriePrice;
             }
 
-            Purchase.Total = total;
+            // בדיקת קוד קופון פשוטה
+            decimal discount = 0;
+            if (!string.IsNullOrEmpty(CouponCode))
+            {
+                if (CouponCode.ToUpper() == "SERIE10")
+                {
+                    discount = 0.10m; // 10% הנחה
+                }
+                // אפשר להוסיף כאן קודי קופון נוספים לפי הצורך
+            }
+
+            Purchase.Total = total * (1 - discount);
 
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();

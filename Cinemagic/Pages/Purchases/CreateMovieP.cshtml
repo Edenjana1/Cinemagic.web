@@ -1,11 +1,11 @@
 ﻿@page
-@model Cinemagic.Pages.Purchases.CreateSeriePModel
+@model Cinemagic.Pages.Purchases.CreateMoviePModel
 
 @{
-    ViewData["Title"] = "Purchase Series";
+    ViewData["Title"] = "Purchase Movies";
 }
 
-<h1>Purchase Series</h1>
+<h1>Purchase Movies</h1>
 
 <h4>Purchase Details</h4>
 <hr />
@@ -16,12 +16,11 @@
 
             <!-- Display Series Name -->
             <div class="form-group">
-                <label>Series Name:</label>
-                <input type="text" class="form-control" value="@Model.SerieName" readonly />
+                <label>Movie Name:</label>
+                <input type="text" class="form-control" value="@Model.MovieName" readonly />
             </div>
 
-            <!-- Hidden field for SerieID -->
-            <input type="hidden" asp-for="Purchase.SerieID" />
+            <input type="hidden" asp-for="Purchase.MovieID" />
 
             <!-- Identity Card -->
             <div class="form-group">
@@ -46,6 +45,13 @@
                 <label asp-for="Purchase.PurchaseDate">Purchase Date</label>
                 <input asp-for="Purchase.PurchaseDate" class="form-control" readonly />
                 <span asp-validation-for="Purchase.PurchaseDate" class="text-danger"></span>
+            </div>
+
+            <!-- Coupon Code -->
+            <div class="form-group">
+                <label asp-for="CouponCode">קוד קופון</label>
+                <input asp-for="CouponCode" class="form-control" />
+                <span asp-validation-for="CouponCode" class="text-danger"></span>
             </div>
 
             <!-- Total Amount -->
