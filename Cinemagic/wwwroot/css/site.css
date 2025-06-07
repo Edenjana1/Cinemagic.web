@@ -281,3 +281,9 @@ h3 {
             color: white;
             transform: scale(1.05);
         }
+.navbar-nav .nav-link {
+    font-size: 1.1rem; /* הקטןתי מ-1rem או גודל ברירת מחדל */
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    white-space: nowrap; /* למנוע שבירה של הטקסט לשורות */
+}
