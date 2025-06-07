@@ -34,7 +34,7 @@ namespace Cinemagic.Pages.Movies
                 return NotFound();
 
             Movie = movie;
-
+ 
             // Load comments for this movie
             MovieComments = await _context.Comments
                 .Where(c => c.MovieID == id)
@@ -67,6 +67,19 @@ namespace Cinemagic.Pages.Movies
 
             return RedirectToPage();
             //return RedirectToPage(new { id });
+        }
+        public async Task<IActionResult> OnPostDeleteCommentAsync(int commentId)
+        {
+            var comment = await _context.Comments.FindAsync(commentId);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage(new { id = comment.MovieID }); // חוזר לעמוד הסרט הנוכחי
         }
     }
 }

@@ -12,9 +12,9 @@ namespace Cinemagic.Pages.Series
 {
     public class DetailsModel : PageModel
     {
-        private readonly Cinemagic.Data.CinemagicContext _context;
+        private readonly CinemagicContext _context;
 
-        public DetailsModel(Cinemagic.Data.CinemagicContext context)
+        public DetailsModel(CinemagicContext context)
         {
             _context = context;
         }
@@ -23,6 +23,9 @@ namespace Cinemagic.Pages.Series
 
         public List<Comment> SerieComments { get; set; } = new();
 
+        [BindProperty]
+        public Comment NewComment { get; set; } = new();
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -30,17 +33,12 @@ namespace Cinemagic.Pages.Series
                 return NotFound();
             }
 
-            var serie = await _context.Series.FirstOrDefaultAsync(m => m.SerieID == id);
-            if (serie == null)
+            Serie = await _context.Series.FirstOrDefaultAsync(m => m.SerieID == id);
+            if (Serie == null)
             {
                 return NotFound();
             }
-            else
-            {
-                Serie = serie;
-            }
 
-            // טוענים תגובות לסדרה הנבחרת בלבד
             SerieComments = await _context.Comments
                 .Where(c => c.SerieID == id)
                 .OrderByDescending(c => c.CommentDate)
@@ -48,11 +46,21 @@ namespace Cinemagic.Pages.Series
 
             return Page();
         }
-        public Comment NewComment { get; set; }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (!ModelState.IsValid || id == null)
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Serie = await _context.Series.FirstOrDefaultAsync(m => m.SerieID == id);
+            SerieComments = await _context.Comments
+                .Where(c => c.SerieID == id)
+                .OrderByDescending(c => c.CommentDate)
+                .ToListAsync();
+
+            if (!ModelState.IsValid)
             {
                 return Page();
             }
@@ -62,6 +70,18 @@ namespace Cinemagic.Pages.Series
 
             _context.Comments.Add(NewComment);
             await _context.SaveChangesAsync();
+
+            return RedirectToPage(new { id });
+        }
+
+        public async Task<IActionResult> OnPostDeleteCommentAsync(int commentId, int id)
+        {
+            var comment = await _context.Comments.FindAsync(commentId);
+            if (comment != null)
+            {
+                _context.Comments.Remove(comment);
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToPage(new { id });
         }

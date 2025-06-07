@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int}"
 @model Cinemagic.Pages.Movies.DetailsModel
 @inject IHttpContextAccessor HttpContextAccessor
 
@@ -70,6 +70,7 @@
     </div>
 }
 
+0
 <style>
     .comment-container {
         position: relative;
@@ -90,7 +91,7 @@
         top: 10px;
         right: 10px;
         width: 30px;
-        height: 30px;
+        height: 30px;0
         border: none;
         border-radius: 50%;
         background-color: #f44336;
@@ -122,6 +123,8 @@
         @foreach (var comment in Model.MovieComments)
         {
             <div class="comment-container">
+                <small style="color: #333;">
+                </small>
                 <small class="text-muted d-block mb-1" style="font-size: 0.85rem;">
                     @comment.CommentDate.ToString("dd/MM/yyyy HH:mm")
                 </small>
@@ -138,6 +141,15 @@
     }
     else
     {
-        <p class="text-center" style="color: #777; font-style: italic;">No comments yet for this movie.</p>
+        <p class="text-center" style="color: #777; font-style: italic;">No comments yet for this serie.</p>
     }
+
+    <h4 class="mt-4">Add a new comment:</h4>
+    <form method="post">
+        <div class="mb-3">
+            <textarea asp-for="NewComment.Content" class="form-control" rows="3" placeholder="Write your comment here..."></textarea>
+            <span asp-validation-for="NewComment.Content" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 </div>

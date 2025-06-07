@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int}"
 @model Cinemagic.Pages.Series.DetailsModel
 @inject IHttpContextAccessor HttpContextAccessor
 
@@ -133,7 +133,7 @@
 
                 @if (isAdmin)
                 {
-                    <form method="post" asp-page-handler="DeleteComment" asp-route-commentId="@comment.CommentID" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                    <form method="post" asp-page-handler="DeleteComment" asp-route-commentId="@comment.CommentID" asp-route-id="@Model.Serie.SerieID" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                         <button type="submit" class="delete-comment-btn" title="Delete comment">&times;</button>
                     </form>
                 }
@@ -142,15 +142,16 @@
     }
     else
     {
-        <p class="text-center" style="color: #777; font-style: italic;">No comments yet for this series.</p>
+        <p class="text-center" style="color: #777; font-style: italic;">No comments yet for this serie.</p>
     }
 
     <h4 class="mt-4">Add a new comment:</h4>
-    <form method="post">
+    <form method="post" asp-page-handler="">
         <div class="mb-3">
             <textarea asp-for="NewComment.Content" class="form-control" rows="3" placeholder="Write your comment here..."></textarea>
             <span asp-validation-for="NewComment.Content" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+
     </form>
 </div>

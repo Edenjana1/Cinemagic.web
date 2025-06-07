@@ -7,10 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Cinemagic.Data;
 using Cinemagic.Models;
-using Humanizer.Localisation;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 
 namespace Cinemagic.Pages.Movies
 {
@@ -35,8 +32,8 @@ namespace Cinemagic.Pages.Movies
 
         public List<Movie> MostPurchasedMovies { get; set; } = new();
         public IList<Movie> RecentMovies { get; set; } = default!;
-
         public List<Movie> KidsMovies { get; set; } = new();
+
         public async Task OnGetAsync()
         {
             // יצירת רשימת ז'אנרים מתוך ה-enum
@@ -45,7 +42,7 @@ namespace Cinemagic.Pages.Movies
                 .Select(g => new SelectListItem
                 {
                     Value = g.ToString(),
-                    Text = g.ToString() // אפשר לשנות לעברית
+                    Text = g.ToString()
                 })
                 .ToList();
 
@@ -75,20 +72,26 @@ namespace Cinemagic.Pages.Movies
                     movie => movie.MovieID,
                     (movieId, movie) => movie)
                 .ToListAsync();
-            
-            //סרטים חדשים
-            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
 
-            RecentMovies = await _context.Movies
-                .Where(m => m.ReleaseDate >= oneYearAgo)
+            // --- סרטים חדשים (בשנה האחרונה) עם סינון לפי ז'אנר ---
+            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
+            var recentQuery = _context.Movies.Where(m => m.ReleaseDate >= oneYearAgo);
+
+            if (Genre.HasValue)
+            {
+                recentQuery = recentQuery.Where(m => m.MovieGenre == Genre.Value);
+            }
+
+            RecentMovies = await recentQuery
                 .OrderByDescending(m => m.ReleaseDate)
                 .ToListAsync();
 
-            //סרטים לילדים
+            // --- סרטים לילדים (עם סינון לפי ז'אנר אם נבחר) ---
             KidsMovies = await _context.Movies
-                .Where(m => m.AgeRate == "G" || m.AgeRate == "TV-Y" || m.AgeRate == "PG")
+                .Where(m =>
+                    (m.AgeRate == "G" || m.AgeRate == "TV-Y" || m.AgeRate == "PG") &&
+                    (!Genre.HasValue || m.MovieGenre == Genre.Value))
                 .ToListAsync();
         }
-
     }
 }
