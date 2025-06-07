@@ -28,13 +28,11 @@
     <a href="/Series/Create" class="btn btn-primary">Add Series</a>
 }
 
-
-
 <!-- Search Box -->
 <form method="get" style="margin: 20px 0;">
     <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-        <label for="searchBox" style="font-weight: 500; color: #444;">Search Series:</label>
-        <input type="text" id="searchBox" name="SearchString"
+        <label for="searchBoxSeries" style="font-weight: 500; color: #444;">Search Series:</label>
+        <input type="text" id="searchBoxSeries" name="SearchString"
                placeholder="Enter series name..."
                style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 8px; width: 220px;" />
 
@@ -57,46 +55,33 @@
 <h3>Series</h3>
 @if (Model.Serie.Any())
 {
-    <div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+    <div class="movie-grid">
         @foreach (var item in Model.Serie)
         {
-            <div class="movie-card" style="width: 180px; text-align: center;">
-                <a asp-page="./Details" asp-route-id="@item.SerieID" style="text-decoration: none; color: inherit;">
-                    <img src="~/Images/SerieIMG/@item.Image" alt="@item.SerieName" style="width: 150px; height: 150px; border-radius: 10px;" />
+            <div class="movie-card">
+                <a asp-page="./Details" asp-route-id="@item.SerieID">
+                    <img src="~/Images/SerieIMG/@item.Image" alt="@item.SerieName" />
                     <h5>@item.SerieName</h5>
                 </a>
             </div>
         }
     </div>
 }
-else if (Model.Genre != null)
-{
-    <p style="font-style: italic; color: #888;">No series available in the selected genre.</p>
-}
 else
 {
-    <p style="font-style: italic; color: #888;">No series available.</p>
+    <p style="font-style: italic; color: #aaa;">No series available.</p>
 }
 
 <h3>Most Purchased Series</h3>
 @if (Model.MostPurchasedSeries.Any())
 {
-    <div class="d-flex flex-row flex-nowrap overflow-auto" style="gap: 12px; padding: 10px 0; justify-content: flex-start;">
+    <div class="movie-grid">
         @foreach (var serie in Model.MostPurchasedSeries)
         {
-            <div class="serie-item" style="flex: 0 0 180px;">
-                <a asp-page="/Series/Details" asp-route-id="@serie.SerieID" class="text-decoration-none text-dark">
-                    <div class="card h-100" style="width: 100%; height: 280px; border: 3px solid; box-shadow: 2px 2px 8px rgba(0,0,0,0.25); padding: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease; background-color: white;">
-                        @if (!string.IsNullOrEmpty(serie.Image))
-                        {
-                            <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" style="width: 100%; height: 180px; object-fit: cover; margin-bottom: 8px;" />
-                        }
-                        <div class="card-body p-2">
-                            <h5 class="card-title mb-1" style="font-size: 1rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@serie.SerieName</h5>
-                            <p class="card-text mb-1" style="font-size: 0.9rem;">Price: @serie.SeriePrice ₪</p>
-                            <p class="card-text" style="font-size: 0.8rem; color: #666;">Genre: @serie.SerieGenre</p>
-                        </div>
-                    </div>
+            <div class="movie-card">
+                <a asp-page="/Series/Details" asp-route-id="@serie.SerieID">
+                    <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" />
+                    <h5>@serie.SerieName</h5>
                 </a>
             </div>
         }
@@ -104,47 +89,39 @@ else
 }
 else
 {
-    <p style="font-style: italic; color: #888;">No popular series available.</p>
+    <p style="font-style: italic; color: #aaa;">No popular series available.</p>
 }
 
 <h3>New Series</h3>
 @if (Model.RecentSeries.Any())
 {
-    <div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+    <div class="movie-grid">
         @foreach (var serie in Model.RecentSeries)
         {
-            <div class="movie-card" style="width: 180px; text-align: center;">
-                <a asp-page="/Series/Details" asp-route-id="@serie.SerieID" style="text-decoration: none; color: inherit;">
-                    <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName"
-                         style="width: 150px; height: 150px; border-radius: 10px; object-fit: cover;" />
-                    <h5 style="margin-top: 10px;">@serie.SerieName</h5>
-                    <p style="font-size: 0.9rem; color: #555;">Released: @serie.ReleaseDate.ToShortDateString()</p>
+            <div class="movie-card">
+                <a asp-page="/Series/Details" asp-route-id="@serie.SerieID">
+                    <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" />
+                    <h5>@serie.SerieName</h5>
                 </a>
             </div>
         }
     </div>
 }
-else if (Model.Genre != null)
-{
-    <p style="font-style: italic; color: #888;">No new series in the searched genre.</p>
-}
 else
 {
-    <p style="font-style: italic; color: #888;">No new series in the last year.</p>
+    <p style="font-style: italic; color: #aaa;">No new series available.</p>
 }
 
-<h3 style="margin-top: 30px;">Series for Kids</h3>
+<h3>Series for Kids</h3>
 @if (Model.KidsSeries.Any())
 {
-    <div class="movie-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+    <div class="movie-grid">
         @foreach (var serie in Model.KidsSeries)
         {
-            <div class="movie-card" style="width: 180px; text-align: center;">
-                <a asp-page="/Series/Details" asp-route-id="@serie.SerieID" style="text-decoration: none; color: inherit;">
-                    <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName"
-                         style="width: 150px; height: 150px; border-radius: 10px; object-fit: cover;" />
-                    <h5 style="margin-top: 10px;">@serie.SerieName</h5>
-                    <p style="font-size: 0.9rem; color: #555;">Released: @serie.ReleaseDate.ToShortDateString()</p>
+            <div class="movie-card">
+                <a asp-page="/Series/Details" asp-route-id="@serie.SerieID">
+                    <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" />
+                    <h5>@serie.SerieName</h5>
                 </a>
             </div>
         }
@@ -152,5 +129,5 @@ else
 }
 else
 {
-    <p style="font-style: italic; color: #888;">No kids series found for the selected genre.</p>
+    <p style="font-style: italic; color: #aaa;">No kids series available.</p>
 }
