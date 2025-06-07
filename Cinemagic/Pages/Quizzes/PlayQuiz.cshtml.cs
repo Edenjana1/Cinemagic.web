@@ -38,6 +38,7 @@ namespace Cinemagic.Pages.Quizzes
 
         [TempData]
         public int CorrectAnswersCount { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             Quiz = await _context.Quizzes
@@ -54,13 +55,19 @@ namespace Cinemagic.Pages.Quizzes
             {
                 CorrectAnswersCount = 0; // אפס ציון עם התחלת חידון חדש
             }
+            else
+            {
+                // קבלת הערך מה-TempData כדי להמשיך לספור את הציונים
+                if (TempData.ContainsKey(nameof(CorrectAnswersCount)))
+                {
+                    CorrectAnswersCount = (int)TempData.Peek(nameof(CorrectAnswersCount))+1;
+                }
+            }
 
             CurrentQuestion = Quiz.Questions.OrderBy(q => q.Id).ElementAt(QuestionIndex);
 
             return Page();
         }
-
-
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -76,6 +83,21 @@ namespace Cinemagic.Pages.Quizzes
 
             CurrentQuestion = Quiz.Questions.OrderBy(q => q.Id).ElementAt(QuestionIndex);
 
+            if (Request.Form.ContainsKey("NextQuestion"))
+            {
+                // שמירת הציון לפני הרידיירקט
+                TempData[nameof(CorrectAnswersCount)] = CorrectAnswersCount;
+
+                QuestionIndex++;
+                if (QuestionIndex >= Quiz.Questions.Count)
+                {
+                    // סיימנו את כל השאלות - נחזור לעמוד החידונים
+                    return RedirectToPage("./Index");
+                }
+
+                return RedirectToPage(new { QuizId = QuizId, QuestionIndex = QuestionIndex });
+            }
+
             if (SelectedOptionIndex == null)
             {
                 ModelState.AddModelError("", "Please select an option.");
@@ -89,8 +111,12 @@ namespace Cinemagic.Pages.Quizzes
                 CorrectAnswersCount++;
             }
 
+            // שמירת הציון המעודכן ב-TempData כדי שלא יאבד בעת הרידיירקט הבא
+            TempData[nameof(CorrectAnswersCount)] = CorrectAnswersCount;
+
             return Page();
         }
+
 
     }
 }

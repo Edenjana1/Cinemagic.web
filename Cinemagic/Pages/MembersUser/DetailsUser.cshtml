@@ -2,10 +2,10 @@
 @model Cinemagic.Pages.Members.DetailsModel
 
 @{
-    ViewData["Title"] = "פרטי משתמש";
+    ViewData["Title"] = "User Details";
 }
 
-<h1 class="text-center text-primary mb-4">פרטי מנוי</h1>
+<h1 class="text-center text-primary mb-4">Subscriber Details</h1>
 
 <div class="card shadow-lg p-4 mx-auto" style="max-width: 600px;">
     <div class="text-center mb-4">
@@ -17,31 +17,30 @@
     </div>
 
     <dl class="row">
-        <dt class="col-sm-4">תעודת זהות:</dt>
+        <dt class="col-sm-4">Identity Card:</dt>
         <dd class="col-sm-8">@Model.Member.IdintityCard</dd>
 
-        <dt class="col-sm-4">שם משפחה:</dt>
+        <dt class="col-sm-4">Last Name:</dt>
         <dd class="col-sm-8">@Model.Member.LastName</dd>
 
-        <dt class="col-sm-4">שם פרטי:</dt>
+        <dt class="col-sm-4">First Name:</dt>
         <dd class="col-sm-8">@Model.Member.FirstMidName</dd>
 
-        <dt class="col-sm-4">מגדר:</dt>
+        <dt class="col-sm-4">Gender:</dt>
         <dd class="col-sm-8">@Model.Member.Gender</dd>
 
-        <dt class="col-sm-4">אימייל:</dt>
+        <dt class="col-sm-4">Email:</dt>
         <dd class="col-sm-8">@Model.Member.Email</dd>
 
-        <dt class="col-sm-4">טלפון:</dt>
+        <dt class="col-sm-4">Phone:</dt>
         <dd class="col-sm-8">@Model.Member.Phone</dd>
 
-        <dt class="col-sm-4">תאריך לידה:</dt>
+        <dt class="col-sm-4">Birth Date:</dt>
         <dd class="col-sm-8">@Model.Member.BirthDate.ToShortDateString()</dd>
     </dl>
 
     <div class="text-center mt-4">
-        <a class="btn btn-warning me-2" asp-page="/MembersUser/EditUser" asp-route-id="@Model.Member.MemberID">ערוך פרטים</a>
-        <a class="btn btn-secondary" asp-page="/Movies/Index">חזרה לרשימה </a>
+        <a class="btn btn-warning me-2" asp-page="/MembersUser/EditUser" asp-route-id="@Model.Member.MemberID">Edit Details</a>
+        <a class="btn btn-secondary" asp-page="/Movies/Index">Back to List</a>
     </div>
 </div>
-

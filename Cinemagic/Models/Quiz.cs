@@ -20,11 +20,9 @@ namespace Cinemagic.Models
 
         [Required]
         public string QuestionText { get; set; }
-
-        // זהו השדה שישמר בפועל במסד הנתונים
         public string OptionsSerialized { get; set; }
 
-        // שדה מחושב – לא נשמר בבסיס הנתונים
+        // אומר שזה לא נשמר בבסיס הנתונים
         [NotMapped]
         public List<string> Options
         {
@@ -33,8 +31,6 @@ namespace Cinemagic.Models
         }
 
         public int CorrectOptionIndex { get; set; }
-
-        // Foreign key to Quiz
         public int QuizId { get; set; }
         public Quiz Quiz { get; set; }
     }

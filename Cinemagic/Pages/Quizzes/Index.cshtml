@@ -4,33 +4,154 @@
     ViewData["Title"] = "Quizzes";
 }
 
-<div class="container mt-4">
-    <h1 class="mb-4 text-center" style="font-weight: 600;">🎬 Movie & Series Quizzes</h1>
+<style>
+    body {
+        background: linear-gradient(to right, #1e1e2f, #2b2b45);
+        color: #f0f0f0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-    <!-- כפתור יצירת חידון -->
+    .arcade-header {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #ffde59;
+        text-shadow: 2px 2px #ff6f61, -2px -2px #5d9bff;
+    }
+
+    .btn-create {
+        background-color: #5d9bff;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 10px #5d9bff;
+        transition: all 0.3s ease;
+    }
+
+        .btn-create:hover {
+            background-color: #4b89e6;
+            box-shadow: 0 0 15px #4b89e6;
+        }
+
+    /* כרטיס חידון חדש */
+    .card {
+        background: linear-gradient(145deg, #323355, #272a4a);
+        border-radius: 20px;
+        border: 2px solid transparent;
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        height: 220px;
+    }
+
+        .card:hover {
+            border-color: #ffde59;
+            box-shadow: 0 0 20px #ffde59;
+            transform: translateY(-6px);
+        }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ffde59;
+        text-shadow: 1px 1px 3px #ffa94d;
+    }
+
+    /* כפתור Play מעוצב */
+    .btn-play {
+        background: linear-gradient(90deg, #5d9bff, #3a63d7);
+        color: white;
+        font-weight: 700;
+        border-radius: 30px;
+        padding: 10px 0;
+        font-size: 1.1rem;
+        border: none;
+        box-shadow: 0 4px 12px rgba(93, 155, 255, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        width: 100%;
+    }
+
+        .btn-play:hover {
+            background: linear-gradient(90deg, #7aa6ff, #507dff);
+            box-shadow: 0 6px 18px rgba(122, 166, 255, 0.9);
+            transform: translateY(-3px);
+        }
+
+        .btn-play svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+    /* כפתור Delete נשאר כפי שהוא */
+    .btn-danger {
+        background-color: #ff6f61;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        padding: 10px;
+        transition: background-color 0.3s ease;
+        width: 100%;
+    }
+
+        .btn-danger:hover {
+            background-color: #e65c50;
+        }
+
+    .btn-group {
+        display: flex;
+        gap: 12px;
+    }
+
+    .text-muted {
+        color: #aaa !important;
+    }
+</style>
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-center arcade-header">🎮 Movie & Series Quizzes</h1>
+
     <div class="text-center mb-4">
-        <a class="btn btn-success px-4 py-2" style="font-size: 1.1rem; border-radius: 10px;" asp-page="/Quizzes/Create">➕ Create a Quiz</a>
+        <a class="btn btn-create px-4 py-2" asp-page="/Quizzes/Create">➕ Create a Quiz</a>
     </div>
 
-    <!-- הצגת חידונים קיימים -->
     @if (Model.Quizzes != null && Model.Quizzes.Any())
     {
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             @foreach (var quiz in Model.Quizzes)
             {
                 <div class="col">
-                    <div class="card shadow-sm h-100" style="border-radius: 15px; transition: transform 0.2s ease;">
-                        <div class="card-body d-flex flex-column justify-content-between">
-                            <div>
-                                <h5 class="card-title">@quiz.Title</h5>
-                            </div>
-                            <div class="mt-3 d-flex justify-content-between gap-2">
-                                <a asp-page="/Quizzes/PlayQuiz" asp-route-QuizId="@quiz.Id" class="btn btn-outline-primary w-50">🎮 Play</a>
-                                <form method="post" asp-page-handler="Delete" asp-route-id="@quiz.Id" style="display:inline">
+                    <div class="card">
+                        <h5 class="card-title">@quiz.Title</h5>
+
+                        <div class="btn-group mt-auto">
+                            <a asp-page="/Quizzes/PlayQuiz" asp-route-QuizId="@quiz.Id" class="btn-play" title="Play Quiz">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                Play
+                            </a>
+                    @inject IHttpContextAccessor HttpContextAccessor
+                            @{
+                                var userType = HttpContextAccessor.HttpContext.Session.GetString("UserType");
+                                var isAdmin = userType == "Admin";
+                            }
+
+                            @if (isAdmin)
+                            {
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@quiz.Id" style="display:inline; flex:1;">
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this quiz?');">Delete</button>
                                 </form>
-
-                            </div>
+                            }
 
                         </div>
                     </div>
@@ -42,5 +163,4 @@
     {
         <p class="text-muted text-center mt-4">No quizzes available yet. Be the first to create one!</p>
     }
-
 </div>

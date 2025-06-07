@@ -40,14 +40,16 @@
             </div>
 
             <div class="form-group">
-                <label for="SeasonNum" class="control-label">Season Number</label>
-                <select id="seasonDropdown" name="SeasonNum" class="form-control">
+                <label asp-for="Serie.SeasonNum" class="control-label">Season Number</label>
+                <select asp-for="Serie.SeasonNum" class="form-control" id="seasonDropdown">
                     @for (int i = 1; i <= 30; i++)
                     {
                         <option value="@i">@i</option>
                     }
                 </select>
+                <span asp-validation-for="Serie.SeasonNum" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Serie.SerieGenre" class="control-label">Genre</label>
                 <select asp-for="Serie.SerieGenre" class="form-control" asp-items="Model.Genres">

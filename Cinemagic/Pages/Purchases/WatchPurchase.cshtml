@@ -1,13 +1,11 @@
 ﻿@page
 @model Cinemagic.Pages.Purchases.WatchPurchaseModel
 
-
-
-<h2>סרטים שנקנו</h2>
+<h2>Purchased Movies</h2>
 <div class="row">
     @if (Model.MoviePurchases.Count == 0)
     {
-        <p>לא נקנו סרטים עם תעודת זהות זו.</p>
+        <p>No movies purchased with this identity card.</p>
     }
     @foreach (var purchase in Model.MoviePurchases)
     {
@@ -24,19 +22,18 @@
                 </div>
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-center">@purchase.Movies.MovieName</h5>
-                    <a href="@url" target="_blank" class="btn btn-primary mt-auto w-100">▶️ צפה עכשיו</a>
+                    <a href="@url" target="_blank" class="btn btn-primary mt-auto w-100">▶️ Watch Now</a>
                 </div>
             </div>
         </div>
-
     }
 </div>
 
-<h2>סדרות שנקנו</h2>
+<h2>Purchased Series</h2>
 <div class="row">
     @if (Model.SeriesPurchases.Count == 0)
     {
-        <p>לא נקנו סדרות עם תעודת זהות זו.</p>
+        <p>No series purchased with this identity card.</p>
     }
     @foreach (var purchase in Model.SeriesPurchases)
     {
@@ -53,7 +50,7 @@
                 </div>
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-center">@purchase.Series.SerieName</h5>
-                    <a href="@url" target="_blank" class="btn btn-primary mt-auto w-100">▶️ צפה עכשיו</a>
+                    <a href="@url" target="_blank" class="btn btn-primary mt-auto w-100">▶️ Watch Now</a>
                 </div>
             </div>
         </div>

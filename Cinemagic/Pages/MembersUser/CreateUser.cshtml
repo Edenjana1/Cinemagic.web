@@ -3,78 +3,80 @@
 
 @{
     ViewData["Title"] = "Create";
-    ViewData["NavClass"] = "login-page"; // כדי לתת רקע שחור ל־navbar
+    ViewData["NavClass"] = "login-page";
 }
 
-<h1>Create</h1>
+<h1 class="text-center mb-4" style="font-weight: 700; color: #2c3e50;">Create New Member</h1>
 
-<h4>Member</h4>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm p-4" style="border-radius: 20px; background-color: #fdfdfd;">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group" style="display: grid; grid-template-columns: 1fr auto; align-items: flex-start; column-gap: 30px;">
-                <div>
-                    <label asp-for="Member.Image" class="control-label"></label>
-                    <select asp-for="Member.Image" class="form-control" asp-items="Model.ImageOptions" id="imageSelect">
-                        <option value="">בחר תמונה</option>
+                <div class="form-group d-flex align-items-center mb-4" style="column-gap: 30px;">
+                    <div class="flex-grow-1">
+                        <label asp-for="Member.Image" class="form-label fw-semibold">Profile Image</label>
+                        <select asp-for="Member.Image" class="form-select" asp-items="Model.ImageOptions" id="imageSelect">
+                            <option value="">Select Image</option>
+                        </select>
+                    </div>
+                    <div>
+                        <img id="selectedImage" src="" alt="Selected Member Image"
+                             style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; display: none; border: 2px solid #ccc;" />
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Member.IdintityCard" class="form-label">ID Number</label>
+                    <input asp-for="Member.IdintityCard" class="form-control" />
+                    <span asp-validation-for="Member.IdintityCard" class="text-danger small"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Member.LastName" class="form-label">Last Name</label>
+                    <input asp-for="Member.LastName" class="form-control" />
+                    <span asp-validation-for="Member.LastName" class="text-danger small"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Member.FirstMidName" class="form-label">First Name</label>
+                    <input asp-for="Member.FirstMidName" class="form-control" />
+                    <span asp-validation-for="Member.FirstMidName" class="text-danger small"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Member.Gender" class="form-label">Gender</label>
+                    <select asp-for="Member.Gender" class="form-select" asp-items="Model.GenderOptions">
+                        <option value="">Select Gender</option>
                     </select>
+                    <span asp-validation-for="Member.Gender" class="text-danger small"></span>
                 </div>
-                <div>
-                    <img id="selectedImage" src="" alt="Selected Member Image" style="max-width: 100px; display: none;" />
+
+                <div class="form-group mb-3">
+                    <label asp-for="Member.Email" class="form-label">Email</label>
+                    <input asp-for="Member.Email" class="form-control" />
+                    <span asp-validation-for="Member.Email" class="text-danger small"></span>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Member.IdintityCard" class="control-label"></label>
-                <input asp-for="Member.IdintityCard" class="form-control" />
-                <span asp-validation-for="Member.IdintityCard" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Member.LastName" class="control-label"></label>
-                <input asp-for="Member.LastName" class="form-control" />
-                <span asp-validation-for="Member.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Member.FirstMidName" class="control-label"></label>
-                <input asp-for="Member.FirstMidName" class="form-control" />
-                <span asp-validation-for="Member.FirstMidName" class="text-danger"></span>
-            </div>
-            <!-- שדה מגדר -->
-            <div class="form-group">
-                <label asp-for="Member.Gender" class="control-label"></label>
-                <select asp-for="Member.Gender" class="form-control" asp-items="Model.GenderOptions">
-                    <option value="">בחר מגדר</option>
-                </select>
-                <span asp-validation-for="Member.Gender" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Member.Email" class="control-label"></label>
-                <input asp-for="Member.Email" class="form-control" />
-                <span asp-validation-for="Member.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Member.Phone" class="control-label"></label>
-                <input asp-for="Member.Phone" class="form-control" />
-                <span asp-validation-for="Member.Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Member.BirthDate" class="control-label"></label>
-                <input asp-for="Member.BirthDate" class="form-control" />
-                <span asp-validation-for="Member.BirthDate" class="text-danger"></span>
-            </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Member.Phone" class="form-label">Phone</label>
+                    <input asp-for="Member.Phone" class="form-control" />
+                    <span asp-validation-for="Member.Phone" class="text-danger small"></span>
+                </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" href="/Index" />
-            </div>
-        </form>
+                <div class="form-group mb-4">
+                    <label asp-for="Member.BirthDate" class="form-label">Birth Date</label>
+                    <input asp-for="Member.BirthDate" class="form-control" />
+                    <span asp-validation-for="Member.BirthDate" class="text-danger small"></span>
+                </div>
+
+                <div class="d-grid">
+                    <input type="submit" value="Create Member" class="btn btn-primary btn-lg rounded-pill" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {
@@ -93,8 +95,7 @@
 
         document.getElementById("imageSelect").addEventListener("change", updateSelectedImage);
 
-        // כדי להציג את התמונה גם לאחר שליחה - אם יש בחירה קיימת
-        window.onload = function() {
+        window.onload = function () {
             updateSelectedImage();
         }
     </script>

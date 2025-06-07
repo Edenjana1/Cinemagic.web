@@ -16,22 +16,15 @@
         <p><strong>Genre:</strong> @Model.Serie.SerieGenre</p>
         <p><strong>Description:</strong> @Model.Serie.SerieDescription</p>
         <p><strong>Release Date:</strong> @Model.Serie.ReleaseDate.ToString("dd/MM/yyyy")</p>
-        <p><strong>Age Rating:</strong> @Model.Serie.
-        
-        
-        
-        
-        
-        
-        
-        </p>
+        <p><strong>Age Rating:</strong> @Model.Serie</p>
+        <p><strong>Seasons:</strong> @Model.Serie.SeasonNum</p>
         <p><strong>Price:</strong> @Model.Serie.SeriePrice ₪</p>
     </div>
 </div>
 
 <!-- Purchase Button -->
 <div class="purchase-button-container">
-    <a asp-page="/Purchases/CreateSerieP" asp-route-serieid="@Model.Serie.SerieID" class="btn btn-primary">קנייה עכשיו</a>
+    <a asp-page="/Purchases/CreateSerieP" asp-route-serieid="@Model.Serie.SerieID" class="btn btn-primary">Buy Now</a>
 
 </div>
 
@@ -41,7 +34,7 @@
     <a asp-page="./Index" class="btn btn-secondary mt-3">Back to List</a>
 </div>
 
-<h3>תגובות:</h3>
+<h3>Comments:</h3>
 @if (Model.SerieComments.Any())
 {
     foreach (var comment in Model.SerieComments)
@@ -54,15 +47,14 @@
 }
 else
 {
-    <p>אין תגובות עדיין לסדרה זו.</p>
+    <p>There are no comments for this series yet.</p>
 }
 
-<h4>הוסף תגובה חדשה:</h4>
+<h4>Add a new comment:</h4>
 <form method="post">
     <div class="mb-3">
-        <textarea asp-for="NewComment.Content" class="form-control" rows="3" placeholder="כתוב כאן את התגובה שלך..."></textarea>
+        <textarea asp-for="NewComment.Content" class="form-control" rows="3" placeholder="Write your comment here..."></textarea>
         <span asp-validation-for="NewComment.Content" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">שלח</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-

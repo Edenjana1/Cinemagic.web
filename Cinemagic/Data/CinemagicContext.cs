@@ -21,12 +21,12 @@ namespace Cinemagic.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // קשר בין תגובה למשתמש (Member)
+            
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.User)
-                .WithMany() // אם תוסיף ל-`Member` רשימת תגובות אפשר לשים פה WithMany(m => m.Comments)
+                .WithMany() 
                 .HasForeignKey(c => c.UserID)
-                .OnDelete(DeleteBehavior.SetNull); // כשמשתמש נמחק, התגובה תישאר בלי יוצר
+                .OnDelete(DeleteBehavior.SetNull); 
 
             modelBuilder.Entity<Question>()
                 .HasOne(q => q.Quiz)

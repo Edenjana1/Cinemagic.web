@@ -1,65 +1,69 @@
 ﻿@page
-@model Cinemagic.Pages.Purchases.CreateMoviePModel
+@model Cinemagic.Pages.Purchases.CreateSeriePModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Purchase Series";
 }
 
-<h1>רכישת סרט</h1>
+<h1>Purchase Series</h1>
 
-<h4>פרטי רכישה</h4>
+<h4>Purchase Details</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- מציג שם הסרט -->
+            <!-- Display Series Name -->
             <div class="form-group">
-                <label>שם הסרט:</label>
-                <input type="text" class="form-control" value="@Model.MovieName" readonly />
+                <label>Series Name:</label>
+                <input type="text" class="form-control" value="@Model.SerieName" readonly />
             </div>
 
-            <!-- שומר את MovieID בצורה חבויה -->
-            <input type="hidden" asp-for="Purchase.MovieID" />
+            <!-- Hidden field for SerieID -->
+            <input type="hidden" asp-for="Purchase.SerieID" />
 
-            <!-- מציג תעודת זהות -->
+            <!-- Identity Card -->
             <div class="form-group">
-                <label>תעודת זהות:</label>
+                <label>Identity Card:</label>
                 <input type="text" class="form-control" value="@Model.IdentityCard" readonly />
             </div>
 
+            <!-- Member ID -->
             <input type="hidden" asp-for="Purchase.MemberID" />
 
+            <!-- Email -->
             <div class="form-group">
-                <label asp-for="Purchase.Email" class="control-label">כתובת אימייל</label>
+                <label asp-for="Purchase.Email" class="control-label">Email Address</label>
                 <select asp-for="Purchase.Email" class="form-control" asp-items="ViewBag.Email">
-                    <option value="">בחר אימייל</option>
+                    <option value="">Select Email</option>
                 </select>
                 <span asp-validation-for="Purchase.Email" class="text-danger"></span>
             </div>
 
+            <!-- Purchase Date -->
             <div class="form-group">
-                <label asp-for="Purchase.PurchaseDate">תאריך רכישה</label>
+                <label asp-for="Purchase.PurchaseDate">Purchase Date</label>
                 <input asp-for="Purchase.PurchaseDate" class="form-control" readonly />
                 <span asp-validation-for="Purchase.PurchaseDate" class="text-danger"></span>
             </div>
 
+            <!-- Total Amount -->
             <div class="form-group">
-                <label asp-for="Purchase.Total">סכום לתשלום</label>
+                <label asp-for="Purchase.Total">Total Amount</label>
                 <input asp-for="Purchase.Total" class="form-control" readonly />
                 <span asp-validation-for="Purchase.Total" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="רכוש" class="btn btn-primary" />
+                <input type="submit" value="Purchase" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">חזרה לרשימה</a>
+    <a asp-page="Index">Back to Purchases List</a>
 </div>
 
 @section Scripts {

@@ -20,7 +20,6 @@ namespace Cinemagic.Models
         public string Phone { get; set; }
         public DateTime BirthDate { get; set; }
 
-
         public ICollection<Purchase> Purchases { get; set; }
     }
 }

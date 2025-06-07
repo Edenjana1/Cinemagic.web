@@ -49,7 +49,7 @@
             }
             else
             {
-                @if (Model.IsAnswerCorrect.HasValue && Model.IsLastQuestion)
+                if (Model.IsLastQuestion)
                 {
                     <div class="alert alert-info mt-4">
                         Quiz finished! Your score: @Model.CorrectAnswersCount / @Model.Quiz.Questions.Count
@@ -59,9 +59,11 @@
                 }
                 else
                 {
-                    <a class="btn btn-primary" asp-page="./Index">Finish Quiz</a>
+                    <button type="submit" name="NextQuestion" value="true" class="btn btn-success">Next Question</button>
+                    <a class="btn btn-secondary ms-2" asp-page="./Index">Exit Quiz</a>
                 }
             }
+
            
         </div>
     </form>

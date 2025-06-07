@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Cinemagic.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http; // לגישה לסשן
+using Microsoft.AspNetCore.Http; // For accessing session
 using System;
 
 namespace Cinemagic.Pages.Movies
@@ -35,13 +35,12 @@ namespace Cinemagic.Pages.Movies
 
             Movie = movie;
 
-            // טוענים תגובות כולל את המשתמש שכתב כל תגובה
+            // Load comments for this movie
             MovieComments = await _context.Comments
                 .Where(c => c.MovieID == id)
                 //.Include(c => c.User)
                 .OrderByDescending(c => c.CommentDate)
                 .ToListAsync();
-            
 
             return Page();
         }
@@ -56,7 +55,7 @@ namespace Cinemagic.Pages.Movies
             NewComment.MovieID = id.Value;
             NewComment.CommentDate = DateTime.Now;
 
-            // נסה לקרוא את ה-UserId מהסשן
+            // Try to read the UserId from the session
             //var userIdStr = HttpContext.Session.GetString("UserId");
             //if (int.TryParse(userIdStr, out int userId))
             //{
