@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http; // ודא שהתווסף
 
-namespace Cinemagic.Pages.Coupons
+namespace Cinemagic.Pages.Cupons
 {
     public class IndexModel : PageModel
     {

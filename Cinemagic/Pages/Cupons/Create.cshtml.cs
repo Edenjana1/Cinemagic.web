@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Cinemagic.Pages.Coupons
+namespace Cinemagic.Pages.Cupons
 {
     public class CreateModel : PageModel
     {
@@ -10,28 +10,24 @@ namespace Cinemagic.Pages.Coupons
 
         public IActionResult OnGet()
         {
-            var isAdmin = HttpContext.Session.GetString("IsAdmin") == "true";
-            if (!isAdmin)
-                return Forbid();
+            
 
             return Page();
         }
 
         public IActionResult OnPost()
         {
-            var isAdmin = HttpContext.Session.GetString("IsAdmin") == "true";
-            if (!isAdmin)
-                return Forbid();
+            
 
             if (!ModelState.IsValid)
                 return Page();
 
             Coupon.ExpiryDate = CouponStore.GetFirstDayOfNextMonth();
-
             CouponStore.Coupons.Add(Coupon);
 
-            return RedirectToPage("/Coupons/Index");
+            return RedirectToPage("/Cupons/Index");
         }
+
 
 
     }
