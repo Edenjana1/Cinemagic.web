@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Cinemagic.Data;
 using Cinemagic.Models;
+using Microsoft.AspNetCore.Http; // לשימוש ב-Session
 
 namespace Cinemagic.Pages.Series
 {
@@ -26,6 +27,9 @@ namespace Cinemagic.Pages.Series
         [BindProperty]
         public Comment NewComment { get; set; } = new();
 
+        // חדש: האם הסדרה כבר נקנתה
+        public bool IsPurchased { get; set; } = false;
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -37,6 +41,14 @@ namespace Cinemagic.Pages.Series
             if (Serie == null)
             {
                 return NotFound();
+            }
+
+            // בדיקה אם המשתמש מחובר וקנה את הסדרה
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (!string.IsNullOrEmpty(userIdStr) && int.TryParse(userIdStr, out int userId))
+            {
+                IsPurchased = await _context.Purchases
+                    .AnyAsync(p => p.MemberID == userId && p.SerieID == Serie.SerieID);
             }
 
             SerieComments = await _context.Comments

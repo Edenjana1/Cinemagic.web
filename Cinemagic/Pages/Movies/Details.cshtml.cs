@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Cinemagic.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http; // For accessing session
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Linq;
 
 namespace Cinemagic.Pages.Movies
 {
@@ -24,6 +25,9 @@ namespace Cinemagic.Pages.Movies
         [BindProperty]
         public Comment NewComment { get; set; }
 
+        // חדש: האם הסרט כבר נקנה
+        public bool IsPurchased { get; set; } = false;
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -34,11 +38,18 @@ namespace Cinemagic.Pages.Movies
                 return NotFound();
 
             Movie = movie;
- 
+
+            // בדיקה אם המשתמש מחובר וקנה את הסרט
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (!string.IsNullOrEmpty(userIdStr) && int.TryParse(userIdStr, out int userId))
+            {
+                IsPurchased = await _context.Purchases
+                    .AnyAsync(p => p.MemberID == userId && p.MovieID == movie.MovieID);
+            }
+
             // Load comments for this movie
             MovieComments = await _context.Comments
                 .Where(c => c.MovieID == id)
-                //.Include(c => c.User)
                 .OrderByDescending(c => c.CommentDate)
                 .ToListAsync();
 
@@ -55,19 +66,12 @@ namespace Cinemagic.Pages.Movies
             NewComment.MovieID = id.Value;
             NewComment.CommentDate = DateTime.Now;
 
-            // Try to read the UserId from the session
-            //var userIdStr = HttpContext.Session.GetString("UserId");
-            //if (int.TryParse(userIdStr, out int userId))
-            //{
-            //    NewComment.UserID = userId;
-            //}
-
             _context.Comments.Add(NewComment);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage();
-            //return RedirectToPage(new { id });
+            return RedirectToPage(new { id });
         }
+
         public async Task<IActionResult> OnPostDeleteCommentAsync(int commentId)
         {
             var comment = await _context.Comments.FindAsync(commentId);
@@ -79,7 +83,7 @@ namespace Cinemagic.Pages.Movies
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage(new { id = comment.MovieID }); // חוזר לעמוד הסרט הנוכחי
+            return RedirectToPage(new { id = comment.MovieID });
         }
     }
 }

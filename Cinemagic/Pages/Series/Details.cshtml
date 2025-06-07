@@ -65,13 +65,24 @@
 
 @if (isMember)
 {
-    <div class="text-center my-5">
-        <a asp-page="/Purchases/CreateSerieP" asp-route-serieid="@Model.Serie.SerieID"
-           class="btn btn-outline-primary px-5 py-2"
-           style="border-radius: 24px; font-weight: 600; font-size: 1.1rem;">
-            Buy Now
-        </a>
-    </div>
+    if (Model.IsPurchased)
+    {
+        <div class="text-center my-5">
+            <span class="btn btn-success px-5 py-2" style="border-radius: 24px; font-weight: 600; font-size: 1.1rem; cursor: default;">
+                Purchased - Available in your purchases
+            </span>
+        </div>
+    }
+    else
+    {
+        <div class="text-center my-5">
+            <a asp-page="/Purchases/CreateSerieP" asp-route-serieid="@Model.Serie.SerieID"
+               class="btn btn-outline-primary px-5 py-2"
+               style="border-radius: 24px; font-weight: 600; font-size: 1.1rem; transition: background-color 0.3s, color 0.3s;">
+                Buy Now
+            </a>
+        </div>
+    }
 }
 
 <style>
