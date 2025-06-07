@@ -50,9 +50,12 @@
                             <td>@Html.DisplayFor(modelItem => item.Series.SerieName)</td>
                             <td>@Html.DisplayFor(modelItem => item.Total)</td>
                             <td>
-                                <a asp-page="./Edit" asp-route-id="@item.PurchaseID" class="btn btn-warning btn-sm">Edit</a>
-                                <a asp-page="./Details" asp-route-id="@item.PurchaseID" class="btn btn-info btn-sm">Details</a>
-                                <a asp-page="./Delete" asp-route-id="@item.PurchaseID" class="btn btn-danger btn-sm">Delete</a>
+                                @if (Model.IsAdmin)
+                                {
+                                    <a asp-page="./Edit" asp-route-id="@item.PurchaseID" class="btn btn-warning btn-sm">Edit</a>
+                                    <a asp-page="./Details" asp-route-id="@item.PurchaseID" class="btn btn-info btn-sm">Details</a>
+                                    <a asp-page="./Delete" asp-route-id="@item.PurchaseID" class="btn btn-danger btn-sm">Delete</a>
+                                }
                             </td>
                         </tr>
                     }
