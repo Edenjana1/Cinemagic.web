@@ -1,0 +1,61 @@
+﻿@page
+@model Cinemagic.Pages.Purchases.AllContentModel
+@{
+    ViewData["Title"] = "All Content";
+}
+
+<h2>All Movies</h2>
+<div class="row">
+    @if (!Model.AllMovies.Any())
+    {
+        <p>No movies available.</p>
+    }
+    @foreach (var movie in Model.AllMovies)
+    {
+        var url = Model.MovieUrls.ContainsKey(movie.MovieID)
+        ? Model.MovieUrls[movie.MovieID]
+        : "#";
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm" style="padding: 16px; background-color: white;">
+                <div style="display: inline-block; border: 1px solid #ccc; padding: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.25);">
+                    <img src="~/Images/MovieIMG/@movie.Image"
+                         alt="@movie.MovieName"
+                         style="width: 100%; height: 280px; object-fit: contain; display: block;" />
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-center">@movie.MovieName</h5>
+                    <a href="@url" target="_blank" class="btn btn-primary mt-auto w-100">▶️ Watch Now</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<h2 class="mt-5">All Series</h2>
+<div class="row">
+    @if (!Model.AllSeries.Any())
+    {
+        <p>No series available.</p>
+    }
+    @foreach (var serie in Model.AllSeries)
+    {
+        var url = Model.SeriesUrls.ContainsKey(serie.SerieID)
+        ? Model.SeriesUrls[serie.SerieID]
+        : "#";
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm" style="padding: 16px; background-color: white;">
+                <div style="display: inline-block; border: 1px solid #ccc; padding: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.25);">
+                    <img src="~/Images/SerieIMG/@serie.Image"
+                         alt="@serie.SerieName"
+                         style="width: 100%; height: 280px; object-fit: contain; display: block;" />
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-center">@serie.SerieName</h5>
+                    <a href="@url" target="_blank" class="btn btn-primary mt-auto w-100">▶️ Watch Now</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
