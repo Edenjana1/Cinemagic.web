@@ -35,9 +35,7 @@
             <!-- Email -->
             <div class="form-group">
                 <label asp-for="Purchase.Email" class="control-label">Email Address</label>
-                <select asp-for="Purchase.Email" class="form-control" asp-items="ViewBag.Email">
-                    <option value="">Select Email</option>
-                </select>
+                <input asp-for="Purchase.Email" class="form-control" />
                 <span asp-validation-for="Purchase.Email" class="text-danger"></span>
             </div>
 
@@ -68,10 +66,11 @@
         </form>
     </div>
 </div>
-
 <div>
-    <a asp-page="Index">Back to Purchase List</a>
+    <a asp-page="Index" class="btn btn-primary">Go to Purchase List</a>
+    <a asp-page="/Series/Index" class="btn btn-secondary">Go to Series List</a>
 </div>
+
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")

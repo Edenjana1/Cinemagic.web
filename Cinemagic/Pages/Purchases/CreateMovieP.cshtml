@@ -34,9 +34,7 @@
             <!-- Email -->
             <div class="form-group">
                 <label asp-for="Purchase.Email" class="control-label">Email Address</label>
-                <select asp-for="Purchase.Email" class="form-control" asp-items="ViewBag.Email">
-                    <option value="">Select Email</option>
-                </select>
+                <input asp-for="Purchase.Email" class="form-control" />
                 <span asp-validation-for="Purchase.Email" class="text-danger"></span>
             </div>
 
@@ -69,7 +67,8 @@
 </div>
 
 <div>
-    <a asp-page="Index">Back to Purchases List</a>
+    <a asp-page="Index">Go to Purchase List</a>
+    <a asp-page="/Movies/Index">Go to Movies List</a>
 </div>
 
 @section Scripts {

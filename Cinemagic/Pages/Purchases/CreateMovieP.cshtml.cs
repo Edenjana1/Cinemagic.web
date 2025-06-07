@@ -49,7 +49,8 @@ namespace Cinemagic.Pages.Purchases
                         MovieID = movie.MovieID,
                         MemberID = member.MemberID,
                         PurchaseDate = DateTime.Now,
-                        Total = movie.MoviePrice
+                        Total = movie.MoviePrice,
+                        Email = member.Email
                     };
                     IdentityCard = member.IdintityCard.ToString();
                 }
