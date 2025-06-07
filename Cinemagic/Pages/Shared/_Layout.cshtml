@@ -33,13 +33,19 @@
     <header>
         <!-- סרגל ניווט -->
         <nav class="@navClass">
-            <a class="navbar-brand fw-bold" href="/">🎞️ Cinemagic</a>
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
+                <img src="~/images/LOGO5.png" alt="Cinemagic Logo" style="height: 80px; width: 80px; object-fit: cover; border-radius: 50%; box-shadow: 0 0 8px rgba(0,0,0,0.2);" />
+                🎞️ Cinemagic
+            </a>
+
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    
                     @if (!isAdmin && !isMember)
                     {
                         <li class="nav-item">
@@ -65,43 +71,59 @@
                         
                         
                     }
-                    @if (isAdmin)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Members/Index" >👤 Members</a>
-                        </li>
-                        
-                    }
-
                     @{
                         var userId = Context.Session.GetString("UserId");
+                        var userName = Context.Session.GetString("FullName") ?? "משתמש";
+
                     }
 
-                    @if (isMember  )
+                    @if (isAdmin)
                     {
+                        
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Members/Index">👤 Members</a>
+                        </li>
+                    }
+
+                    @if (isMember)
+                    {
+                        
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Purchases/WatchPurchase" asp-route-id="@userId">💳 Purchases</a>
                         </li>
 
-
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/MembersUser/DetailsUser" asp-route-id="@userId">👤 My Profile</a>
                         </li>
+
+                        
                     }
+
                     
 
                 </ul>
 
                 <!-- כפתורי התחברות / התנתקות -->
-                <div class="navbar-buttons d-flex">
+                <div class="navbar-buttons d-flex align-items-center gap-3 flex-row-reverse">
+                    
+
                     @if (isAdmin)
                     {
+                        <li class="nav-item">
+                            <span class="text-end fw-bold" style="direction: rtl; color: white">
+                                👋 היי מנהל
+                            </span>
+                        </li>
                         <form method="post" asp-page="/Index" asp-route-handler="LogoutAdmin">
                             <button type="submit" class="btn btn-danger">🚪 Logout as Admin</button>
                         </form>
                     }
                     else if (isMember)
                     {
+                        <span class="fw-bold" style="direction: rtl; white-space: nowrap; color: white">
+                            👋 שלום, @userName
+                        </span>
                         <form method="post" asp-page="/Index" asp-route-handler="LogoutMember">
                             <button type="submit" class="btn btn-warning">🚪 Logout</button>
                         </form>

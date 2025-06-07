@@ -28,9 +28,11 @@ namespace Cinemagic.Pages.Login
             {
                 // שמירת מזהה המשתמש בסשן
                 HttpContext.Session.SetString("UserId", member.MemberID.ToString());
+                HttpContext.Session.SetString("FullName", member.FirstMidName + " " + member.LastName);
+                // <-- זה חשוב!
 
                 HttpContext.Session.SetString("UserType", "Member");
-
+                
                 return RedirectToPage("/Movies/Index", new { id = member.MemberID });
             }
             else

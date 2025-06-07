@@ -5,6 +5,10 @@
 
 <h2>סרטים שנקנו</h2>
 <div class="row">
+    @if (Model.MoviePurchases.Count == 0)
+    {
+        <p>לא נקנו סרטים עם תעודת זהות זו.</p>
+    }
     @foreach (var purchase in Model.MoviePurchases)
     {
         var url = Model.MovieUrls.ContainsKey(purchase.MovieID.Value)
@@ -30,6 +34,10 @@
 
 <h2>סדרות שנקנו</h2>
 <div class="row">
+    @if (Model.SeriesPurchases.Count == 0)
+    {
+        <p>לא נקנו סדרות עם תעודת זהות זו.</p>
+    }
     @foreach (var purchase in Model.SeriesPurchases)
     {
         var url = Model.SeriesUrls.ContainsKey(purchase.SerieID.Value)
