@@ -9,6 +9,7 @@ using Cinemagic.Data;
 using Cinemagic.Models;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Cinemagic.Pages.Cupons;
 
 namespace Cinemagic.Pages.Purchases
 {
@@ -105,15 +106,34 @@ namespace Cinemagic.Pages.Purchases
                     total += serie.SeriePrice;
             }
 
-            // בדיקת קוד קופון פשוטה
+            // בדיקת קוד קופון שמתחיל ב-SERIE (לא תלוי רישיות)
             decimal discount = 0;
             if (!string.IsNullOrEmpty(CouponCode))
             {
-                if (CouponCode.ToUpper() == "SERIE10")
+                string normalizedCode = CouponCode.Trim().ToUpper();
+
+                if (!normalizedCode.StartsWith("SERIE"))
                 {
-                    discount = 0.10m; // 10% הנחה
+                    ModelState.AddModelError("CouponCode", "רק קופונים שמתחילים ב-SERIE מותרים לסדרות");
+                    return Page();
                 }
-                // אפשר להוסיף כאן קודי קופון נוספים לפי הצורך
+
+                var coupon = CouponStore.Coupons
+                    .FirstOrDefault(c => c.Code.Trim().ToUpper() == normalizedCode);
+
+                if (coupon == null)
+                {
+                    ModelState.AddModelError("CouponCode", "קוד קופון לא נמצא");
+                    return Page();
+                }
+
+                if (coupon.ExpiryDate < DateTime.Today)
+                {
+                    ModelState.AddModelError("CouponCode", "תוקף הקופון פג");
+                    return Page();
+                }
+
+                discount = coupon.Discount / 100m;
             }
 
             Purchase.Total = total * (1 - discount);
@@ -123,5 +143,6 @@ namespace Cinemagic.Pages.Purchases
 
             return RedirectToPage("./Index");
         }
+
     }
 }

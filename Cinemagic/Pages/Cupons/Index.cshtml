@@ -24,6 +24,7 @@
     <thead>
         <tr>
             <th>Code</th>
+            <td>Discount</td>
             <th>Description</th>
             <th>Expiry Date</th>
             @if (isAdmin)
@@ -37,6 +38,7 @@
         {
             <tr>
                 <td>@coupon.Code</td>
+                <td>@coupon.Discount</td>
                 <td>@coupon.Description</td>
                 <td>@coupon.ExpiryDate.ToString("yyyy-MM-dd")</td>
                 @if (isAdmin)

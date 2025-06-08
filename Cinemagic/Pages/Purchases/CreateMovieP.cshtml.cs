@@ -5,6 +5,7 @@ using Cinemagic.Data;
 using Cinemagic.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
+using Cinemagic.Pages.Cupons;
 
 namespace Cinemagic.Pages.Purchases
 {
@@ -93,33 +94,50 @@ namespace Cinemagic.Pages.Purchases
                 ModelState.AddModelError("", "הסרט לא נמצא");
                 return Page();
             }
-
             decimal price = movie.MoviePrice;
 
-            // בדוק את קוד הקופון שהוזן
+            // בדיקת קופון שמתחיל ב-MOVIE (לא תלוי רישיות)
             decimal discount = 0m;
             if (!string.IsNullOrEmpty(CouponCode))
             {
-                // לדוגמה, קוד קופון "MOVIE10" נותן 10% הנחה
-                if (CouponCode.Trim().ToUpper() == "MOVIE10")
+                string normalizedCode = CouponCode.Trim().ToUpper();
+
+                // רק אם מתחיל ב-MOVIE
+                if (!normalizedCode.StartsWith("MOVIE"))
                 {
-                    discount = 0.10m;
-                }
-                else
-                {
-                    ModelState.AddModelError("CouponCode", "קוד קופון לא תקין");
+                    ModelState.AddModelError("CouponCode", "קופון לא תקין לסרטים");
                     return Page();
                 }
+
+                // חפש קופון תואם
+                var coupon = CouponStore.Coupons
+                    .FirstOrDefault(c => c.Code.Trim().ToUpper() == normalizedCode);
+
+                if (coupon == null)
+                {
+                    ModelState.AddModelError("CouponCode", "קוד קופון לא נמצא");
+                    return Page();
+                }
+
+                // בדיקה אם הקופון עדיין בתוקף
+                if (coupon.ExpiryDate < DateTime.Today)
+                {
+                    ModelState.AddModelError("CouponCode", "תוקף הקופון פג");
+                    return Page();
+                }
+
+                discount = coupon.Discount / 100m;
             }
 
-            // חשב מחיר סופי עם הנחה
+            // חישוב מחיר סופי
             Purchase.Total = price * (1 - discount);
-            Purchase.PurchaseDate = DateTime.Now; // עדכן תאריך רכישה
+            Purchase.PurchaseDate = DateTime.Now;
 
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("Index");
+
         }
     }
 }

@@ -12,11 +12,22 @@
         <input asp-for="Coupon.Code" class="form-control" />
         <span asp-validation-for="Coupon.Code" class="text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="Coupon.Discount"></label>
+        <input asp-for="Coupon.Discount" class="form-control" />
+        <span asp-validation-for="Coupon.Discount" class="text-danger"></span>
+    </div>
 
     <div class="form-group">
         <label asp-for="Coupon.Description"></label>
         <input asp-for="Coupon.Description" class="form-control" />
         <span asp-validation-for="Coupon.Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Coupon.ExpiryDate"></label>
+        <input asp-for="Coupon.ExpiryDate" class="form-control" />
+        <span asp-validation-for="Coupon.ExpiryDate" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Create</button>
