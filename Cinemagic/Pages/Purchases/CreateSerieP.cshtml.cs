@@ -73,11 +73,9 @@ namespace Cinemagic.Pages.Purchases
             ViewData["MemberID"] = new SelectList(_context.Members, "MemberID", "IdintityCard");
             ViewData["Email"] = new SelectList(_context.Members, "Email", "Email");
 
-            var moviePrices = await _context.Movies.ToDictionaryAsync(m => m.MovieID.ToString(), m => m.MoviePrice);
             var seriePrices = await _context.Series.ToDictionaryAsync(s => s.SerieID.ToString(), s => s.SeriePrice);
-
-            ViewData["MoviePrices"] = JsonSerializer.Serialize(moviePrices);
             ViewData["SeriePrices"] = JsonSerializer.Serialize(seriePrices);
+
 
             return Page();
         }
@@ -87,61 +85,57 @@ namespace Cinemagic.Pages.Purchases
             if (!ModelState.IsValid)
                 return Page();
 
-            if (Purchase.PurchaseDate == default)
-                Purchase.PurchaseDate = DateTime.Now;
-
-            decimal total = 0;
-
-            if (Purchase.MovieID.HasValue)
+            // קבל מחיר הסרט
+            var Serie = await _context.Series.FirstOrDefaultAsync(m => m.SerieID == Purchase.SerieID);
+            if (Serie == null)
             {
-                var movie = await _context.Movies.FindAsync(Purchase.MovieID.Value);
-                if (movie != null)
-                    total += movie.MoviePrice;
+                ModelState.AddModelError("", "הסרט לא נמצא");
+                return Page();
             }
+            decimal price = Serie.SeriePrice;
 
-            if (Purchase.SerieID.HasValue)
-            {
-                var serie = await _context.Series.FindAsync(Purchase.SerieID.Value);
-                if (serie != null)
-                    total += serie.SeriePrice;
-            }
-
-            // בדיקת קוד קופון שמתחיל ב-SERIE (לא תלוי רישיות)
-            decimal discount = 0;
+            // בדיקת קופון שמתחיל ב-Serie (לא תלוי רישיות)
+            decimal discount = 0m;
             if (!string.IsNullOrEmpty(CouponCode))
             {
                 string normalizedCode = CouponCode.Trim().ToUpper();
 
-                if (!normalizedCode.StartsWith("SERIE"))
+                // רק אם מתחיל ב-Serie
+                if (!normalizedCode.StartsWith("Serie"))
                 {
-                    ModelState.AddModelError("CouponCode", "רק קופונים שמתחילים ב-SERIE מותרים לסדרות");
+                    ModelState.AddModelError("CouponCode", "Invalid Coupon!");
                     return Page();
                 }
 
+                // חפש קופון תואם
                 var coupon = CouponStore.Coupons
                     .FirstOrDefault(c => c.Code.Trim().ToUpper() == normalizedCode);
 
                 if (coupon == null)
                 {
-                    ModelState.AddModelError("CouponCode", "קוד קופון לא נמצא");
+                    ModelState.AddModelError("CouponCode", "Coupon Not Found");
                     return Page();
                 }
 
+                // בדיקה אם הקופון עדיין בתוקף
                 if (coupon.ExpiryDate < DateTime.Today)
                 {
-                    ModelState.AddModelError("CouponCode", "תוקף הקופון פג");
+                    ModelState.AddModelError("CouponCode", "Coupon Expired");
                     return Page();
                 }
 
                 discount = coupon.Discount / 100m;
             }
 
-            Purchase.Total = total * (1 - discount);
+            // חישוב מחיר סופי
+            Purchase.Total = price * (1 - discount);
+            Purchase.PurchaseDate = DateTime.Now;
 
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("Index");
+
         }
 
     }

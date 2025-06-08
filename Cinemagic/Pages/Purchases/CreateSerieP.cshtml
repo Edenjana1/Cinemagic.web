@@ -48,15 +48,15 @@
 
             <div class="form-group">
                 <label asp-for="CouponCode">קוד קופון</label>
-                <input asp-for="CouponCode" class="form-control" />
+                <input asp-for="CouponCode" class="form-control" id="couponInput" />
                 <span asp-validation-for="CouponCode" class="text-danger"></span>
             </div>
 
 
             <!-- Total Price -->
             <div class="form-group">
-                <label asp-for="Purchase.Total">Total Amount</label>
-                <input asp-for="Purchase.Total" class="form-control" readonly />
+                <label asp-for="Purchase.Total">Total Price (NIS) </label>
+                <input asp-for="Purchase.Total" class="form-control" readonly id="totalInput" />
                 <span asp-validation-for="Purchase.Total" class="text-danger"></span>
             </div>
 
@@ -74,4 +74,35 @@
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        const coupons = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Cinemagic.Pages.Cupons.CouponStore.Coupons));
+        const originalPrice = @Model.Purchase.Total;
+
+        const couponInput = document.getElementById("couponInput");
+        const totalInput = document.getElementById("totalInput");
+
+        couponInput.addEventListener("input", function () {
+            const inputCode = couponInput.value.trim().toUpperCase();
+            let finalPrice = originalPrice;
+
+            if (inputCode.startsWith("Serie")) {
+                const coupon = coupons.find(c => c.Code.trim().toUpperCase() === inputCode);
+                if (coupon) {
+                    const expiry = new Date(coupon.ExpiryDate);
+                    const today = new Date();
+
+                    if (expiry >= today) {
+                        const discount = coupon.Discount / 100;
+                        finalPrice = originalPrice * (1 - discount);
+                    }
+                }
+            }
+
+            totalInput.value = finalPrice.toFixed(2);
+        });
+    </script>
+
+
 }
+

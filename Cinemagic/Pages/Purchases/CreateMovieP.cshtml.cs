@@ -105,7 +105,7 @@ namespace Cinemagic.Pages.Purchases
                 // רק אם מתחיל ב-MOVIE
                 if (!normalizedCode.StartsWith("MOVIE"))
                 {
-                    ModelState.AddModelError("CouponCode", "קופון לא תקין לסרטים");
+                    ModelState.AddModelError("CouponCode", "Invalid Coupon!");
                     return Page();
                 }
 
@@ -115,14 +115,14 @@ namespace Cinemagic.Pages.Purchases
 
                 if (coupon == null)
                 {
-                    ModelState.AddModelError("CouponCode", "קוד קופון לא נמצא");
+                    ModelState.AddModelError("CouponCode", "Coupon Not Found");
                     return Page();
                 }
 
                 // בדיקה אם הקופון עדיין בתוקף
                 if (coupon.ExpiryDate < DateTime.Today)
                 {
-                    ModelState.AddModelError("CouponCode", "תוקף הקופון פג");
+                    ModelState.AddModelError("CouponCode", "Coupon Expired");
                     return Page();
                 }
 
