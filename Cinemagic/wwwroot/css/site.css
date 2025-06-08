@@ -287,3 +287,54 @@ h3 {
     padding-bottom: 0.4rem;
     white-space: nowrap; /* למנוע שבירה של הטקסט לשורות */
 }
+.scroll-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 15px;
+    padding: 10px 40px;
+}
+
+.scroll-btn {
+    position: absolute;
+    top: 40%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.scroll-left {
+    left: 0;
+}
+
+.scroll-right {
+    right: 0;
+}
+
+.movie-card {
+    flex: 0 0 auto;
+    width: 160px;
+    text-align: center;
+}
+
+    .movie-card img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .movie-card h5 {
+        margin-top: 8px;
+        font-size: 1rem;
+        color: #222;
+    }

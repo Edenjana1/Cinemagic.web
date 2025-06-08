@@ -58,7 +58,10 @@
     <div class="movie-grid">
         @foreach (var item in Model.Movie)
         {
-            <div class="movie-card">
+            <div style="position: relative; width: 100%; overflow: hidden; margin-bottom: 40px;">
+
+                <button type="button" id="scrollLeftKids" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
+                <button type="button" id="scrollRightKids" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
                 <a asp-page="./Details" asp-route-id="@item.MovieID">
                     <img src="~/Images/MovieIMG/@item.Image" alt="@item.MovieName" />
                     <h5>@item.MovieName</h5>
@@ -75,7 +78,10 @@ else
 <h3>Most Purchased Movies</h3>
 @if (Model.MostPurchasedMovies.Any())
 {
-    <div class="movie-grid">
+    <div style="position: relative; width: 100%; overflow: hidden; margin-bottom: 40px;">
+
+        <button type="button" id="scrollLeftKids" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
+        <button type="button" id="scrollRightKids" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
         @foreach (var movie in Model.MostPurchasedMovies)
         {
             <div class="movie-card">
@@ -95,7 +101,10 @@ else
 <h3>New Movies</h3>
 @if (Model.RecentMovies.Any())
 {
-    <div class="movie-grid">
+    <div style="position: relative; width: 100%; overflow: hidden; margin-bottom: 40px;">
+
+        <button type="button" id="scrollLeftKids" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
+        <button type="button" id="scrollRightKids" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
         @foreach (var movie in Model.RecentMovies)
         {
             <div class="movie-card">
@@ -115,7 +124,10 @@ else
 <h3>Movies for Kids</h3>
 @if (Model.KidsMovies.Any())
 {
-    <div class="movie-grid">
+    <div style="position: relative; width: 100%; overflow: hidden; margin-bottom: 40px;">
+
+        <button type="button" id="scrollLeftKids" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
+        <button type="button" id="scrollRightKids" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
         @foreach (var movie in Model.KidsMovies)
         {
             <div class="movie-card">

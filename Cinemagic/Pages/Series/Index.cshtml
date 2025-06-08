@@ -98,17 +98,25 @@ else
 <h3>Most Purchased Series</h3>
 @if (Model.MostPurchasedSeries.Any())
 {
-    <div class="movie-grid">
-        @foreach (var serie in Model.MostPurchasedSeries)
-        {
-            <div class="movie-card">
-                <a asp-page="/Series/Details" asp-route-id="@serie.SerieID">
-                    <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" />
-                    <h5>@serie.SerieName</h5>
-                </a>
-            </div>
-        }
+    <div style="position: relative; width: 100%; overflow: hidden; margin-bottom: 40px;">
+
+        <button type="button" id="scrollLeftPurchased" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
+        <button type="button" id="scrollRightPurchased" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
+
+        <div id="purchasedSeriesContainer" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 15px; padding: 10px 40px;">
+            @foreach (var serie in Model.MostPurchasedSeries)
+            {
+                <div class="movie-card" style="flex: 0 0 auto; width: 160px; text-align: center;">
+                    <a asp-page="/Series/Details" asp-route-id="@serie.SerieID" style="text-decoration: none; color: inherit;">
+                        <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" style="width: 100%; border-radius: 8px;" />
+                        <h5 style="margin-top: 8px;">@serie.SerieName</h5>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
+
+    
 }
 else
 {
@@ -118,17 +126,25 @@ else
 <h3>New Series</h3>
 @if (Model.RecentSeries.Any())
 {
-    <div class="movie-grid">
-        @foreach (var serie in Model.RecentSeries)
-        {
-            <div class="movie-card">
-                <a asp-page="/Series/Details" asp-route-id="@serie.SerieID">
-                    <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" />
-                    <h5>@serie.SerieName</h5>
-                </a>
-            </div>
-        }
+    <div style="position: relative; width: 100%; overflow: hidden; margin-bottom: 40px;">
+
+        <button type="button" id="scrollLeftNew" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
+        <button type="button" id="scrollRightNew" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
+
+        <div id="newSeriesContainer" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 15px; padding: 10px 40px;">
+            @foreach (var serie in Model.RecentSeries)
+            {
+                <div class="movie-card" style="flex: 0 0 auto; width: 160px; text-align: center;">
+                    <a asp-page="/Series/Details" asp-route-id="@serie.SerieID" style="text-decoration: none; color: inherit;">
+                        <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" style="width: 100%; border-radius: 8px;" />
+                        <h5 style="margin-top: 8px;">@serie.SerieName</h5>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
+
+
 }
 else
 {
@@ -138,19 +154,46 @@ else
 <h3>Series for Kids</h3>
 @if (Model.KidsSeries.Any())
 {
-    <div class="movie-grid">
-        @foreach (var serie in Model.KidsSeries)
-        {
-            <div class="movie-card">
-                <a asp-page="/Series/Details" asp-route-id="@serie.SerieID">
-                    <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" />
-                    <h5>@serie.SerieName</h5>
-                </a>
-            </div>
-        }
+    <div style="position: relative; width: 100%; overflow: hidden; margin-bottom: 40px;">
+
+        <button type="button" id="scrollLeftKids" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
+        <button type="button" id="scrollRightKids" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
+
+        <div id="kidsSeriesContainer" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 15px; padding: 10px 40px;">
+            @foreach (var serie in Model.KidsSeries)
+            {
+                <div class="movie-card" style="flex: 0 0 auto; width: 160px; text-align: center;">
+                    <a asp-page="/Series/Details" asp-route-id="@serie.SerieID" style="text-decoration: none; color: inherit;">
+                        <img src="~/Images/SerieIMG/@serie.Image" alt="@serie.SerieName" style="width: 100%; border-radius: 8px;" />
+                        <h5 style="margin-top: 8px;">@serie.SerieName</h5>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
+
 }
 else
 {
     <p style="font-style: italic; color: #aaa;">No kids series available.</p>
 }
+@* <script>
+    document.getElementById('scrollLeftPurchased').addEventListener('click', () => {
+        document.getElementById('purchasedSeriesContainer').scrollBy({ left: -300, behavior: 'smooth' });
+    });
+    document.getElementById('scrollRightPurchased').addEventListener('click', () => {
+        document.getElementById('purchasedSeriesContainer').scrollBy({ left: 300, behavior: 'smooth' });
+    });
+    document.getElementById('scrollLeftNew').addEventListener('click', () => {
+        document.getElementById('newSeriesContainer').scrollBy({ left: -300, behavior: 'smooth' });
+    });
+    document.getElementById('scrollRightNew').addEventListener('click', () => {
+        document.getElementById('newSeriesContainer').scrollBy({ left: 300, behavior: 'smooth' });
+    });
+    document.getElementById('scrollLeftKids').addEventListener('click', () => {
+        document.getElementById('kidsSeriesContainer').scrollBy({ left: -300, behavior: 'smooth' });
+    });
+    document.getElementById('scrollRightKids').addEventListener('click', () => {
+        document.getElementById('kidsSeriesContainer').scrollBy({ left: 300, behavior: 'smooth' });
+    });
+</script> *@
