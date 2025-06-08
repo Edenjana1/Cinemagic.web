@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Cinemagic.Data;
 using Cinemagic.Models;
-using System.Collections.Generic;
 
 namespace Cinemagic.Pages.Quizzes
 {
@@ -28,7 +27,6 @@ namespace Cinemagic.Pages.Quizzes
 
         public Question CurrentQuestion { get; set; } = default!;
 
-        // לתשובה שנבחרה (אינדקס אפשרות)
         [BindProperty]
         public int? SelectedOptionIndex { get; set; }
 
@@ -51,18 +49,18 @@ namespace Cinemagic.Pages.Quizzes
             if (QuestionIndex < 0 || QuestionIndex >= Quiz.Questions.Count)
                 return RedirectToPage("./Index");
 
+            // התחלה מחדש
             if (QuestionIndex == 0)
             {
-                CorrectAnswersCount = 0; // אפס ציון עם התחלת חידון חדש
+                CorrectAnswersCount = 0;
+                TempData[nameof(CorrectAnswersCount)] = 0;
             }
-            else
+            if (TempData.ContainsKey(nameof(CorrectAnswersCount)))
             {
-                // קבלת הערך מה-TempData כדי להמשיך לספור את הציונים
-                if (TempData.ContainsKey(nameof(CorrectAnswersCount)))
-                {
-                    CorrectAnswersCount = (int)TempData.Peek(nameof(CorrectAnswersCount))+1;
-                }
+                CorrectAnswersCount = (int)TempData[nameof(CorrectAnswersCount)];
+                TempData.Keep(nameof(CorrectAnswersCount));
             }
+
 
             CurrentQuestion = Quiz.Questions.OrderBy(q => q.Id).ElementAt(QuestionIndex);
 
@@ -83,21 +81,6 @@ namespace Cinemagic.Pages.Quizzes
 
             CurrentQuestion = Quiz.Questions.OrderBy(q => q.Id).ElementAt(QuestionIndex);
 
-            if (Request.Form.ContainsKey("NextQuestion"))
-            {
-                // שמירת הציון לפני הרידיירקט
-                TempData[nameof(CorrectAnswersCount)] = CorrectAnswersCount;
-
-                QuestionIndex++;
-                if (QuestionIndex >= Quiz.Questions.Count)
-                {
-                    // סיימנו את כל השאלות - נחזור לעמוד החידונים
-                    return RedirectToPage("./Index");
-                }
-
-                return RedirectToPage(new { QuizId = QuizId, QuestionIndex = QuestionIndex });
-            }
-
             if (SelectedOptionIndex == null)
             {
                 ModelState.AddModelError("", "Please select an option.");
@@ -111,12 +94,15 @@ namespace Cinemagic.Pages.Quizzes
                 CorrectAnswersCount++;
             }
 
-            // שמירת הציון המעודכן ב-TempData כדי שלא יאבד בעת הרידיירקט הבא
             TempData[nameof(CorrectAnswersCount)] = CorrectAnswersCount;
+
+            if (Request.Form.ContainsKey("NextQuestion"))
+            {
+                QuestionIndex++;
+                return RedirectToPage(new { QuizId = QuizId, QuestionIndex = QuestionIndex });
+            }
 
             return Page();
         }
-
-
     }
 }
