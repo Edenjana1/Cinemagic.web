@@ -15,17 +15,18 @@
                 <label for="IdintityCard" class="form-label">מספר תעודת זהות</label>
                 <input type="text" id="IdintityCard" name="IdintityCard" class="form-control" required />
             </div>
-
-            <button type="submit" class="btn btn-primary w-100">התחבר</button>
-        </form>
-
-        @if (Model.ErrorMessage != null)
-        {
-            <div class="alert alert-danger mt-3 text-center">
-                @Model.ErrorMessage
+            <div class="form-group">
+                <label asp-for="PhoneNumber">Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-control" />
             </div>
 
-        }
+            <button type="submit" class="btn btn-primary">Login</button>
+
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="text-danger mt-2">@Model.ErrorMessage</div>
+            }
+        </form>
 
         <hr />
         <div class="text-center mt-3">

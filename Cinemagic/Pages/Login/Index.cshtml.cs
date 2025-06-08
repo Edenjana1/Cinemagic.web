@@ -18,26 +18,27 @@ namespace Cinemagic.Pages.Login
         [BindProperty]
         public int IdintityCard { get; set; }
 
+        [BindProperty]
+        public string PhoneNumber { get; set; }
+
         public string ErrorMessage { get; set; }
 
         public IActionResult OnPost()
         {
-            var member = _context.Members.FirstOrDefault(m => m.IdintityCard == IdintityCard);
+            var member = _context.Members
+                .FirstOrDefault(m => m.IdintityCard == IdintityCard && m.Phone == PhoneNumber);
 
             if (member != null)
             {
-                // שמירת מזהה המשתמש בסשן
                 HttpContext.Session.SetString("UserId", member.MemberID.ToString());
                 HttpContext.Session.SetString("FullName", member.FirstMidName + " " + member.LastName);
-                // <-- זה חשוב!
-
                 HttpContext.Session.SetString("UserType", "Member");
-                
+
                 return RedirectToPage("/Movies/Index", new { id = member.MemberID });
             }
             else
             {
-                ErrorMessage = "ID not found, please create a new member.";
+                ErrorMessage = "ID or phone number incorrect. Please try again or create a new account.";
                 return Page();
             }
         }
