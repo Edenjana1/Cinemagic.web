@@ -44,7 +44,12 @@ namespace Cinemagic.Pages.Movies
                 new SelectListItem { Text = "DUNE", Value = "DUNE.jpg" },
                 new SelectListItem { Text = "WICKED", Value = "WICKED.jpg" },
                 new SelectListItem { Text = "Oppenhaimer", Value = "oppenheimer.jpg" },
-                new SelectListItem { Text = "Harry potter and the philosopher's stone", Value = "harry_potter1.jpg" }
+                new SelectListItem { Text = "Harry potter and the philosopher's stone", Value = "harry_potter1.jpg" },
+                new SelectListItem { Text = "Counterstrike", Value = "Counterstrike.jpg" },
+                new SelectListItem { Text = "Fear Street: Prom Queen", Value = "FearStreetPromQueen.jpg" },
+                new SelectListItem { Text = "Plankton: The Movie", Value = "PlanktonTheMovie.jpg" },
+                new SelectListItem { Text = "Revelations", Value = "Revelations.jpg" },
+                new SelectListItem { Text = "The Electri cState", Value = "TheElectricState.jpg" }
             };
             Genres = Enum.GetValues(typeof(MovieGenre))
                  .Cast<MovieGenre>()

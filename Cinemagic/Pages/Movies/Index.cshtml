@@ -5,6 +5,7 @@
     ViewData["Title"] = "Movies";
     var userType = HttpContext.Session.GetString("UserType");
 }
+
 <!-- Genre Navigation Bar -->
 <div class="genre-bar-container">
     <div class="genre-bar d-flex flex-wrap gap-2 justify-content-start">
@@ -24,7 +25,7 @@
 
 @if (userType == "Admin")
 {
-    <a href="/Movies/Create" class="btn btn-primary">Add Movie</a>
+    <a href="/Movies/Create" class="btn btn-primary">Add Movies</a>
 }
 
 <!-- Search Box -->
@@ -32,7 +33,7 @@
     <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
         <label for="searchBoxMovies" style="font-weight: 500; color: #444;">Search Movies:</label>
         <input type="text" id="searchBoxMovies" name="SearchString"
-               placeholder="Enter movie name..."
+               placeholder="Enter Movies name..."
                style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 8px; width: 220px;" />
 
         <input type="submit" value="Search"
@@ -51,51 +52,75 @@
     </div>
 </form>
 
-
 <h3>Movies</h3>
 @if (Model.Movie.Any())
 {
-    <div class="movie-grid">
-        @foreach (var item in Model.Movie)
-        {
-            <div style="position: relative; width: 100%; overflow: hidden; margin-bottom: 40px;">
+    <div style="position: relative; width: 100%; overflow: hidden;">
 
-                <button type="button" id="scrollLeftKids" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
-                <button type="button" id="scrollRightKids" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
-                <a asp-page="./Details" asp-route-id="@item.MovieID">
-                    <img src="~/Images/MovieIMG/@item.Image" alt="@item.MovieName" />
-                    <h5>@item.MovieName</h5>
-                </a>
-            </div>
-        }
+        <!-- כפתורי החלקה -->
+        <button type="button" id="scrollLeftBtn" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
+        <button type="button" id="scrollRightBtn" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
+
+        <div id="MoviesContainer" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 15px; padding: 10px 40px;">
+
+            @foreach (var item in Model.Movie)
+            {
+                <div class="movie-card" style="flex: 0 0 auto; width: 160px; text-align: center;">
+                    <a asp-page="./Details" asp-route-id="@item.MovieID" style="text-decoration: none; color: inherit;">
+                        <img src="~/Images/MovieIMG/@item.Image" alt="@item.MovieName" style="width: 100%; border-radius: 8px;" />
+                        <h5 style="margin-top: 8px;">@item.MovieName</h5>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
+
+    <script>
+        const scrollContainer = document.getElementById('MoviesContainer');
+        const btnLeft = document.getElementById('scrollLeftBtn');
+        const btnRight = document.getElementById('scrollRightBtn');
+
+        btnLeft.addEventListener('click', () => {
+            scrollContainer.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+
+        btnRight.addEventListener('click', () => {
+            scrollContainer.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+    </script>
 }
 else
 {
-    <p style="font-style: italic; color: #aaa;">No movies available.</p>
+    <p style="font-style: italic; color: #aaa;">No Movies available.</p>
 }
+
 
 <h3>Most Purchased Movies</h3>
 @if (Model.MostPurchasedMovies.Any())
 {
     <div style="position: relative; width: 100%; overflow: hidden; margin-bottom: 40px;">
 
-        <button type="button" id="scrollLeftKids" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
-        <button type="button" id="scrollRightKids" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
-        @foreach (var movie in Model.MostPurchasedMovies)
-        {
-            <div class="movie-card">
-                <a asp-page="./Details" asp-route-id="@movie.MovieID">
-                    <img src="~/Images/MovieIMG/@movie.Image" alt="@movie.MovieName" />
-                    <h5>@movie.MovieName</h5>
-                </a>
-            </div>
-        }
+        <button type="button" id="scrollLeftPurchased" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
+        <button type="button" id="scrollRightPurchased" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
+
+        <div id="purchasedMoviesContainer" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 15px; padding: 10px 40px;">
+            @foreach (var Movie in Model.MostPurchasedMovies)
+            {
+                <div class="movie-card" style="flex: 0 0 auto; width: 160px; text-align: center;">
+                    <a asp-page="/Movies/Details" asp-route-id="@Movie.MovieID" style="text-decoration: none; color: inherit;">
+                        <img src="~/Images/MovieIMG/@Movie.Image" alt="@Movie.MovieName" style="width: 100%; border-radius: 8px;" />
+                        <h5 style="margin-top: 8px ;">@Movie.MovieName</h5>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
+
+
 }
 else
 {
-    <p style="font-style: italic; color: #aaa;">No popular movies available.</p>
+    <p style="font-style: italic; color: #aaa;">No popular Movies available.</p>
 }
 
 <h3>New Movies</h3>
@@ -103,22 +128,27 @@ else
 {
     <div style="position: relative; width: 100%; overflow: hidden; margin-bottom: 40px;">
 
-        <button type="button" id="scrollLeftKids" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
-        <button type="button" id="scrollRightKids" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
-        @foreach (var movie in Model.RecentMovies)
-        {
-            <div class="movie-card">
-                <a asp-page="./Details" asp-route-id="@movie.MovieID">
-                    <img src="~/Images/MovieIMG/@movie.Image" alt="@movie.MovieName" />
-                    <h5>@movie.MovieName</h5>
-                </a>
-            </div>
-        }
+        <button type="button" id="scrollLeftNew" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
+        <button type="button" id="scrollRightNew" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
+
+        <div id="newMoviesContainer" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 15px; padding: 10px 40px;">
+            @foreach (var Movie in Model.RecentMovies)
+            {
+                <div class="movie-card" style="flex: 0 0 auto; width: 160px; text-align: center;">
+                    <a asp-page="/Movies/Details" asp-route-id="@Movie.MovieID" style="text-decoration: none; color: inherit;">
+                        <img src="~/Images/MovieIMG/@Movie.Image" alt="@Movie.MovieName" style="width: 100%; border-radius: 8px;" />
+                        <h5 style="margin-top: 8px;">@Movie.MovieName</h5>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
+
+
 }
 else
 {
-    <p style="font-style: italic; color: #aaa;">No new movies available.</p>
+    <p style="font-style: italic; color: #aaa;">No new Movies available.</p>
 }
 
 <h3>Movies for Kids</h3>
@@ -128,19 +158,42 @@ else
 
         <button type="button" id="scrollLeftKids" style="position: absolute; left: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8592;</button>
         <button type="button" id="scrollRightKids" style="position: absolute; right: 0; top: 40%; z-index: 10; background-color: rgba(0,0,0,0.3); border: none; color: white; font-size: 24px; cursor: pointer; padding: 10px;">&#8594;</button>
-        @foreach (var movie in Model.KidsMovies)
-        {
-            <div class="movie-card">
-                <a asp-page="./Details" asp-route-id="@movie.MovieID">
-                    <img src="~/Images/MovieIMG/@movie.Image" alt="@movie.MovieName" />
-                    <h5>@movie.MovieName</h5>
-                </a>
-            </div>
-        }
+
+        <div id="kidsMoviesContainer" style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 15px; padding: 10px 40px;">
+            @foreach (var Movie in Model.KidsMovies)
+            {
+                <div class="movie-card" style="flex: 0 0 auto; width: 160px; text-align: center;">
+                    <a asp-page="/Movies/Details" asp-route-id="@Movie.MovieID" style="text-decoration: none; color: inherit;">
+                        <img src="~/Images/MovieIMG/@Movie.Image" alt="@Movie.MovieName" style="width: 100%; border-radius: 8px;" />
+                        <h5 style="margin-top: 8px;">@Movie.MovieName</h5>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
+
 }
 else
 {
-    <p style="font-style: italic; color: #aaa;">No kids movies available.</p>
+    <p style="font-style: italic; color: #aaa;">No kids Movies available.</p>
 }
-
+@* <script>
+    document.getElementById('scrollLeftPurchased').addEventListener('click', () => {
+        document.getElementById('purchasedMoviesContainer').scrollBy({ left: -300, behavior: 'smooth' });
+    });
+    document.getElementById('scrollRightPurchased').addEventListener('click', () => {
+        document.getElementById('purchasedMoviesContainer').scrollBy({ left: 300, behavior: 'smooth' });
+    });
+    document.getElementById('scrollLeftNew').addEventListener('click', () => {
+        document.getElementById('newMoviesContainer').scrollBy({ left: -300, behavior: 'smooth' });
+    });
+    document.getElementById('scrollRightNew').addEventListener('click', () => {
+        document.getElementById('newMoviesContainer').scrollBy({ left: 300, behavior: 'smooth' });
+    });
+    document.getElementById('scrollLeftKids').addEventListener('click', () => {
+        document.getElementById('kidsMoviesContainer').scrollBy({ left: -300, behavior: 'smooth' });
+    });
+    document.getElementById('scrollRightKids').addEventListener('click', () => {
+        document.getElementById('kidsMoviesContainer').scrollBy({ left: 300, behavior: 'smooth' });
+    });
+</script> *@
