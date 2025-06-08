@@ -56,20 +56,27 @@ namespace Cinemagic.Pages.Movies
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid || id == null)
+            if (Movie == null || Movie.MovieID == 0)
             {
-                return Page();
+                return NotFound();
             }
 
-            NewComment.MovieID = id.Value;
-            NewComment.CommentDate = DateTime.Now;
+            var relatedComments = await _context.Comments
+                .Where(c => c.MovieID == Movie.MovieID)
+                .ToListAsync();
 
-            _context.Comments.Add(NewComment);
-            await _context.SaveChangesAsync();
+            _context.Comments.RemoveRange(relatedComments);
 
-            return RedirectToPage(new { id });
+            var movieToDelete = await _context.Movies.FindAsync(Movie.MovieID);
+            if (movieToDelete != null)
+            {
+                _context.Movies.Remove(movieToDelete);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage("./Index");
         }
 
         public async Task<IActionResult> OnPostDeleteCommentAsync(int commentId)

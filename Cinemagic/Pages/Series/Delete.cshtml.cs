@@ -22,6 +22,7 @@ namespace Cinemagic.Pages.Series
         [BindProperty]
         public Serie Serie { get; set; } = default!;
 
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -29,35 +30,37 @@ namespace Cinemagic.Pages.Series
                 return NotFound();
             }
 
-            var serie = await _context.Series.FirstOrDefaultAsync(m => m.SerieID == id);
-
-            if (serie == null)
+            Serie = await _context.Series.FirstOrDefaultAsync(m => m.SerieID == id);
+            if (Serie == null)
             {
                 return NotFound();
-            }
-            else
-            {
-                Serie = serie;
             }
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (id == null)
+            if (Serie == null || Serie.SerieID == 0)
             {
                 return NotFound();
             }
 
-            var serie = await _context.Series.FindAsync(id);
-            if (serie != null)
+            var relatedComments = await _context.Comments
+    .Where(c => c.SerieID == Serie.SerieID)
+    .ToListAsync();
+
+            _context.Comments.RemoveRange(relatedComments);
+
+
+            var serieToDelete = await _context.Series.FindAsync(Serie.SerieID);
+            if (serieToDelete != null)
             {
-                Serie = serie;
-                _context.Series.Remove(Serie);
+                _context.Series.Remove(serieToDelete);
                 await _context.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");
         }
+
     }
 }

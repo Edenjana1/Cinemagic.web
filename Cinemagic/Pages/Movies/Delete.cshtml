@@ -1,64 +1,43 @@
 ﻿@page
 @model Cinemagic.Pages.Movies.DeleteModel
-
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Movie";
 }
 
 <h1>Delete Movie</h1>
-
 <h3>Are you sure you want to delete this movie?</h3>
+
 <div>
     <h4>Movie Details</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.Image)
-        </dt>
-        <div>
-            <img src="~/Images/MovieIMG/@Model.Movie.Image" alt="@Model.Movie.MovieName" style="width: 150px; height: 150px; border-radius: 10px;" />
-        </div>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.MovieName)
-        </dt>
+        <dt class="col-sm-2">Image</dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Movie.MovieName)
+            <img src="~/Images/MovieIMG/@Model.Movie.Image" alt="@Model.Movie.MovieName" style="width: 150px; height: 150px;" />
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.MovieGenre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Movie.MovieGenre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.MovieDescription)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Movie.MovieDescription)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.ReleaseDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Movie.ReleaseDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.AgeRate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Movie.AgeRate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.MoviePrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Movie.MoviePrice)
-        </dd>
+
+        <dt class="col-sm-2">Name</dt>
+        <dd class="col-sm-10">@Model.Movie.MovieName</dd>
+
+        <dt class="col-sm-2">Genre</dt>
+        <dd class="col-sm-10">@Model.Movie.MovieGenre</dd>
+
+        <dt class="col-sm-2">Description</dt>
+        <dd class="col-sm-10">@Model.Movie.MovieDescription</dd>
+
+        <dt class="col-sm-2">Release Date</dt>
+        <dd class="col-sm-10">@Model.Movie.ReleaseDate.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">Age Rating</dt>
+        <dd class="col-sm-10">@Model.Movie.AgeRate</dd>
+
+        <dt class="col-sm-2">Price</dt>
+        <dd class="col-sm-10">@Model.Movie.MoviePrice ₪</dd>
     </dl>
 
     <form method="post">
         <input type="hidden" asp-for="Movie.MovieID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure?');" />
+        <a asp-page="./Index" class="btn btn-secondary ms-2">Cancel</a>
     </form>
 </div>

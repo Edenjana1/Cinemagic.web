@@ -36,7 +36,9 @@ namespace Cinemagic.Pages.Series
                 new SelectListItem { Text = "Game Of Thrones", Value = "GameOfThrones.jpg" },
                 new SelectListItem { Text = "Money Heist", Value = "MoneyHeist.jpg" },
                 new SelectListItem { Text = "Stranger Things", Value = "StrangerThings.jpg" },
-                new SelectListItem { Text = "Friends", Value = "Friends.jpg" }
+                new SelectListItem { Text = "Friends", Value = "Friends.jpg" },
+                new SelectListItem { Text = "Adolescence ", Value = "Adolescence.jpg" },
+                new SelectListItem { Text = "The Residance", Value = "TheResidance.jpg" }
             };
 
             Genres = Enum.GetValues(typeof(SerieGenre))
